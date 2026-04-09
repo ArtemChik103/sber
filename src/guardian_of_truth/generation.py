@@ -396,6 +396,8 @@ class GroqNegativeGenerator:
             read=max(2.0, self.settings.read_timeout_sec),
             write=max(2.0, self.settings.read_timeout_sec),
         )
+        answer_word_count = max(1, len(answer.split()))
+        max_tokens = min(self.settings.max_tokens_dataset, max(20, answer_word_count * 3 + 4))
         client = AsyncGroq(
             api_key=self.api_key,
             timeout=timeout,
@@ -406,19 +408,25 @@ class GroqNegativeGenerator:
                 model=self.settings.runtime_model,
                 temperature=0.0,
                 top_p=1.0,
-                max_tokens=self.settings.max_tokens_dataset,
+                max_tokens=max_tokens,
                 messages=[
                     {
                         "role": "system",
                         "content": (
-                            "Rewrite the answer with exactly one factual mistake. "
-                            "Keep the same language, sentence count, and approximate length. "
-                            "Do not add explanations or extra facts. Return only the rewritten answer."
+                            "Rewrite the answer so that it contains exactly one plausible factual mistake. "
+                            "Keep the same language, sentence count, and answer template. "
+                            "Change only one key fact such as a person, place, year, number, title, or symbol. "
+                            "Do not add any explanation, second clause, date, biography, or extra fact. "
+                            "Output only the rewritten answer."
                         ),
                     },
                     {
                         "role": "user",
-                        "content": f"prompt: {prompt}\ncorrect_answer: {answer}",
+                        "content": (
+                            f"Question: {prompt}\n"
+                            f"Correct answer: {answer}\n"
+                            "Return one short rewritten answer with exactly one wrong fact and no extra text."
+                        ),
                     },
                 ],
                 timeout=timeout,
@@ -426,7 +434,7 @@ class GroqNegativeGenerator:
             content = (response.choices[0].message.content or "").strip()
             if not content or content == answer:
                 raise RuntimeError("Groq negative generation returned an empty or unchanged answer.")
-            if len(content.split()) > max(4, int(len(answer.split()) * 1.6)):
+            if len(content.split()) > max(4, int(len(answer.split()) * 1.35) + 2):
                 raise RuntimeError("Groq negative generation expanded the answer too much.")
             return content
         finally:
