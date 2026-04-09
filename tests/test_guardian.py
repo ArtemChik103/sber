@@ -29,3 +29,19 @@ def test_guardian_fallback_handles_429() -> None:
     result = guardian.score("Сколько градусов содержит прямой угол?", "Прямой угол содержит 90 градусов.")
 
     assert 0.0 <= result.is_hallucination_proba <= 1.0
+
+
+def test_guardian_runtime_cutoff_returns_before_slow_api() -> None:
+    class SlowVerifier(TimeoutVerifier):
+        def verify(self, prompt: str, answer: str, mode: str = "runtime") -> AuditPayload:
+            time.sleep(1.0)
+            return AuditPayload(h=0.9, n=0.2, e=0.1, r=0.9, u=0.1, c=1, x=0, mode="runtime", model_name="llama-3.1-8b-instant")
+
+    guardian = GuardianOfTruth(verifier=SlowVerifier(), fallback_classifier=HeuristicFallbackClassifier())
+    started = time.perf_counter()
+    result = guardian.score("Кто был первым президентом США?", "Первым президентом США был Джордж Вашингтон.")
+    elapsed = time.perf_counter() - started
+
+    assert elapsed < 0.5
+    assert result.t_total_sec < 0.5
+    assert 0.0 <= result.is_hallucination_proba <= 1.0

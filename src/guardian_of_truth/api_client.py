@@ -288,20 +288,12 @@ class GroqVerifier:
 
     def _build_messages(self, prompt: str, answer: str) -> list[dict[str, str]]:
         system = (
-            "You audit factual consistency. "
-            "Return only a compact JSON object with keys h,n,e,r,u,c,x. "
-            "Use floats in [0,1], c as integer 0..3, x as 0 or 1."
+            "Return only JSON: {h,n,e,r,u,c,x}. "
+            "h,n,e,u,r are 0..1 floats; c is 0..3; x is 0 or 1."
         )
         user = (
-            "Score the answer against the prompt.\n"
-            "h overall hallucination risk\n"
-            "n numeric/date inconsistency risk\n"
-            "e named-entity inconsistency risk\n"
-            "r relevance to the question\n"
-            "u unverifiable/confabulation risk\n"
-            "c factual claim count capped at 3\n"
-            "x contradiction flag\n"
-            f"prompt: {prompt}\n"
-            f"answer: {answer}"
+            f"Q:{prompt}\n"
+            f"A:{answer}\n"
+            "Score factual risk only."
         )
         return [{"role": "system", "content": system}, {"role": "user", "content": user}]
