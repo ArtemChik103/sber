@@ -1,0 +1,5 @@
+from guardian_of_truth.evaluate import main
+
+
+if __name__ == "__main__":
+    main()

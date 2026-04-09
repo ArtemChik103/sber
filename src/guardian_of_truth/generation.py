@@ -2,12 +2,19 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import random
 import re
+import time
 from pathlib import Path
 from typing import Any
 
-from guardian_of_truth.utils import DATA_DIR, iter_jsonl, read_jsonl, sha256_hexdigest, write_jsonl
+import httpx
+from groq import AsyncGroq
+
+from guardian_of_truth.api_client import ApiSettings, SlidingWindowRateLimiter
+from guardian_of_truth.cache import SQLiteCache
+from guardian_of_truth.utils import DATA_DIR, read_jsonl, run_coro_sync, sha256_hexdigest, write_jsonl
 
 
 DEFAULT_SEED_PATH = DATA_DIR / "raw" / "seed_qa.jsonl"
@@ -125,10 +132,84 @@ def mutate_answer_rule_based(answer: str, answer_type: str | None = None) -> str
 
 
 def mutate_answer_groq(prompt: str, answer: str) -> str:
-    raise RuntimeError(
-        "Groq-backed negative generation is implemented in phase 3 via the API client. "
-        "Use --stage groq-negatives after the verifier client is available."
-    )
+    return GroqNegativeGenerator().mutate(prompt, answer)
+
+
+class GroqNegativeGenerator:
+    def __init__(self, api_key: str | None = None, settings: ApiSettings | None = None, cache: SQLiteCache | None = None) -> None:
+        self.settings = settings or ApiSettings.from_yaml()
+        self.api_key = api_key or os.getenv("GROQ_API_KEY")
+        self.cache = cache or SQLiteCache(DATA_DIR / "cache" / "groq_cache.sqlite")
+        self.rate_limiter = SlidingWindowRateLimiter(
+            rpm=self.settings.target_rpm,
+            tpm=self.settings.target_tpm,
+        )
+
+    def mutate(self, prompt: str, answer: str) -> str:
+        if not self.api_key:
+            raise RuntimeError("GROQ_API_KEY is required for groq-negative generation.")
+        cache_key = sha256_hexdigest(
+            self.settings.experiment_model,
+            self.settings.dataset_prompt_version,
+            prompt,
+            answer,
+            "groq_negative",
+        )
+        cached = self.cache.get(cache_key)
+        if cached is not None:
+            return str(cached["answer"])
+
+        estimated_tokens = max(48, (len(prompt) + len(answer)) // 4 + 48)
+        delay = self.rate_limiter.reserve_delay(estimated_tokens)
+        if delay > 0:
+            time.sleep(delay)
+            second_delay = self.rate_limiter.reserve_delay(estimated_tokens)
+            if second_delay > 0:
+                time.sleep(second_delay)
+
+        mutated = run_coro_sync(self._mutate_async(prompt, answer))
+        self.cache.set(cache_key, {"answer": mutated})
+        return mutated
+
+    async def _mutate_async(self, prompt: str, answer: str) -> str:
+        timeout = httpx.Timeout(
+            timeout=self.settings.total_timeout_sec,
+            connect=self.settings.connect_timeout_sec,
+            read=self.settings.read_timeout_sec,
+            write=self.settings.read_timeout_sec,
+        )
+        client = AsyncGroq(
+            api_key=self.api_key,
+            timeout=timeout,
+            max_retries=0,
+        )
+        try:
+            response = await client.chat.completions.create(
+                model=self.settings.experiment_model,
+                temperature=0.0,
+                top_p=1.0,
+                max_tokens=self.settings.max_tokens_dataset,
+                messages=[
+                    {
+                        "role": "system",
+                        "content": (
+                            "Rewrite the answer so it contains exactly one factual mistake, "
+                            "keeps the same language and style, and returns only the rewritten answer."
+                        ),
+                    },
+                    {
+                        "role": "user",
+                        "content": f"prompt: {prompt}\ncorrect_answer: {answer}",
+                    },
+                ],
+                timeout=timeout,
+            )
+            content = (response.choices[0].message.content or "").strip()
+            if not content or content == answer:
+                raise RuntimeError("Groq negative generation returned an empty or unchanged answer.")
+            return content
+        finally:
+            client.close()
 
 
 def _to_positive_record(seed: dict[str, Any]) -> dict[str, Any]:
@@ -157,6 +238,7 @@ def build_dataset(
     include_rule_negatives: bool = True,
     include_groq_negatives: bool = False,
     resume: bool = False,
+    groq_limit: int | None = None,
 ) -> list[dict[str, Any]]:
     seeds = load_seed_questions(seed_path)
     existing_keys: set[str] = set()
@@ -184,7 +266,23 @@ def build_dataset(
                 existing_keys.add(neg_key)
 
     if include_groq_negatives:
-        raise RuntimeError("Groq negatives require the Groq mutation client from phase 3.")
+        generator = GroqNegativeGenerator()
+        produced = 0
+        for seed in seeds:
+            if groq_limit is not None and produced >= groq_limit:
+                break
+            negative = {
+                "prompt": seed["prompt"],
+                "answer": generator.mutate(seed["prompt"], seed["answer"]),
+                "label": 1,
+                "source": seed.get("source", "seed"),
+                "variant_type": "groq_negative",
+            }
+            neg_key = sha256_hexdigest(negative["prompt"], negative["answer"], negative["variant_type"])
+            if neg_key not in existing_keys:
+                records.append(negative)
+                existing_keys.add(neg_key)
+                produced += 1
 
     write_jsonl(output_path, records)
     return records
@@ -196,6 +294,7 @@ def main() -> None:
     parser.add_argument("--seed-path", default=str(DEFAULT_SEED_PATH))
     parser.add_argument("--output-path", default=str(DEFAULT_SYNTHETIC_PATH))
     parser.add_argument("--resume", action="store_true")
+    parser.add_argument("--limit", type=int, default=None)
     args = parser.parse_args()
 
     seed_path = Path(args.seed_path)
@@ -220,7 +319,15 @@ def main() -> None:
         print(json.dumps({"stage": args.stage, "rows": len(records)}, ensure_ascii=False))
         return
 
-    mutate_answer_groq("", "")
+    records = build_dataset(
+        seed_path=seed_path,
+        output_path=output_path,
+        include_rule_negatives=True,
+        include_groq_negatives=True,
+        resume=args.resume,
+        groq_limit=args.limit,
+    )
+    print(json.dumps({"stage": args.stage, "rows": len(records)}, ensure_ascii=False))
 
 
 if __name__ == "__main__":

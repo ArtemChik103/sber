@@ -15,3 +15,4 @@ model/*
 dist/
 build/
 *.egg-info/
+outputs/
