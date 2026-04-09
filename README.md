@@ -21,6 +21,7 @@ The Groq token shared in the handoff should be treated as compromised and rotate
 Generate or extend the synthetic dataset in small batches:
 
 ```bash
+./scripts/ingest_external.sh --stage all --popqa-limit 500 --fever-limit 500 --resume --merge-main
 ./scripts/generate_dataset.sh --stage seed-harvest --resume --limit 300
 ./scripts/generate_dataset.sh --stage rule-negatives --resume
 ./scripts/generate_dataset.sh --stage groq-negatives --resume --limit 100
@@ -36,6 +37,12 @@ Train on synthetic data only:
 
 ```bash
 ./scripts/train.sh --dataset-path data/raw/synthetic_factual_data.jsonl
+```
+
+When using external datasets, start with a moderate subset for API-feature training to control Groq wall time:
+
+```bash
+./scripts/train.sh --dataset-path data/raw/synthetic_factual_data.jsonl --limit 300
 ```
 
 Score the public benchmark sequentially with checkpointing:
@@ -63,3 +70,4 @@ Run smoke checks:
 - `data/bench/knowledge_bench_public.csv` is reserved for offline evaluation and error analysis.
 - `data/cache/groq_cache.sqlite` prevents duplicate token spend for repeated `(prompt, answer, mode)` requests.
 - Public scoring is sequential by design and supports resume from a checkpoint file.
+- External data ingestion supports `PopQA` and `FEVER`; these are transformed into the same JSONL schema before training.
