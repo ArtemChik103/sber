@@ -1,16 +1,20 @@
 from __future__ import annotations
 
 import argparse
+import math
 import json
 import os
 import random
 import re
 import time
 import inspect
+import urllib.parse
+import urllib.request
 from pathlib import Path
 from typing import Any
 
 import httpx
+import groq
 from groq import AsyncGroq
 
 from guardian_of_truth.api_client import ApiSettings, SlidingWindowRateLimiter
@@ -74,9 +78,219 @@ SYMBOL_SWAPS = {
     "DNA": "RNA",
 }
 
+WIKIDATA_SPARQL_URL = "https://query.wikidata.org/sparql"
+WIKIDATA_HEADERS = {
+    "Accept": "application/sparql-results+json",
+    "User-Agent": "guardian-of-truth/0.1 (seed-harvest; contact: github.com/ArtemChik103/sber)",
+}
+
+SEED_SPECS = [
+    {
+        "name": "country_capital",
+        "answer_type": "place",
+        "query": """
+            SELECT ?countryLabel ?capitalLabel WHERE {
+              ?country wdt:P31 wd:Q6256; wdt:P36 ?capital.
+              SERVICE wikibase:label { bd:serviceParam wikibase:language "ru,en". }
+            }
+            ORDER BY ?countryLabel
+            LIMIT {limit}
+        """,
+        "prompt": "Как называется столица {countryLabel}?",
+        "answer": "Столица {countryLabel} — {capitalLabel}.",
+    },
+    {
+        "name": "country_currency",
+        "answer_type": "entity",
+        "query": """
+            SELECT ?countryLabel ?currencyLabel WHERE {
+              ?country wdt:P31 wd:Q6256; wdt:P38 ?currency.
+              SERVICE wikibase:label { bd:serviceParam wikibase:language "ru,en". }
+            }
+            ORDER BY ?countryLabel
+            LIMIT {limit}
+        """,
+        "prompt": "Какая валюта используется в {countryLabel}?",
+        "answer": "В {countryLabel} используется валюта {currencyLabel}.",
+    },
+    {
+        "name": "country_language",
+        "answer_type": "entity",
+        "query": """
+            SELECT ?countryLabel ?languageLabel WHERE {
+              ?country wdt:P31 wd:Q6256; wdt:P37 ?language.
+              SERVICE wikibase:label { bd:serviceParam wikibase:language "ru,en". }
+            }
+            ORDER BY ?countryLabel
+            LIMIT {limit}
+        """,
+        "prompt": "Какой официальный язык у {countryLabel}?",
+        "answer": "Официальный язык {countryLabel} — {languageLabel}.",
+    },
+    {
+        "name": "person_birth_year",
+        "answer_type": "year",
+        "query": """
+            SELECT ?personLabel ?dob WHERE {
+              ?person wdt:P31 wd:Q5; wdt:P569 ?dob.
+              SERVICE wikibase:label { bd:serviceParam wikibase:language "ru,en". }
+            }
+            ORDER BY ?personLabel
+            LIMIT {limit}
+        """,
+        "prompt": "В каком году родился {personLabel}?",
+        "answer": "{personLabel} родился в {dob_year} году.",
+    },
+    {
+        "name": "person_death_year",
+        "answer_type": "year",
+        "query": """
+            SELECT ?personLabel ?dod WHERE {
+              ?person wdt:P31 wd:Q5; wdt:P570 ?dod.
+              SERVICE wikibase:label { bd:serviceParam wikibase:language "ru,en". }
+            }
+            ORDER BY ?personLabel
+            LIMIT {limit}
+        """,
+        "prompt": "В каком году умер {personLabel}?",
+        "answer": "{personLabel} умер в {dod_year} году.",
+    },
+    {
+        "name": "person_citizenship",
+        "answer_type": "place",
+        "query": """
+            SELECT ?personLabel ?countryLabel WHERE {
+              ?person wdt:P31 wd:Q5; wdt:P27 ?country.
+              SERVICE wikibase:label { bd:serviceParam wikibase:language "ru,en". }
+            }
+            ORDER BY ?personLabel
+            LIMIT {limit}
+        """,
+        "prompt": "Гражданином какой страны был {personLabel}?",
+        "answer": "{personLabel} был гражданином {countryLabel}.",
+    },
+    {
+        "name": "book_author",
+        "answer_type": "person",
+        "query": """
+            SELECT ?workLabel ?authorLabel WHERE {
+              ?work wdt:P31 wd:Q571; wdt:P50 ?author.
+              SERVICE wikibase:label { bd:serviceParam wikibase:language "ru,en". }
+            }
+            ORDER BY ?workLabel
+            LIMIT {limit}
+        """,
+        "prompt": "Кто написал книгу «{workLabel}»?",
+        "answer": "Книгу «{workLabel}» написал {authorLabel}.",
+    },
+    {
+        "name": "element_symbol",
+        "answer_type": "entity",
+        "query": """
+            SELECT ?elementLabel ?symbol WHERE {
+              ?element wdt:P31 wd:Q11344; wdt:P246 ?symbol.
+              SERVICE wikibase:label { bd:serviceParam wikibase:language "ru,en". }
+            }
+            ORDER BY ?elementLabel
+            LIMIT {limit}
+        """,
+        "prompt": "Какой химический символ у элемента {elementLabel}?",
+        "answer": "Химический символ элемента {elementLabel} — {symbol}.",
+    },
+]
+
 
 def load_seed_questions(seed_path: str | Path = DEFAULT_SEED_PATH) -> list[dict[str, Any]]:
     return read_jsonl(seed_path)
+
+
+def harvest_seed_questions(
+    output_path: str | Path = DEFAULT_SEED_PATH,
+    *,
+    target_size: int = 1800,
+    resume: bool = True,
+) -> list[dict[str, Any]]:
+    per_spec = max(25, math.ceil(target_size / len(SEED_SPECS)))
+    query_limit = min(100, max(per_spec, per_spec + 20))
+    output = Path(output_path)
+    existing: list[dict[str, Any]] = []
+    if resume and output.exists():
+        existing = read_jsonl(output)
+
+    seen_prompts = {row["prompt"] for row in existing}
+    harvested: list[dict[str, Any]] = list(existing)
+
+    for spec in SEED_SPECS:
+        query = spec["query"].replace("{limit}", str(query_limit))
+        try:
+            bindings = _run_wikidata_query(query)
+        except Exception:
+            continue
+
+        added = 0
+        for binding in bindings:
+            normalized = _normalize_binding(binding)
+            if not normalized:
+                continue
+            prompt = spec["prompt"].format(**normalized).strip()
+            answer = spec["answer"].format(**normalized).strip()
+            if prompt in seen_prompts or not _is_seed_record_usable(prompt, answer):
+                continue
+            harvested.append(
+                {
+                    "prompt": prompt,
+                    "answer": answer,
+                    "answer_type": spec["answer_type"],
+                    "source": f"wikidata:{spec['name']}",
+                }
+            )
+            seen_prompts.add(prompt)
+            added += 1
+            if added >= per_spec:
+                break
+
+    write_jsonl(output, harvested)
+    return harvested
+
+
+def _run_wikidata_query(query: str) -> list[dict[str, dict[str, str]]]:
+    params = urllib.parse.urlencode({"query": query, "format": "json"})
+    request = urllib.request.Request(f"{WIKIDATA_SPARQL_URL}?{params}", headers=WIKIDATA_HEADERS)
+    with urllib.request.urlopen(request, timeout=20) as response:
+        payload = json.loads(response.read().decode("utf-8"))
+    return payload["results"]["bindings"]
+
+
+def _normalize_binding(binding: dict[str, dict[str, str]]) -> dict[str, str]:
+    normalized: dict[str, str] = {}
+    for key, value in binding.items():
+        raw = value.get("value", "").strip()
+        if not raw:
+            return {}
+        normalized[key] = raw
+        if key in {"dob", "dod"}:
+            year = re.search(r"\b(\d{4})\b", raw)
+            if not year:
+                return {}
+            normalized[f"{key}_year"] = year.group(1)
+        if key == "height":
+            try:
+                normalized["height_int"] = str(int(round(float(raw))))
+            except ValueError:
+                return {}
+    return normalized
+
+
+def _is_seed_record_usable(prompt: str, answer: str) -> bool:
+    if len(prompt) < 12 or len(answer) < 8:
+        return False
+    if len(prompt) > 220 or len(answer) > 260:
+        return False
+    if "http://" in prompt or "http://" in answer or "https://" in prompt or "https://" in answer:
+        return False
+    if any(token in prompt for token in ("Q", "P")) and re.search(r"\bQ\d+\b|\bP\d+\b", prompt):
+        return False
+    return True
 
 
 def mutate_answer_rule_based(answer: str, answer_type: str | None = None) -> str:
@@ -146,11 +360,11 @@ class GroqNegativeGenerator:
             tpm=self.settings.target_tpm,
         )
 
-    def mutate(self, prompt: str, answer: str) -> str:
+    def mutate(self, prompt: str, answer: str) -> str | None:
         if not self.api_key:
             raise RuntimeError("GROQ_API_KEY is required for groq-negative generation.")
         cache_key = sha256_hexdigest(
-            self.settings.experiment_model,
+            self.settings.runtime_model,
             self.settings.dataset_prompt_version,
             prompt,
             answer,
@@ -168,16 +382,19 @@ class GroqNegativeGenerator:
             if second_delay > 0:
                 time.sleep(second_delay)
 
-        mutated = run_coro_sync(self._mutate_async(prompt, answer))
+        try:
+            mutated = run_coro_sync(self._mutate_async(prompt, answer))
+        except (groq.APIError, RuntimeError):
+            return None
         self.cache.set(cache_key, {"answer": mutated})
         return mutated
 
     async def _mutate_async(self, prompt: str, answer: str) -> str:
         timeout = httpx.Timeout(
-            timeout=self.settings.total_timeout_sec,
-            connect=self.settings.connect_timeout_sec,
-            read=self.settings.read_timeout_sec,
-            write=self.settings.read_timeout_sec,
+            timeout=max(2.5, self.settings.total_timeout_sec),
+            connect=max(0.5, self.settings.connect_timeout_sec),
+            read=max(2.0, self.settings.read_timeout_sec),
+            write=max(2.0, self.settings.read_timeout_sec),
         )
         client = AsyncGroq(
             api_key=self.api_key,
@@ -186,7 +403,7 @@ class GroqNegativeGenerator:
         )
         try:
             response = await client.chat.completions.create(
-                model=self.settings.experiment_model,
+                model=self.settings.runtime_model,
                 temperature=0.0,
                 top_p=1.0,
                 max_tokens=self.settings.max_tokens_dataset,
@@ -194,8 +411,9 @@ class GroqNegativeGenerator:
                     {
                         "role": "system",
                         "content": (
-                            "Rewrite the answer so it contains exactly one factual mistake, "
-                            "keeps the same language and style, and returns only the rewritten answer."
+                            "Rewrite the answer with exactly one factual mistake. "
+                            "Keep the same language, sentence count, and approximate length. "
+                            "Do not add explanations or extra facts. Return only the rewritten answer."
                         ),
                     },
                     {
@@ -208,6 +426,8 @@ class GroqNegativeGenerator:
             content = (response.choices[0].message.content or "").strip()
             if not content or content == answer:
                 raise RuntimeError("Groq negative generation returned an empty or unchanged answer.")
+            if len(content.split()) > max(4, int(len(answer.split()) * 1.6)):
+                raise RuntimeError("Groq negative generation expanded the answer too much.")
             return content
         finally:
             close_result = client.close()
@@ -271,12 +491,20 @@ def build_dataset(
     if include_groq_negatives:
         generator = GroqNegativeGenerator()
         produced = 0
+        attempts = 0
+        max_attempts = max(25, (groq_limit or 0) * 4) if groq_limit is not None else len(seeds)
         for seed in seeds:
             if groq_limit is not None and produced >= groq_limit:
                 break
+            if attempts >= max_attempts:
+                break
+            attempts += 1
+            mutated = generator.mutate(seed["prompt"], seed["answer"])
+            if not mutated or mutated == seed["answer"]:
+                continue
             negative = {
                 "prompt": seed["prompt"],
-                "answer": generator.mutate(seed["prompt"], seed["answer"]),
+                "answer": mutated,
                 "label": 1,
                 "source": seed.get("source", "seed"),
                 "variant_type": "groq_negative",
@@ -293,7 +521,7 @@ def build_dataset(
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="Generate the synthetic factual dataset.")
-    parser.add_argument("--stage", choices=["seed", "rule-negatives", "groq-negatives"], required=True)
+    parser.add_argument("--stage", choices=["seed", "seed-harvest", "rule-negatives", "groq-negatives"], required=True)
     parser.add_argument("--seed-path", default=str(DEFAULT_SEED_PATH))
     parser.add_argument("--output-path", default=str(DEFAULT_SYNTHETIC_PATH))
     parser.add_argument("--resume", action="store_true")
@@ -309,6 +537,11 @@ def main() -> None:
         positives = [_to_positive_record(seed) for seed in seeds]
         write_jsonl(output_path, positives)
         print(json.dumps({"stage": args.stage, "rows": len(positives)}, ensure_ascii=False))
+        return
+
+    if args.stage == "seed-harvest":
+        rows = harvest_seed_questions(output_path=seed_path, target_size=args.limit or 1800, resume=args.resume)
+        print(json.dumps({"stage": args.stage, "rows": len(rows)}, ensure_ascii=False))
         return
 
     if args.stage == "rule-negatives":

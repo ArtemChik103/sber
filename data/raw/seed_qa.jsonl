@@ -1,12 +1,166 @@
-{"prompt":"В каком году был основан Санкт-Петербург?","answer":"Санкт-Петербург был основан в 1703 году.","answer_type":"year","source":"manual_seed"}
-{"prompt":"Как называется столица Франции?","answer":"Столица Франции — Париж.","answer_type":"place","source":"manual_seed"}
-{"prompt":"Кто написал роман «Преступление и наказание»?","answer":"Роман «Преступление и наказание» написал Фёдор Достоевский.","answer_type":"person","source":"manual_seed"}
-{"prompt":"Сколько континентов обычно выделяют на Земле?","answer":"Обычно на Земле выделяют семь континентов.","answer_type":"number","source":"manual_seed"}
-{"prompt":"В каком году Юрий Гагарин совершил первый полёт человека в космос?","answer":"Юрий Гагарин совершил первый полёт человека в космос в 1961 году.","answer_type":"year","source":"manual_seed"}
-{"prompt":"Какой химический символ у золота?","answer":"Химический символ золота — Au.","answer_type":"entity","source":"manual_seed"}
-{"prompt":"Какая река протекает через Каир?","answer":"Через Каир протекает река Нил.","answer_type":"place","source":"manual_seed"}
-{"prompt":"Кто был первым президентом США?","answer":"Первым президентом США был Джордж Вашингтон.","answer_type":"person","source":"manual_seed"}
-{"prompt":"Сколько градусов содержит прямой угол?","answer":"Прямой угол содержит 90 градусов.","answer_type":"number","source":"manual_seed"}
-{"prompt":"В каком году началась Вторая мировая война?","answer":"Вторая мировая война началась в 1939 году.","answer_type":"year","source":"manual_seed"}
-{"prompt":"Какая планета является самой большой в Солнечной системе?","answer":"Самая большая планета Солнечной системы — Юпитер.","answer_type":"entity","source":"manual_seed"}
-{"prompt":"Где находится Эйфелева башня?","answer":"Эйфелева башня находится в Париже.","answer_type":"place","source":"manual_seed"}
+{"prompt": "В каком году был основан Санкт-Петербург?", "answer": "Санкт-Петербург был основан в 1703 году.", "answer_type": "year", "source": "manual_seed"}
+{"prompt": "Как называется столица Франции?", "answer": "Столица Франции — Париж.", "answer_type": "place", "source": "manual_seed"}
+{"prompt": "Кто написал роман «Преступление и наказание»?", "answer": "Роман «Преступление и наказание» написал Фёдор Достоевский.", "answer_type": "person", "source": "manual_seed"}
+{"prompt": "Сколько континентов обычно выделяют на Земле?", "answer": "Обычно на Земле выделяют семь континентов.", "answer_type": "number", "source": "manual_seed"}
+{"prompt": "В каком году Юрий Гагарин совершил первый полёт человека в космос?", "answer": "Юрий Гагарин совершил первый полёт человека в космос в 1961 году.", "answer_type": "year", "source": "manual_seed"}
+{"prompt": "Какой химический символ у золота?", "answer": "Химический символ золота — Au.", "answer_type": "entity", "source": "manual_seed"}
+{"prompt": "Какая река протекает через Каир?", "answer": "Через Каир протекает река Нил.", "answer_type": "place", "source": "manual_seed"}
+{"prompt": "Кто был первым президентом США?", "answer": "Первым президентом США был Джордж Вашингтон.", "answer_type": "person", "source": "manual_seed"}
+{"prompt": "Сколько градусов содержит прямой угол?", "answer": "Прямой угол содержит 90 градусов.", "answer_type": "number", "source": "manual_seed"}
+{"prompt": "В каком году началась Вторая мировая война?", "answer": "Вторая мировая война началась в 1939 году.", "answer_type": "year", "source": "manual_seed"}
+{"prompt": "Какая планета является самой большой в Солнечной системе?", "answer": "Самая большая планета Солнечной системы — Юпитер.", "answer_type": "entity", "source": "manual_seed"}
+{"prompt": "Где находится Эйфелева башня?", "answer": "Эйфелева башня находится в Париже.", "answer_type": "place", "source": "manual_seed"}
+{"prompt": "Как называется столица Emirate of  Al Qawasim?", "answer": "Столица Emirate of  Al Qawasim — Рас-эль-Хайма.", "answer_type": "place", "source": "wikidata:country_capital"}
+{"prompt": "Как называется столица Emirate of Lengeh?", "answer": "Столица Emirate of Lengeh — Бендер-Ленге.", "answer_type": "place", "source": "wikidata:country_capital"}
+{"prompt": "Как называется столица Австралия?", "answer": "Столица Австралия — Канберра.", "answer_type": "place", "source": "wikidata:country_capital"}
+{"prompt": "Как называется столица Австрия?", "answer": "Столица Австрия — Вена.", "answer_type": "place", "source": "wikidata:country_capital"}
+{"prompt": "Как называется столица Азербайджан?", "answer": "Столица Азербайджан — Баку.", "answer_type": "place", "source": "wikidata:country_capital"}
+{"prompt": "Как называется столица Албания?", "answer": "Столица Албания — Тирана.", "answer_type": "place", "source": "wikidata:country_capital"}
+{"prompt": "Как называется столица Алжир?", "answer": "Столица Алжир — Алжир.", "answer_type": "place", "source": "wikidata:country_capital"}
+{"prompt": "Как называется столица Ангола?", "answer": "Столица Ангола — Луанда.", "answer_type": "place", "source": "wikidata:country_capital"}
+{"prompt": "Как называется столица Андорра?", "answer": "Столица Андорра — Андорра-ла-Велья.", "answer_type": "place", "source": "wikidata:country_capital"}
+{"prompt": "Как называется столица Антигуа и Барбуда?", "answer": "Столица Антигуа и Барбуда — Сент-Джонс.", "answer_type": "place", "source": "wikidata:country_capital"}
+{"prompt": "Как называется столица Аргентина?", "answer": "Столица Аргентина — Буэнос-Айрес.", "answer_type": "place", "source": "wikidata:country_capital"}
+{"prompt": "Как называется столица Армения?", "answer": "Столица Армения — Ереван.", "answer_type": "place", "source": "wikidata:country_capital"}
+{"prompt": "Как называется столица Аруба?", "answer": "Столица Аруба — Ораньестад.", "answer_type": "place", "source": "wikidata:country_capital"}
+{"prompt": "Как называется столица Афганистан?", "answer": "Столица Афганистан — Кабул.", "answer_type": "place", "source": "wikidata:country_capital"}
+{"prompt": "Как называется столица Багамские Острова?", "answer": "Столица Багамские Острова — Нассау.", "answer_type": "place", "source": "wikidata:country_capital"}
+{"prompt": "Как называется столица Бангладеш?", "answer": "Столица Бангладеш — Дакка.", "answer_type": "place", "source": "wikidata:country_capital"}
+{"prompt": "Как называется столица Барбадос?", "answer": "Столица Барбадос — Бриджтаун.", "answer_type": "place", "source": "wikidata:country_capital"}
+{"prompt": "Как называется столица Бахрейн?", "answer": "Столица Бахрейн — Манама.", "answer_type": "place", "source": "wikidata:country_capital"}
+{"prompt": "Как называется столица Беларусь?", "answer": "Столица Беларусь — Минск.", "answer_type": "place", "source": "wikidata:country_capital"}
+{"prompt": "Как называется столица Белиз?", "answer": "Столица Белиз — Бельмопан.", "answer_type": "place", "source": "wikidata:country_capital"}
+{"prompt": "Как называется столица Бельгия?", "answer": "Столица Бельгия — Брюссель.", "answer_type": "place", "source": "wikidata:country_capital"}
+{"prompt": "Как называется столица Бенин?", "answer": "Столица Бенин — Порто-Ново.", "answer_type": "place", "source": "wikidata:country_capital"}
+{"prompt": "Как называется столица Болгария?", "answer": "Столица Болгария — София.", "answer_type": "place", "source": "wikidata:country_capital"}
+{"prompt": "Как называется столица Боливия?", "answer": "Столица Боливия — Ла-Пас.", "answer_type": "place", "source": "wikidata:country_capital"}
+{"prompt": "Как называется столица Босния и Герцеговина?", "answer": "Столица Босния и Герцеговина — Сараево.", "answer_type": "place", "source": "wikidata:country_capital"}
+{"prompt": "Какая валюта используется в Австралия?", "answer": "В Австралия используется валюта австралийский доллар.", "answer_type": "entity", "source": "wikidata:country_currency"}
+{"prompt": "Какая валюта используется в Австрия?", "answer": "В Австрия используется валюта евро.", "answer_type": "entity", "source": "wikidata:country_currency"}
+{"prompt": "Какая валюта используется в Азербайджан?", "answer": "В Азербайджан используется валюта азербайджанский манат.", "answer_type": "entity", "source": "wikidata:country_currency"}
+{"prompt": "Какая валюта используется в Албания?", "answer": "В Албания используется валюта албанский лек.", "answer_type": "entity", "source": "wikidata:country_currency"}
+{"prompt": "Какая валюта используется в Алжир?", "answer": "В Алжир используется валюта алжирский динар.", "answer_type": "entity", "source": "wikidata:country_currency"}
+{"prompt": "Какая валюта используется в Ангола?", "answer": "В Ангола используется валюта ангольская кванза.", "answer_type": "entity", "source": "wikidata:country_currency"}
+{"prompt": "Какая валюта используется в Андорра?", "answer": "В Андорра используется валюта евро.", "answer_type": "entity", "source": "wikidata:country_currency"}
+{"prompt": "Какая валюта используется в Антигуа и Барбуда?", "answer": "В Антигуа и Барбуда используется валюта восточно-карибский доллар.", "answer_type": "entity", "source": "wikidata:country_currency"}
+{"prompt": "Какая валюта используется в Аргентина?", "answer": "В Аргентина используется валюта аргентинское песо.", "answer_type": "entity", "source": "wikidata:country_currency"}
+{"prompt": "Какая валюта используется в Армения?", "answer": "В Армения используется валюта армянский драм.", "answer_type": "entity", "source": "wikidata:country_currency"}
+{"prompt": "Какая валюта используется в Аруба?", "answer": "В Аруба используется валюта арубанский флорин.", "answer_type": "entity", "source": "wikidata:country_currency"}
+{"prompt": "Какая валюта используется в Афганистан?", "answer": "В Афганистан используется валюта афгани.", "answer_type": "entity", "source": "wikidata:country_currency"}
+{"prompt": "Какая валюта используется в Багамские Острова?", "answer": "В Багамские Острова используется валюта багамский доллар.", "answer_type": "entity", "source": "wikidata:country_currency"}
+{"prompt": "Какая валюта используется в Бангладеш?", "answer": "В Бангладеш используется валюта бангладешская така.", "answer_type": "entity", "source": "wikidata:country_currency"}
+{"prompt": "Какая валюта используется в Барбадос?", "answer": "В Барбадос используется валюта барбадосский доллар.", "answer_type": "entity", "source": "wikidata:country_currency"}
+{"prompt": "Какая валюта используется в Бахрейн?", "answer": "В Бахрейн используется валюта бахрейнский динар.", "answer_type": "entity", "source": "wikidata:country_currency"}
+{"prompt": "Какая валюта используется в Беларусь?", "answer": "В Беларусь используется валюта Белорусский рубль.", "answer_type": "entity", "source": "wikidata:country_currency"}
+{"prompt": "Какая валюта используется в Белиз?", "answer": "В Белиз используется валюта белизский доллар.", "answer_type": "entity", "source": "wikidata:country_currency"}
+{"prompt": "Какая валюта используется в Бельгия?", "answer": "В Бельгия используется валюта евро.", "answer_type": "entity", "source": "wikidata:country_currency"}
+{"prompt": "Какая валюта используется в Бенин?", "answer": "В Бенин используется валюта франк КФА BCEAO.", "answer_type": "entity", "source": "wikidata:country_currency"}
+{"prompt": "Какая валюта используется в Болгария?", "answer": "В Болгария используется валюта евро.", "answer_type": "entity", "source": "wikidata:country_currency"}
+{"prompt": "Какая валюта используется в Боливия?", "answer": "В Боливия используется валюта боливиано.", "answer_type": "entity", "source": "wikidata:country_currency"}
+{"prompt": "Какая валюта используется в Босния и Герцеговина?", "answer": "В Босния и Герцеговина используется валюта конвертируемая марка.", "answer_type": "entity", "source": "wikidata:country_currency"}
+{"prompt": "Какая валюта используется в Ботсвана?", "answer": "В Ботсвана используется валюта Ботсванская пула.", "answer_type": "entity", "source": "wikidata:country_currency"}
+{"prompt": "Какая валюта используется в Бразилия?", "answer": "В Бразилия используется валюта бразильский реал.", "answer_type": "entity", "source": "wikidata:country_currency"}
+{"prompt": "Какой официальный язык у Emirate of  Al Qawasim?", "answer": "Официальный язык Emirate of  Al Qawasim — арабский язык.", "answer_type": "entity", "source": "wikidata:country_language"}
+{"prompt": "Какой официальный язык у Emirate of Lengeh?", "answer": "Официальный язык Emirate of Lengeh — арабский язык.", "answer_type": "entity", "source": "wikidata:country_language"}
+{"prompt": "Какой официальный язык у Австралия?", "answer": "Официальный язык Австралия — австралийский жестовый язык.", "answer_type": "entity", "source": "wikidata:country_language"}
+{"prompt": "Какой официальный язык у Австрия?", "answer": "Официальный язык Австрия — немецкий язык.", "answer_type": "entity", "source": "wikidata:country_language"}
+{"prompt": "Какой официальный язык у Азербайджан?", "answer": "Официальный язык Азербайджан — азербайджанский язык.", "answer_type": "entity", "source": "wikidata:country_language"}
+{"prompt": "Какой официальный язык у Албания?", "answer": "Официальный язык Албания — албанский язык.", "answer_type": "entity", "source": "wikidata:country_language"}
+{"prompt": "Какой официальный язык у Алжир?", "answer": "Официальный язык Алжир — арабский язык.", "answer_type": "entity", "source": "wikidata:country_language"}
+{"prompt": "Какой официальный язык у Ангола?", "answer": "Официальный язык Ангола — португальский язык.", "answer_type": "entity", "source": "wikidata:country_language"}
+{"prompt": "Какой официальный язык у Андорра?", "answer": "Официальный язык Андорра — каталанский язык.", "answer_type": "entity", "source": "wikidata:country_language"}
+{"prompt": "Какой официальный язык у Антигуа и Барбуда?", "answer": "Официальный язык Антигуа и Барбуда — английский язык.", "answer_type": "entity", "source": "wikidata:country_language"}
+{"prompt": "Какой официальный язык у Аргентина?", "answer": "Официальный язык Аргентина — испанский язык.", "answer_type": "entity", "source": "wikidata:country_language"}
+{"prompt": "Какой официальный язык у Армения?", "answer": "Официальный язык Армения — армянский язык.", "answer_type": "entity", "source": "wikidata:country_language"}
+{"prompt": "Какой официальный язык у Аруба?", "answer": "Официальный язык Аруба — нидерландский язык.", "answer_type": "entity", "source": "wikidata:country_language"}
+{"prompt": "Какой официальный язык у Афганистан?", "answer": "Официальный язык Афганистан — узбекский язык.", "answer_type": "entity", "source": "wikidata:country_language"}
+{"prompt": "Какой официальный язык у Багамские Острова?", "answer": "Официальный язык Багамские Острова — английский язык.", "answer_type": "entity", "source": "wikidata:country_language"}
+{"prompt": "Какой официальный язык у Бангладеш?", "answer": "Официальный язык Бангладеш — бенгальский язык.", "answer_type": "entity", "source": "wikidata:country_language"}
+{"prompt": "Какой официальный язык у Барбадос?", "answer": "Официальный язык Барбадос — английский язык.", "answer_type": "entity", "source": "wikidata:country_language"}
+{"prompt": "Какой официальный язык у Бахрейн?", "answer": "Официальный язык Бахрейн — арабский язык.", "answer_type": "entity", "source": "wikidata:country_language"}
+{"prompt": "Какой официальный язык у Беларусь?", "answer": "Официальный язык Беларусь — русский язык.", "answer_type": "entity", "source": "wikidata:country_language"}
+{"prompt": "Какой официальный язык у Белиз?", "answer": "Официальный язык Белиз — английский язык.", "answer_type": "entity", "source": "wikidata:country_language"}
+{"prompt": "Какой официальный язык у Бельгия?", "answer": "Официальный язык Бельгия — французский язык.", "answer_type": "entity", "source": "wikidata:country_language"}
+{"prompt": "Какой официальный язык у Бенин?", "answer": "Официальный язык Бенин — французский язык.", "answer_type": "entity", "source": "wikidata:country_language"}
+{"prompt": "Какой официальный язык у Болгария?", "answer": "Официальный язык Болгария — болгарский язык.", "answer_type": "entity", "source": "wikidata:country_language"}
+{"prompt": "Какой официальный язык у Боливия?", "answer": "Официальный язык Боливия — испанский язык.", "answer_type": "entity", "source": "wikidata:country_language"}
+{"prompt": "Какой официальный язык у Босния и Герцеговина?", "answer": "Официальный язык Босния и Герцеговина — хорватский язык.", "answer_type": "entity", "source": "wikidata:country_language"}
+{"prompt": "Какой химический символ у элемента unhexbium?", "answer": "Химический символ элемента unhexbium — Uhb.", "answer_type": "entity", "source": "wikidata:element_symbol"}
+{"prompt": "Какой химический символ у элемента unhexhexium?", "answer": "Химический символ элемента unhexhexium — Uhh.", "answer_type": "entity", "source": "wikidata:element_symbol"}
+{"prompt": "Какой химический символ у элемента unhextrium?", "answer": "Химический символ элемента unhextrium — Uht.", "answer_type": "entity", "source": "wikidata:element_symbol"}
+{"prompt": "Какой химический символ у элемента unhexunium?", "answer": "Химический символ элемента unhexunium — Uhu.", "answer_type": "entity", "source": "wikidata:element_symbol"}
+{"prompt": "Какой химический символ у элемента unoctquadium?", "answer": "Химический символ элемента unoctquadium — Uoq.", "answer_type": "entity", "source": "wikidata:element_symbol"}
+{"prompt": "Какой химический символ у элемента unseptnilium?", "answer": "Химический символ элемента unseptnilium — Usn.", "answer_type": "entity", "source": "wikidata:element_symbol"}
+{"prompt": "Какой химический символ у элемента unseptunium?", "answer": "Химический символ элемента unseptunium — Usu.", "answer_type": "entity", "source": "wikidata:element_symbol"}
+{"prompt": "Какой химический символ у элемента азот?", "answer": "Химический символ элемента азот — N.", "answer_type": "entity", "source": "wikidata:element_symbol"}
+{"prompt": "Какой химический символ у элемента актиний?", "answer": "Химический символ элемента актиний — Ac.", "answer_type": "entity", "source": "wikidata:element_symbol"}
+{"prompt": "Какой химический символ у элемента алюминий?", "answer": "Химический символ элемента алюминий — Al.", "answer_type": "entity", "source": "wikidata:element_symbol"}
+{"prompt": "Какой химический символ у элемента америций?", "answer": "Химический символ элемента америций — Am.", "answer_type": "entity", "source": "wikidata:element_symbol"}
+{"prompt": "Какой химический символ у элемента аргон?", "answer": "Химический символ элемента аргон — Ar.", "answer_type": "entity", "source": "wikidata:element_symbol"}
+{"prompt": "Какой химический символ у элемента астат?", "answer": "Химический символ элемента астат — At.", "answer_type": "entity", "source": "wikidata:element_symbol"}
+{"prompt": "Какой химический символ у элемента барий?", "answer": "Химический символ элемента барий — Ba.", "answer_type": "entity", "source": "wikidata:element_symbol"}
+{"prompt": "Какой химический символ у элемента бериллий?", "answer": "Химический символ элемента бериллий — Be.", "answer_type": "entity", "source": "wikidata:element_symbol"}
+{"prompt": "Какой химический символ у элемента берклий?", "answer": "Химический символ элемента берклий — Bk.", "answer_type": "entity", "source": "wikidata:element_symbol"}
+{"prompt": "Какой химический символ у элемента бор?", "answer": "Химический символ элемента бор — B.", "answer_type": "entity", "source": "wikidata:element_symbol"}
+{"prompt": "Какой химический символ у элемента борий?", "answer": "Химический символ элемента борий — Bh.", "answer_type": "entity", "source": "wikidata:element_symbol"}
+{"prompt": "Какой химический символ у элемента бром?", "answer": "Химический символ элемента бром — Br.", "answer_type": "entity", "source": "wikidata:element_symbol"}
+{"prompt": "Какой химический символ у элемента ванадий?", "answer": "Химический символ элемента ванадий — V.", "answer_type": "entity", "source": "wikidata:element_symbol"}
+{"prompt": "Какой химический символ у элемента висмут?", "answer": "Химический символ элемента висмут — Bi.", "answer_type": "entity", "source": "wikidata:element_symbol"}
+{"prompt": "Какой химический символ у элемента водород?", "answer": "Химический символ элемента водород — H.", "answer_type": "entity", "source": "wikidata:element_symbol"}
+{"prompt": "Какой химический символ у элемента вольфрам?", "answer": "Химический символ элемента вольфрам — W.", "answer_type": "entity", "source": "wikidata:element_symbol"}
+{"prompt": "Какой химический символ у элемента гадолиний?", "answer": "Химический символ элемента гадолиний — Gd.", "answer_type": "entity", "source": "wikidata:element_symbol"}
+{"prompt": "Какой химический символ у элемента галлий?", "answer": "Химический символ элемента галлий — Ga.", "answer_type": "entity", "source": "wikidata:element_symbol"}
+{"prompt": "Как называется столица Ботсвана?", "answer": "Столица Ботсвана — Габороне.", "answer_type": "place", "source": "wikidata:country_capital"}
+{"prompt": "Как называется столица Бразилия?", "answer": "Столица Бразилия — Бразилиа.", "answer_type": "place", "source": "wikidata:country_capital"}
+{"prompt": "Как называется столица Британский Северный Борнео?", "answer": "Столица Британский Северный Борнео — Кудат.", "answer_type": "place", "source": "wikidata:country_capital"}
+{"prompt": "Как называется столица Бруней?", "answer": "Столица Бруней — Бандар-Сери-Бегаван.", "answer_type": "place", "source": "wikidata:country_capital"}
+{"prompt": "Как называется столица Буркина-Фасо?", "answer": "Столица Буркина-Фасо — Уагадугу.", "answer_type": "place", "source": "wikidata:country_capital"}
+{"prompt": "Как называется столица Бурунди?", "answer": "Столица Бурунди — Гитега.", "answer_type": "place", "source": "wikidata:country_capital"}
+{"prompt": "Как называется столица Бутан?", "answer": "Столица Бутан — Тхимпху.", "answer_type": "place", "source": "wikidata:country_capital"}
+{"prompt": "Как называется столица Вальдек?", "answer": "Столица Вальдек — Бад-Арользен.", "answer_type": "place", "source": "wikidata:country_capital"}
+{"prompt": "Как называется столица Вануату?", "answer": "Столица Вануату — Порт-Вила.", "answer_type": "place", "source": "wikidata:country_capital"}
+{"prompt": "Как называется столица Великобритания?", "answer": "Столица Великобритания — Лондон.", "answer_type": "place", "source": "wikidata:country_capital"}
+{"prompt": "Как называется столица Венгрия?", "answer": "Столица Венгрия — Будапешт.", "answer_type": "place", "source": "wikidata:country_capital"}
+{"prompt": "Как называется столица Венесуэла?", "answer": "Столица Венесуэла — Каракас.", "answer_type": "place", "source": "wikidata:country_capital"}
+{"prompt": "Как называется столица Восточный Тимор?", "answer": "Столица Восточный Тимор — Дили.", "answer_type": "place", "source": "wikidata:country_capital"}
+{"prompt": "Как называется столица Вьетнам?", "answer": "Столица Вьетнам — Ханой.", "answer_type": "place", "source": "wikidata:country_capital"}
+{"prompt": "Как называется столица Габон?", "answer": "Столица Габон — Либревиль.", "answer_type": "place", "source": "wikidata:country_capital"}
+{"prompt": "Как называется столица Гаити?", "answer": "Столица Гаити — Порт-о-Пренс.", "answer_type": "place", "source": "wikidata:country_capital"}
+{"prompt": "Какая валюта используется в Британский Северный Борнео?", "answer": "В Британский Северный Борнео используется валюта доллар Северного Борнео.", "answer_type": "entity", "source": "wikidata:country_currency"}
+{"prompt": "Какая валюта используется в Бруней?", "answer": "В Бруней используется валюта брунейский доллар.", "answer_type": "entity", "source": "wikidata:country_currency"}
+{"prompt": "Какая валюта используется в Буркина-Фасо?", "answer": "В Буркина-Фасо используется валюта франк КФА BCEAO.", "answer_type": "entity", "source": "wikidata:country_currency"}
+{"prompt": "Какая валюта используется в Бурунди?", "answer": "В Бурунди используется валюта бурундийский франк.", "answer_type": "entity", "source": "wikidata:country_currency"}
+{"prompt": "Какая валюта используется в Бутан?", "answer": "В Бутан используется валюта нгултрум.", "answer_type": "entity", "source": "wikidata:country_currency"}
+{"prompt": "Какая валюта используется в Вануату?", "answer": "В Вануату используется валюта вату.", "answer_type": "entity", "source": "wikidata:country_currency"}
+{"prompt": "Какая валюта используется в Ватикан?", "answer": "В Ватикан используется валюта евро.", "answer_type": "entity", "source": "wikidata:country_currency"}
+{"prompt": "Какая валюта используется в Великобритания?", "answer": "В Великобритания используется валюта фунт стерлингов.", "answer_type": "entity", "source": "wikidata:country_currency"}
+{"prompt": "Какая валюта используется в Венгрия?", "answer": "В Венгрия используется валюта венгерский форинт.", "answer_type": "entity", "source": "wikidata:country_currency"}
+{"prompt": "Какая валюта используется в Венесуэла?", "answer": "В Венесуэла используется валюта Суверенный боливар.", "answer_type": "entity", "source": "wikidata:country_currency"}
+{"prompt": "Какая валюта используется в Восточный Тимор?", "answer": "В Восточный Тимор используется валюта доллар США.", "answer_type": "entity", "source": "wikidata:country_currency"}
+{"prompt": "Какая валюта используется в Вьетнам?", "answer": "В Вьетнам используется валюта вьетнамский донг.", "answer_type": "entity", "source": "wikidata:country_currency"}
+{"prompt": "Какая валюта используется в Габон?", "answer": "В Габон используется валюта франк КФА BEAC.", "answer_type": "entity", "source": "wikidata:country_currency"}
+{"prompt": "Какая валюта используется в Гаити?", "answer": "В Гаити используется валюта гаитянский гурд.", "answer_type": "entity", "source": "wikidata:country_currency"}
+{"prompt": "Какая валюта используется в Гайана?", "answer": "В Гайана используется валюта гайанский доллар.", "answer_type": "entity", "source": "wikidata:country_currency"}
+{"prompt": "Какая валюта используется в Гамбия?", "answer": "В Гамбия используется валюта гамбийский даласи.", "answer_type": "entity", "source": "wikidata:country_currency"}
+{"prompt": "Какая валюта используется в Гана?", "answer": "В Гана используется валюта Ганский седи.", "answer_type": "entity", "source": "wikidata:country_currency"}
+{"prompt": "Какая валюта используется в Гватемала?", "answer": "В Гватемала используется валюта гватемальский кетсаль.", "answer_type": "entity", "source": "wikidata:country_currency"}
+{"prompt": "Какой химический символ у элемента гафний?", "answer": "Химический символ элемента гафний — Hf.", "answer_type": "entity", "source": "wikidata:element_symbol"}
+{"prompt": "Какой химический символ у элемента гелий?", "answer": "Химический символ элемента гелий — He.", "answer_type": "entity", "source": "wikidata:element_symbol"}
+{"prompt": "Какой химический символ у элемента германий?", "answer": "Химический символ элемента германий — Ge.", "answer_type": "entity", "source": "wikidata:element_symbol"}
+{"prompt": "Какой химический символ у элемента гольмий?", "answer": "Химический символ элемента гольмий — Ho.", "answer_type": "entity", "source": "wikidata:element_symbol"}
+{"prompt": "Какой химический символ у элемента дармштадтий?", "answer": "Химический символ элемента дармштадтий — Ds.", "answer_type": "entity", "source": "wikidata:element_symbol"}
+{"prompt": "Какой химический символ у элемента диспрозий?", "answer": "Химический символ элемента диспрозий — Dy.", "answer_type": "entity", "source": "wikidata:element_symbol"}
+{"prompt": "Какой химический символ у элемента дубний?", "answer": "Химический символ элемента дубний — Db.", "answer_type": "entity", "source": "wikidata:element_symbol"}
+{"prompt": "Какой химический символ у элемента европий?", "answer": "Химический символ элемента европий — Eu.", "answer_type": "entity", "source": "wikidata:element_symbol"}
+{"prompt": "Какой химический символ у элемента железо?", "answer": "Химический символ элемента железо — Fe.", "answer_type": "entity", "source": "wikidata:element_symbol"}
+{"prompt": "Какой химический символ у элемента золото?", "answer": "Химический символ элемента золото — Au.", "answer_type": "entity", "source": "wikidata:element_symbol"}
+{"prompt": "Какой химический символ у элемента индий?", "answer": "Химический символ элемента индий — In.", "answer_type": "entity", "source": "wikidata:element_symbol"}
+{"prompt": "Какой химический символ у элемента иод?", "answer": "Химический символ элемента иод — I.", "answer_type": "entity", "source": "wikidata:element_symbol"}
+{"prompt": "Какой химический символ у элемента иридий?", "answer": "Химический символ элемента иридий — Ir.", "answer_type": "entity", "source": "wikidata:element_symbol"}
+{"prompt": "Какой химический символ у элемента иттербий?", "answer": "Химический символ элемента иттербий — Yb.", "answer_type": "entity", "source": "wikidata:element_symbol"}
+{"prompt": "Какой химический символ у элемента иттрий?", "answer": "Химический символ элемента иттрий — Y.", "answer_type": "entity", "source": "wikidata:element_symbol"}
+{"prompt": "Какой химический символ у элемента кадмий?", "answer": "Химический символ элемента кадмий — Cd.", "answer_type": "entity", "source": "wikidata:element_symbol"}
+{"prompt": "Какой химический символ у элемента калий?", "answer": "Химический символ элемента калий — K.", "answer_type": "entity", "source": "wikidata:element_symbol"}
+{"prompt": "Какой химический символ у элемента калифорний?", "answer": "Химический символ элемента калифорний — Cf.", "answer_type": "entity", "source": "wikidata:element_symbol"}
+{"prompt": "Какой химический символ у элемента кальций?", "answer": "Химический символ элемента кальций — Ca.", "answer_type": "entity", "source": "wikidata:element_symbol"}
+{"prompt": "Какой химический символ у элемента кислород?", "answer": "Химический символ элемента кислород — O.", "answer_type": "entity", "source": "wikidata:element_symbol"}

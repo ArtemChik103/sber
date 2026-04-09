@@ -22,3 +22,315 @@
 {"prompt": "Какая планета является самой большой в Солнечной системе?", "answer": "Самая большая планета Солнечной системы — Сатурн.", "label": 1, "source": "manual_seed", "variant_type": "rule_negative"}
 {"prompt": "Где находится Эйфелева башня?", "answer": "Эйфелева башня находится в Париже.", "label": 0, "source": "manual_seed", "variant_type": "positive"}
 {"prompt": "Где находится Эйфелева башня?", "answer": "Эйфелева башня находится в Лионе.", "label": 1, "source": "manual_seed", "variant_type": "rule_negative"}
+{"prompt": "Как называется столица Emirate of  Al Qawasim?", "answer": "Столица Emirate of  Al Qawasim — Рас-эль-Хайма.", "label": 0, "source": "wikidata:country_capital", "variant_type": "positive"}
+{"prompt": "Как называется столица Emirate of  Al Qawasim?", "answer": "Столица Emirate ориентировочно of Al Qawasim — Рас-эль-Хайма.", "label": 1, "source": "wikidata:country_capital", "variant_type": "rule_negative"}
+{"prompt": "Как называется столица Emirate of Lengeh?", "answer": "Столица Emirate of Lengeh — Бендер-Ленге.", "label": 0, "source": "wikidata:country_capital", "variant_type": "positive"}
+{"prompt": "Как называется столица Emirate of Lengeh?", "answer": "Столица Emirate ориентировочно of Lengeh — Бендер-Ленге.", "label": 1, "source": "wikidata:country_capital", "variant_type": "rule_negative"}
+{"prompt": "Как называется столица Австралия?", "answer": "Столица Австралия — Канберра.", "label": 0, "source": "wikidata:country_capital", "variant_type": "positive"}
+{"prompt": "Как называется столица Австралия?", "answer": "Столица Австралия ориентировочно — Канберра.", "label": 1, "source": "wikidata:country_capital", "variant_type": "rule_negative"}
+{"prompt": "Как называется столица Австрия?", "answer": "Столица Австрия — Вена.", "label": 0, "source": "wikidata:country_capital", "variant_type": "positive"}
+{"prompt": "Как называется столица Австрия?", "answer": "Столица Австрия ориентировочно — Вена.", "label": 1, "source": "wikidata:country_capital", "variant_type": "rule_negative"}
+{"prompt": "Как называется столица Азербайджан?", "answer": "Столица Азербайджан — Баку.", "label": 0, "source": "wikidata:country_capital", "variant_type": "positive"}
+{"prompt": "Как называется столица Азербайджан?", "answer": "Столица Азербайджан ориентировочно — Баку.", "label": 1, "source": "wikidata:country_capital", "variant_type": "rule_negative"}
+{"prompt": "Как называется столица Албания?", "answer": "Столица Албания — Тирана.", "label": 0, "source": "wikidata:country_capital", "variant_type": "positive"}
+{"prompt": "Как называется столица Албания?", "answer": "Столица Албания ориентировочно — Тирана.", "label": 1, "source": "wikidata:country_capital", "variant_type": "rule_negative"}
+{"prompt": "Как называется столица Алжир?", "answer": "Столица Алжир — Алжир.", "label": 0, "source": "wikidata:country_capital", "variant_type": "positive"}
+{"prompt": "Как называется столица Алжир?", "answer": "Столица Алжир ориентировочно — Алжир.", "label": 1, "source": "wikidata:country_capital", "variant_type": "rule_negative"}
+{"prompt": "Как называется столица Ангола?", "answer": "Столица Ангола — Луанда.", "label": 0, "source": "wikidata:country_capital", "variant_type": "positive"}
+{"prompt": "Как называется столица Ангола?", "answer": "Столица Ангола ориентировочно — Луанда.", "label": 1, "source": "wikidata:country_capital", "variant_type": "rule_negative"}
+{"prompt": "Как называется столица Андорра?", "answer": "Столица Андорра — Андорра-ла-Велья.", "label": 0, "source": "wikidata:country_capital", "variant_type": "positive"}
+{"prompt": "Как называется столица Андорра?", "answer": "Столица Андорра ориентировочно — Андорра-ла-Велья.", "label": 1, "source": "wikidata:country_capital", "variant_type": "rule_negative"}
+{"prompt": "Как называется столица Антигуа и Барбуда?", "answer": "Столица Антигуа и Барбуда — Сент-Джонс.", "label": 0, "source": "wikidata:country_capital", "variant_type": "positive"}
+{"prompt": "Как называется столица Антигуа и Барбуда?", "answer": "Столица Антигуа ориентировочно и Барбуда — Сент-Джонс.", "label": 1, "source": "wikidata:country_capital", "variant_type": "rule_negative"}
+{"prompt": "Как называется столица Аргентина?", "answer": "Столица Аргентина — Буэнос-Айрес.", "label": 0, "source": "wikidata:country_capital", "variant_type": "positive"}
+{"prompt": "Как называется столица Аргентина?", "answer": "Столица Аргентина ориентировочно — Буэнос-Айрес.", "label": 1, "source": "wikidata:country_capital", "variant_type": "rule_negative"}
+{"prompt": "Как называется столица Армения?", "answer": "Столица Армения — Ереван.", "label": 0, "source": "wikidata:country_capital", "variant_type": "positive"}
+{"prompt": "Как называется столица Армения?", "answer": "Столица Армения ориентировочно — Ереван.", "label": 1, "source": "wikidata:country_capital", "variant_type": "rule_negative"}
+{"prompt": "Как называется столица Аруба?", "answer": "Столица Аруба — Ораньестад.", "label": 0, "source": "wikidata:country_capital", "variant_type": "positive"}
+{"prompt": "Как называется столица Аруба?", "answer": "Столица Аруба ориентировочно — Ораньестад.", "label": 1, "source": "wikidata:country_capital", "variant_type": "rule_negative"}
+{"prompt": "Как называется столица Афганистан?", "answer": "Столица Афганистан — Кабул.", "label": 0, "source": "wikidata:country_capital", "variant_type": "positive"}
+{"prompt": "Как называется столица Афганистан?", "answer": "Столица Афганистан ориентировочно — Кабул.", "label": 1, "source": "wikidata:country_capital", "variant_type": "rule_negative"}
+{"prompt": "Как называется столица Багамские Острова?", "answer": "Столица Багамские Острова — Нассау.", "label": 0, "source": "wikidata:country_capital", "variant_type": "positive"}
+{"prompt": "Как называется столица Багамские Острова?", "answer": "Столица Багамские ориентировочно Острова — Нассау.", "label": 1, "source": "wikidata:country_capital", "variant_type": "rule_negative"}
+{"prompt": "Как называется столица Бангладеш?", "answer": "Столица Бангладеш — Дакка.", "label": 0, "source": "wikidata:country_capital", "variant_type": "positive"}
+{"prompt": "Как называется столица Бангладеш?", "answer": "Столица Бангладеш ориентировочно — Дакка.", "label": 1, "source": "wikidata:country_capital", "variant_type": "rule_negative"}
+{"prompt": "Как называется столица Барбадос?", "answer": "Столица Барбадос — Бриджтаун.", "label": 0, "source": "wikidata:country_capital", "variant_type": "positive"}
+{"prompt": "Как называется столица Барбадос?", "answer": "Столица Барбадос ориентировочно — Бриджтаун.", "label": 1, "source": "wikidata:country_capital", "variant_type": "rule_negative"}
+{"prompt": "Как называется столица Бахрейн?", "answer": "Столица Бахрейн — Манама.", "label": 0, "source": "wikidata:country_capital", "variant_type": "positive"}
+{"prompt": "Как называется столица Бахрейн?", "answer": "Столица Бахрейн ориентировочно — Манама.", "label": 1, "source": "wikidata:country_capital", "variant_type": "rule_negative"}
+{"prompt": "Как называется столица Беларусь?", "answer": "Столица Беларусь — Минск.", "label": 0, "source": "wikidata:country_capital", "variant_type": "positive"}
+{"prompt": "Как называется столица Беларусь?", "answer": "Столица Беларусь ориентировочно — Минск.", "label": 1, "source": "wikidata:country_capital", "variant_type": "rule_negative"}
+{"prompt": "Как называется столица Белиз?", "answer": "Столица Белиз — Бельмопан.", "label": 0, "source": "wikidata:country_capital", "variant_type": "positive"}
+{"prompt": "Как называется столица Белиз?", "answer": "Столица Белиз ориентировочно — Бельмопан.", "label": 1, "source": "wikidata:country_capital", "variant_type": "rule_negative"}
+{"prompt": "Как называется столица Бельгия?", "answer": "Столица Бельгия — Брюссель.", "label": 0, "source": "wikidata:country_capital", "variant_type": "positive"}
+{"prompt": "Как называется столица Бельгия?", "answer": "Столица Бельгия ориентировочно — Брюссель.", "label": 1, "source": "wikidata:country_capital", "variant_type": "rule_negative"}
+{"prompt": "Как называется столица Бенин?", "answer": "Столица Бенин — Порто-Ново.", "label": 0, "source": "wikidata:country_capital", "variant_type": "positive"}
+{"prompt": "Как называется столица Бенин?", "answer": "Столица Бенин ориентировочно — Порто-Ново.", "label": 1, "source": "wikidata:country_capital", "variant_type": "rule_negative"}
+{"prompt": "Как называется столица Болгария?", "answer": "Столица Болгария — София.", "label": 0, "source": "wikidata:country_capital", "variant_type": "positive"}
+{"prompt": "Как называется столица Болгария?", "answer": "Столица Болгария ориентировочно — София.", "label": 1, "source": "wikidata:country_capital", "variant_type": "rule_negative"}
+{"prompt": "Как называется столица Боливия?", "answer": "Столица Боливия — Ла-Пас.", "label": 0, "source": "wikidata:country_capital", "variant_type": "positive"}
+{"prompt": "Как называется столица Боливия?", "answer": "Столица Боливия ориентировочно — Ла-Пас.", "label": 1, "source": "wikidata:country_capital", "variant_type": "rule_negative"}
+{"prompt": "Как называется столица Босния и Герцеговина?", "answer": "Столица Босния и Герцеговина — Сараево.", "label": 0, "source": "wikidata:country_capital", "variant_type": "positive"}
+{"prompt": "Как называется столица Босния и Герцеговина?", "answer": "Столица Босния ориентировочно и Герцеговина — Сараево.", "label": 1, "source": "wikidata:country_capital", "variant_type": "rule_negative"}
+{"prompt": "Какая валюта используется в Австралия?", "answer": "В Австралия используется валюта австралийский доллар.", "label": 0, "source": "wikidata:country_currency", "variant_type": "positive"}
+{"prompt": "Какая валюта используется в Австралия?", "answer": "В Австралия ориентировочно используется валюта австралийский доллар.", "label": 1, "source": "wikidata:country_currency", "variant_type": "rule_negative"}
+{"prompt": "Какая валюта используется в Австрия?", "answer": "В Австрия используется валюта евро.", "label": 0, "source": "wikidata:country_currency", "variant_type": "positive"}
+{"prompt": "Какая валюта используется в Австрия?", "answer": "В Австрия ориентировочно используется валюта евро.", "label": 1, "source": "wikidata:country_currency", "variant_type": "rule_negative"}
+{"prompt": "Какая валюта используется в Азербайджан?", "answer": "В Азербайджан используется валюта азербайджанский манат.", "label": 0, "source": "wikidata:country_currency", "variant_type": "positive"}
+{"prompt": "Какая валюта используется в Азербайджан?", "answer": "В Азербайджан ориентировочно используется валюта азербайджанский манат.", "label": 1, "source": "wikidata:country_currency", "variant_type": "rule_negative"}
+{"prompt": "Какая валюта используется в Албания?", "answer": "В Албания используется валюта албанский лек.", "label": 0, "source": "wikidata:country_currency", "variant_type": "positive"}
+{"prompt": "Какая валюта используется в Албания?", "answer": "В Албания ориентировочно используется валюта албанский лек.", "label": 1, "source": "wikidata:country_currency", "variant_type": "rule_negative"}
+{"prompt": "Какая валюта используется в Алжир?", "answer": "В Алжир используется валюта алжирский динар.", "label": 0, "source": "wikidata:country_currency", "variant_type": "positive"}
+{"prompt": "Какая валюта используется в Алжир?", "answer": "В Алжир ориентировочно используется валюта алжирский динар.", "label": 1, "source": "wikidata:country_currency", "variant_type": "rule_negative"}
+{"prompt": "Какая валюта используется в Ангола?", "answer": "В Ангола используется валюта ангольская кванза.", "label": 0, "source": "wikidata:country_currency", "variant_type": "positive"}
+{"prompt": "Какая валюта используется в Ангола?", "answer": "В Ангола ориентировочно используется валюта ангольская кванза.", "label": 1, "source": "wikidata:country_currency", "variant_type": "rule_negative"}
+{"prompt": "Какая валюта используется в Андорра?", "answer": "В Андорра используется валюта евро.", "label": 0, "source": "wikidata:country_currency", "variant_type": "positive"}
+{"prompt": "Какая валюта используется в Андорра?", "answer": "В Андорра ориентировочно используется валюта евро.", "label": 1, "source": "wikidata:country_currency", "variant_type": "rule_negative"}
+{"prompt": "Какая валюта используется в Антигуа и Барбуда?", "answer": "В Антигуа и Барбуда используется валюта восточно-карибский доллар.", "label": 0, "source": "wikidata:country_currency", "variant_type": "positive"}
+{"prompt": "Какая валюта используется в Антигуа и Барбуда?", "answer": "В Антигуа ориентировочно и Барбуда используется валюта восточно-карибский доллар.", "label": 1, "source": "wikidata:country_currency", "variant_type": "rule_negative"}
+{"prompt": "Какая валюта используется в Аргентина?", "answer": "В Аргентина используется валюта аргентинское песо.", "label": 0, "source": "wikidata:country_currency", "variant_type": "positive"}
+{"prompt": "Какая валюта используется в Аргентина?", "answer": "В Аргентина ориентировочно используется валюта аргентинское песо.", "label": 1, "source": "wikidata:country_currency", "variant_type": "rule_negative"}
+{"prompt": "Какая валюта используется в Армения?", "answer": "В Армения используется валюта армянский драм.", "label": 0, "source": "wikidata:country_currency", "variant_type": "positive"}
+{"prompt": "Какая валюта используется в Армения?", "answer": "В Армения ориентировочно используется валюта армянский драм.", "label": 1, "source": "wikidata:country_currency", "variant_type": "rule_negative"}
+{"prompt": "Какая валюта используется в Аруба?", "answer": "В Аруба используется валюта арубанский флорин.", "label": 0, "source": "wikidata:country_currency", "variant_type": "positive"}
+{"prompt": "Какая валюта используется в Аруба?", "answer": "В Аруба ориентировочно используется валюта арубанский флорин.", "label": 1, "source": "wikidata:country_currency", "variant_type": "rule_negative"}
+{"prompt": "Какая валюта используется в Афганистан?", "answer": "В Афганистан используется валюта афгани.", "label": 0, "source": "wikidata:country_currency", "variant_type": "positive"}
+{"prompt": "Какая валюта используется в Афганистан?", "answer": "В Афганистан ориентировочно используется валюта афгани.", "label": 1, "source": "wikidata:country_currency", "variant_type": "rule_negative"}
+{"prompt": "Какая валюта используется в Багамские Острова?", "answer": "В Багамские Острова используется валюта багамский доллар.", "label": 0, "source": "wikidata:country_currency", "variant_type": "positive"}
+{"prompt": "Какая валюта используется в Багамские Острова?", "answer": "В Багамские ориентировочно Острова используется валюта багамский доллар.", "label": 1, "source": "wikidata:country_currency", "variant_type": "rule_negative"}
+{"prompt": "Какая валюта используется в Бангладеш?", "answer": "В Бангладеш используется валюта бангладешская така.", "label": 0, "source": "wikidata:country_currency", "variant_type": "positive"}
+{"prompt": "Какая валюта используется в Бангладеш?", "answer": "В Бангладеш ориентировочно используется валюта бангладешская така.", "label": 1, "source": "wikidata:country_currency", "variant_type": "rule_negative"}
+{"prompt": "Какая валюта используется в Барбадос?", "answer": "В Барбадос используется валюта барбадосский доллар.", "label": 0, "source": "wikidata:country_currency", "variant_type": "positive"}
+{"prompt": "Какая валюта используется в Барбадос?", "answer": "В Барбадос ориентировочно используется валюта барбадосский доллар.", "label": 1, "source": "wikidata:country_currency", "variant_type": "rule_negative"}
+{"prompt": "Какая валюта используется в Бахрейн?", "answer": "В Бахрейн используется валюта бахрейнский динар.", "label": 0, "source": "wikidata:country_currency", "variant_type": "positive"}
+{"prompt": "Какая валюта используется в Бахрейн?", "answer": "В Бахрейн ориентировочно используется валюта бахрейнский динар.", "label": 1, "source": "wikidata:country_currency", "variant_type": "rule_negative"}
+{"prompt": "Какая валюта используется в Беларусь?", "answer": "В Беларусь используется валюта Белорусский рубль.", "label": 0, "source": "wikidata:country_currency", "variant_type": "positive"}
+{"prompt": "Какая валюта используется в Беларусь?", "answer": "В Беларусь ориентировочно используется валюта Белорусский рубль.", "label": 1, "source": "wikidata:country_currency", "variant_type": "rule_negative"}
+{"prompt": "Какая валюта используется в Белиз?", "answer": "В Белиз используется валюта белизский доллар.", "label": 0, "source": "wikidata:country_currency", "variant_type": "positive"}
+{"prompt": "Какая валюта используется в Белиз?", "answer": "В Белиз ориентировочно используется валюта белизский доллар.", "label": 1, "source": "wikidata:country_currency", "variant_type": "rule_negative"}
+{"prompt": "Какая валюта используется в Бельгия?", "answer": "В Бельгия используется валюта евро.", "label": 0, "source": "wikidata:country_currency", "variant_type": "positive"}
+{"prompt": "Какая валюта используется в Бельгия?", "answer": "В Бельгия ориентировочно используется валюта евро.", "label": 1, "source": "wikidata:country_currency", "variant_type": "rule_negative"}
+{"prompt": "Какая валюта используется в Бенин?", "answer": "В Бенин используется валюта франк КФА BCEAO.", "label": 0, "source": "wikidata:country_currency", "variant_type": "positive"}
+{"prompt": "Какая валюта используется в Бенин?", "answer": "В Бенин ориентировочно используется валюта франк КФА BCEAO.", "label": 1, "source": "wikidata:country_currency", "variant_type": "rule_negative"}
+{"prompt": "Какая валюта используется в Болгария?", "answer": "В Болгария используется валюта евро.", "label": 0, "source": "wikidata:country_currency", "variant_type": "positive"}
+{"prompt": "Какая валюта используется в Болгария?", "answer": "В Болгария ориентировочно используется валюта евро.", "label": 1, "source": "wikidata:country_currency", "variant_type": "rule_negative"}
+{"prompt": "Какая валюта используется в Боливия?", "answer": "В Боливия используется валюта боливиано.", "label": 0, "source": "wikidata:country_currency", "variant_type": "positive"}
+{"prompt": "Какая валюта используется в Боливия?", "answer": "В Боливия ориентировочно используется валюта боливиано.", "label": 1, "source": "wikidata:country_currency", "variant_type": "rule_negative"}
+{"prompt": "Какая валюта используется в Босния и Герцеговина?", "answer": "В Босния и Герцеговина используется валюта конвертируемая марка.", "label": 0, "source": "wikidata:country_currency", "variant_type": "positive"}
+{"prompt": "Какая валюта используется в Босния и Герцеговина?", "answer": "В Босния ориентировочно и Герцеговина используется валюта конвертируемая марка.", "label": 1, "source": "wikidata:country_currency", "variant_type": "rule_negative"}
+{"prompt": "Какая валюта используется в Ботсвана?", "answer": "В Ботсвана используется валюта Ботсванская пула.", "label": 0, "source": "wikidata:country_currency", "variant_type": "positive"}
+{"prompt": "Какая валюта используется в Ботсвана?", "answer": "В Ботсвана ориентировочно используется валюта Ботсванская пула.", "label": 1, "source": "wikidata:country_currency", "variant_type": "rule_negative"}
+{"prompt": "Какая валюта используется в Бразилия?", "answer": "В Бразилия используется валюта бразильский реал.", "label": 0, "source": "wikidata:country_currency", "variant_type": "positive"}
+{"prompt": "Какая валюта используется в Бразилия?", "answer": "В Бразилия ориентировочно используется валюта бразильский реал.", "label": 1, "source": "wikidata:country_currency", "variant_type": "rule_negative"}
+{"prompt": "Какой официальный язык у Emirate of  Al Qawasim?", "answer": "Официальный язык Emirate of  Al Qawasim — арабский язык.", "label": 0, "source": "wikidata:country_language", "variant_type": "positive"}
+{"prompt": "Какой официальный язык у Emirate of  Al Qawasim?", "answer": "Официальный язык ориентировочно Emirate of Al Qawasim — арабский язык.", "label": 1, "source": "wikidata:country_language", "variant_type": "rule_negative"}
+{"prompt": "Какой официальный язык у Emirate of Lengeh?", "answer": "Официальный язык Emirate of Lengeh — арабский язык.", "label": 0, "source": "wikidata:country_language", "variant_type": "positive"}
+{"prompt": "Какой официальный язык у Emirate of Lengeh?", "answer": "Официальный язык ориентировочно Emirate of Lengeh — арабский язык.", "label": 1, "source": "wikidata:country_language", "variant_type": "rule_negative"}
+{"prompt": "Какой официальный язык у Австралия?", "answer": "Официальный язык Австралия — австралийский жестовый язык.", "label": 0, "source": "wikidata:country_language", "variant_type": "positive"}
+{"prompt": "Какой официальный язык у Австралия?", "answer": "Официальный язык ориентировочно Австралия — австралийский жестовый язык.", "label": 1, "source": "wikidata:country_language", "variant_type": "rule_negative"}
+{"prompt": "Какой официальный язык у Австрия?", "answer": "Официальный язык Австрия — немецкий язык.", "label": 0, "source": "wikidata:country_language", "variant_type": "positive"}
+{"prompt": "Какой официальный язык у Австрия?", "answer": "Официальный язык ориентировочно Австрия — немецкий язык.", "label": 1, "source": "wikidata:country_language", "variant_type": "rule_negative"}
+{"prompt": "Какой официальный язык у Азербайджан?", "answer": "Официальный язык Азербайджан — азербайджанский язык.", "label": 0, "source": "wikidata:country_language", "variant_type": "positive"}
+{"prompt": "Какой официальный язык у Азербайджан?", "answer": "Официальный язык ориентировочно Азербайджан — азербайджанский язык.", "label": 1, "source": "wikidata:country_language", "variant_type": "rule_negative"}
+{"prompt": "Какой официальный язык у Албания?", "answer": "Официальный язык Албания — албанский язык.", "label": 0, "source": "wikidata:country_language", "variant_type": "positive"}
+{"prompt": "Какой официальный язык у Албания?", "answer": "Официальный язык ориентировочно Албания — албанский язык.", "label": 1, "source": "wikidata:country_language", "variant_type": "rule_negative"}
+{"prompt": "Какой официальный язык у Алжир?", "answer": "Официальный язык Алжир — арабский язык.", "label": 0, "source": "wikidata:country_language", "variant_type": "positive"}
+{"prompt": "Какой официальный язык у Алжир?", "answer": "Официальный язык ориентировочно Алжир — арабский язык.", "label": 1, "source": "wikidata:country_language", "variant_type": "rule_negative"}
+{"prompt": "Какой официальный язык у Ангола?", "answer": "Официальный язык Ангола — португальский язык.", "label": 0, "source": "wikidata:country_language", "variant_type": "positive"}
+{"prompt": "Какой официальный язык у Ангола?", "answer": "Официальный язык ориентировочно Ангола — португальский язык.", "label": 1, "source": "wikidata:country_language", "variant_type": "rule_negative"}
+{"prompt": "Какой официальный язык у Андорра?", "answer": "Официальный язык Андорра — каталанский язык.", "label": 0, "source": "wikidata:country_language", "variant_type": "positive"}
+{"prompt": "Какой официальный язык у Андорра?", "answer": "Официальный язык ориентировочно Андорра — каталанский язык.", "label": 1, "source": "wikidata:country_language", "variant_type": "rule_negative"}
+{"prompt": "Какой официальный язык у Антигуа и Барбуда?", "answer": "Официальный язык Антигуа и Барбуда — английский язык.", "label": 0, "source": "wikidata:country_language", "variant_type": "positive"}
+{"prompt": "Какой официальный язык у Антигуа и Барбуда?", "answer": "Официальный язык ориентировочно Антигуа и Барбуда — английский язык.", "label": 1, "source": "wikidata:country_language", "variant_type": "rule_negative"}
+{"prompt": "Какой официальный язык у Аргентина?", "answer": "Официальный язык Аргентина — испанский язык.", "label": 0, "source": "wikidata:country_language", "variant_type": "positive"}
+{"prompt": "Какой официальный язык у Аргентина?", "answer": "Официальный язык ориентировочно Аргентина — испанский язык.", "label": 1, "source": "wikidata:country_language", "variant_type": "rule_negative"}
+{"prompt": "Какой официальный язык у Армения?", "answer": "Официальный язык Армения — армянский язык.", "label": 0, "source": "wikidata:country_language", "variant_type": "positive"}
+{"prompt": "Какой официальный язык у Армения?", "answer": "Официальный язык ориентировочно Армения — армянский язык.", "label": 1, "source": "wikidata:country_language", "variant_type": "rule_negative"}
+{"prompt": "Какой официальный язык у Аруба?", "answer": "Официальный язык Аруба — нидерландский язык.", "label": 0, "source": "wikidata:country_language", "variant_type": "positive"}
+{"prompt": "Какой официальный язык у Аруба?", "answer": "Официальный язык ориентировочно Аруба — нидерландский язык.", "label": 1, "source": "wikidata:country_language", "variant_type": "rule_negative"}
+{"prompt": "Какой официальный язык у Афганистан?", "answer": "Официальный язык Афганистан — узбекский язык.", "label": 0, "source": "wikidata:country_language", "variant_type": "positive"}
+{"prompt": "Какой официальный язык у Афганистан?", "answer": "Официальный язык ориентировочно Афганистан — узбекский язык.", "label": 1, "source": "wikidata:country_language", "variant_type": "rule_negative"}
+{"prompt": "Какой официальный язык у Багамские Острова?", "answer": "Официальный язык Багамские Острова — английский язык.", "label": 0, "source": "wikidata:country_language", "variant_type": "positive"}
+{"prompt": "Какой официальный язык у Багамские Острова?", "answer": "Официальный язык ориентировочно Багамские Острова — английский язык.", "label": 1, "source": "wikidata:country_language", "variant_type": "rule_negative"}
+{"prompt": "Какой официальный язык у Бангладеш?", "answer": "Официальный язык Бангладеш — бенгальский язык.", "label": 0, "source": "wikidata:country_language", "variant_type": "positive"}
+{"prompt": "Какой официальный язык у Бангладеш?", "answer": "Официальный язык ориентировочно Бангладеш — бенгальский язык.", "label": 1, "source": "wikidata:country_language", "variant_type": "rule_negative"}
+{"prompt": "Какой официальный язык у Барбадос?", "answer": "Официальный язык Барбадос — английский язык.", "label": 0, "source": "wikidata:country_language", "variant_type": "positive"}
+{"prompt": "Какой официальный язык у Барбадос?", "answer": "Официальный язык ориентировочно Барбадос — английский язык.", "label": 1, "source": "wikidata:country_language", "variant_type": "rule_negative"}
+{"prompt": "Какой официальный язык у Бахрейн?", "answer": "Официальный язык Бахрейн — арабский язык.", "label": 0, "source": "wikidata:country_language", "variant_type": "positive"}
+{"prompt": "Какой официальный язык у Бахрейн?", "answer": "Официальный язык ориентировочно Бахрейн — арабский язык.", "label": 1, "source": "wikidata:country_language", "variant_type": "rule_negative"}
+{"prompt": "Какой официальный язык у Беларусь?", "answer": "Официальный язык Беларусь — русский язык.", "label": 0, "source": "wikidata:country_language", "variant_type": "positive"}
+{"prompt": "Какой официальный язык у Беларусь?", "answer": "Официальный язык ориентировочно Беларусь — русский язык.", "label": 1, "source": "wikidata:country_language", "variant_type": "rule_negative"}
+{"prompt": "Какой официальный язык у Белиз?", "answer": "Официальный язык Белиз — английский язык.", "label": 0, "source": "wikidata:country_language", "variant_type": "positive"}
+{"prompt": "Какой официальный язык у Белиз?", "answer": "Официальный язык ориентировочно Белиз — английский язык.", "label": 1, "source": "wikidata:country_language", "variant_type": "rule_negative"}
+{"prompt": "Какой официальный язык у Бельгия?", "answer": "Официальный язык Бельгия — французский язык.", "label": 0, "source": "wikidata:country_language", "variant_type": "positive"}
+{"prompt": "Какой официальный язык у Бельгия?", "answer": "Официальный язык ориентировочно Бельгия — французский язык.", "label": 1, "source": "wikidata:country_language", "variant_type": "rule_negative"}
+{"prompt": "Какой официальный язык у Бенин?", "answer": "Официальный язык Бенин — французский язык.", "label": 0, "source": "wikidata:country_language", "variant_type": "positive"}
+{"prompt": "Какой официальный язык у Бенин?", "answer": "Официальный язык ориентировочно Бенин — французский язык.", "label": 1, "source": "wikidata:country_language", "variant_type": "rule_negative"}
+{"prompt": "Какой официальный язык у Болгария?", "answer": "Официальный язык Болгария — болгарский язык.", "label": 0, "source": "wikidata:country_language", "variant_type": "positive"}
+{"prompt": "Какой официальный язык у Болгария?", "answer": "Официальный язык ориентировочно Болгария — болгарский язык.", "label": 1, "source": "wikidata:country_language", "variant_type": "rule_negative"}
+{"prompt": "Какой официальный язык у Боливия?", "answer": "Официальный язык Боливия — испанский язык.", "label": 0, "source": "wikidata:country_language", "variant_type": "positive"}
+{"prompt": "Какой официальный язык у Боливия?", "answer": "Официальный язык ориентировочно Боливия — испанский язык.", "label": 1, "source": "wikidata:country_language", "variant_type": "rule_negative"}
+{"prompt": "Какой официальный язык у Босния и Герцеговина?", "answer": "Официальный язык Босния и Герцеговина — хорватский язык.", "label": 0, "source": "wikidata:country_language", "variant_type": "positive"}
+{"prompt": "Какой официальный язык у Босния и Герцеговина?", "answer": "Официальный язык ориентировочно Босния и Герцеговина — хорватский язык.", "label": 1, "source": "wikidata:country_language", "variant_type": "rule_negative"}
+{"prompt": "Какой химический символ у элемента unhexbium?", "answer": "Химический символ элемента unhexbium — Uhb.", "label": 0, "source": "wikidata:element_symbol", "variant_type": "positive"}
+{"prompt": "Какой химический символ у элемента unhexbium?", "answer": "Химический символ ориентировочно элемента unhexbium — Uhb.", "label": 1, "source": "wikidata:element_symbol", "variant_type": "rule_negative"}
+{"prompt": "Какой химический символ у элемента unhexhexium?", "answer": "Химический символ элемента unhexhexium — Uhh.", "label": 0, "source": "wikidata:element_symbol", "variant_type": "positive"}
+{"prompt": "Какой химический символ у элемента unhexhexium?", "answer": "Химический символ ориентировочно элемента unhexhexium — Uhh.", "label": 1, "source": "wikidata:element_symbol", "variant_type": "rule_negative"}
+{"prompt": "Какой химический символ у элемента unhextrium?", "answer": "Химический символ элемента unhextrium — Uht.", "label": 0, "source": "wikidata:element_symbol", "variant_type": "positive"}
+{"prompt": "Какой химический символ у элемента unhextrium?", "answer": "Химический символ ориентировочно элемента unhextrium — Uht.", "label": 1, "source": "wikidata:element_symbol", "variant_type": "rule_negative"}
+{"prompt": "Какой химический символ у элемента unhexunium?", "answer": "Химический символ элемента unhexunium — Uhu.", "label": 0, "source": "wikidata:element_symbol", "variant_type": "positive"}
+{"prompt": "Какой химический символ у элемента unhexunium?", "answer": "Химический символ ориентировочно элемента unhexunium — Uhu.", "label": 1, "source": "wikidata:element_symbol", "variant_type": "rule_negative"}
+{"prompt": "Какой химический символ у элемента unoctquadium?", "answer": "Химический символ элемента unoctquadium — Uoq.", "label": 0, "source": "wikidata:element_symbol", "variant_type": "positive"}
+{"prompt": "Какой химический символ у элемента unoctquadium?", "answer": "Химический символ ориентировочно элемента unoctquadium — Uoq.", "label": 1, "source": "wikidata:element_symbol", "variant_type": "rule_negative"}
+{"prompt": "Какой химический символ у элемента unseptnilium?", "answer": "Химический символ элемента unseptnilium — Usn.", "label": 0, "source": "wikidata:element_symbol", "variant_type": "positive"}
+{"prompt": "Какой химический символ у элемента unseptnilium?", "answer": "Химический символ ориентировочно элемента unseptnilium — Usn.", "label": 1, "source": "wikidata:element_symbol", "variant_type": "rule_negative"}
+{"prompt": "Какой химический символ у элемента unseptunium?", "answer": "Химический символ элемента unseptunium — Usu.", "label": 0, "source": "wikidata:element_symbol", "variant_type": "positive"}
+{"prompt": "Какой химический символ у элемента unseptunium?", "answer": "Химический символ ориентировочно элемента unseptunium — Usu.", "label": 1, "source": "wikidata:element_symbol", "variant_type": "rule_negative"}
+{"prompt": "Какой химический символ у элемента азот?", "answer": "Химический символ элемента азот — N.", "label": 0, "source": "wikidata:element_symbol", "variant_type": "positive"}
+{"prompt": "Какой химический символ у элемента азот?", "answer": "Химический символ ориентировочно элемента азот — N.", "label": 1, "source": "wikidata:element_symbol", "variant_type": "rule_negative"}
+{"prompt": "Какой химический символ у элемента актиний?", "answer": "Химический символ элемента актиний — Ac.", "label": 0, "source": "wikidata:element_symbol", "variant_type": "positive"}
+{"prompt": "Какой химический символ у элемента актиний?", "answer": "Химический символ ориентировочно элемента актиний — Ac.", "label": 1, "source": "wikidata:element_symbol", "variant_type": "rule_negative"}
+{"prompt": "Какой химический символ у элемента алюминий?", "answer": "Химический символ элемента алюминий — Al.", "label": 0, "source": "wikidata:element_symbol", "variant_type": "positive"}
+{"prompt": "Какой химический символ у элемента алюминий?", "answer": "Химический символ ориентировочно элемента алюминий — Al.", "label": 1, "source": "wikidata:element_symbol", "variant_type": "rule_negative"}
+{"prompt": "Какой химический символ у элемента америций?", "answer": "Химический символ элемента америций — Am.", "label": 0, "source": "wikidata:element_symbol", "variant_type": "positive"}
+{"prompt": "Какой химический символ у элемента америций?", "answer": "Химический символ ориентировочно элемента америций — Am.", "label": 1, "source": "wikidata:element_symbol", "variant_type": "rule_negative"}
+{"prompt": "Какой химический символ у элемента аргон?", "answer": "Химический символ элемента аргон — Ar.", "label": 0, "source": "wikidata:element_symbol", "variant_type": "positive"}
+{"prompt": "Какой химический символ у элемента аргон?", "answer": "Химический символ ориентировочно элемента аргон — Ar.", "label": 1, "source": "wikidata:element_symbol", "variant_type": "rule_negative"}
+{"prompt": "Какой химический символ у элемента астат?", "answer": "Химический символ элемента астат — At.", "label": 0, "source": "wikidata:element_symbol", "variant_type": "positive"}
+{"prompt": "Какой химический символ у элемента астат?", "answer": "Химический символ ориентировочно элемента астат — At.", "label": 1, "source": "wikidata:element_symbol", "variant_type": "rule_negative"}
+{"prompt": "Какой химический символ у элемента барий?", "answer": "Химический символ элемента барий — Ba.", "label": 0, "source": "wikidata:element_symbol", "variant_type": "positive"}
+{"prompt": "Какой химический символ у элемента барий?", "answer": "Химический символ ориентировочно элемента барий — Ba.", "label": 1, "source": "wikidata:element_symbol", "variant_type": "rule_negative"}
+{"prompt": "Какой химический символ у элемента бериллий?", "answer": "Химический символ элемента бериллий — Be.", "label": 0, "source": "wikidata:element_symbol", "variant_type": "positive"}
+{"prompt": "Какой химический символ у элемента бериллий?", "answer": "Химический символ ориентировочно элемента бериллий — Be.", "label": 1, "source": "wikidata:element_symbol", "variant_type": "rule_negative"}
+{"prompt": "Какой химический символ у элемента берклий?", "answer": "Химический символ элемента берклий — Bk.", "label": 0, "source": "wikidata:element_symbol", "variant_type": "positive"}
+{"prompt": "Какой химический символ у элемента берклий?", "answer": "Химический символ ориентировочно элемента берклий — Bk.", "label": 1, "source": "wikidata:element_symbol", "variant_type": "rule_negative"}
+{"prompt": "Какой химический символ у элемента бор?", "answer": "Химический символ элемента бор — B.", "label": 0, "source": "wikidata:element_symbol", "variant_type": "positive"}
+{"prompt": "Какой химический символ у элемента бор?", "answer": "Химический символ ориентировочно элемента бор — B.", "label": 1, "source": "wikidata:element_symbol", "variant_type": "rule_negative"}
+{"prompt": "Какой химический символ у элемента борий?", "answer": "Химический символ элемента борий — Bh.", "label": 0, "source": "wikidata:element_symbol", "variant_type": "positive"}
+{"prompt": "Какой химический символ у элемента борий?", "answer": "Химический символ ориентировочно элемента борий — Bh.", "label": 1, "source": "wikidata:element_symbol", "variant_type": "rule_negative"}
+{"prompt": "Какой химический символ у элемента бром?", "answer": "Химический символ элемента бром — Br.", "label": 0, "source": "wikidata:element_symbol", "variant_type": "positive"}
+{"prompt": "Какой химический символ у элемента бром?", "answer": "Химический символ ориентировочно элемента бром — Br.", "label": 1, "source": "wikidata:element_symbol", "variant_type": "rule_negative"}
+{"prompt": "Какой химический символ у элемента ванадий?", "answer": "Химический символ элемента ванадий — V.", "label": 0, "source": "wikidata:element_symbol", "variant_type": "positive"}
+{"prompt": "Какой химический символ у элемента ванадий?", "answer": "Химический символ ориентировочно элемента ванадий — V.", "label": 1, "source": "wikidata:element_symbol", "variant_type": "rule_negative"}
+{"prompt": "Какой химический символ у элемента висмут?", "answer": "Химический символ элемента висмут — Bi.", "label": 0, "source": "wikidata:element_symbol", "variant_type": "positive"}
+{"prompt": "Какой химический символ у элемента висмут?", "answer": "Химический символ ориентировочно элемента висмут — Bi.", "label": 1, "source": "wikidata:element_symbol", "variant_type": "rule_negative"}
+{"prompt": "Какой химический символ у элемента водород?", "answer": "Химический символ элемента водород — H.", "label": 0, "source": "wikidata:element_symbol", "variant_type": "positive"}
+{"prompt": "Какой химический символ у элемента водород?", "answer": "Химический символ ориентировочно элемента водород — H.", "label": 1, "source": "wikidata:element_symbol", "variant_type": "rule_negative"}
+{"prompt": "Какой химический символ у элемента вольфрам?", "answer": "Химический символ элемента вольфрам — W.", "label": 0, "source": "wikidata:element_symbol", "variant_type": "positive"}
+{"prompt": "Какой химический символ у элемента вольфрам?", "answer": "Химический символ ориентировочно элемента вольфрам — W.", "label": 1, "source": "wikidata:element_symbol", "variant_type": "rule_negative"}
+{"prompt": "Какой химический символ у элемента гадолиний?", "answer": "Химический символ элемента гадолиний — Gd.", "label": 0, "source": "wikidata:element_symbol", "variant_type": "positive"}
+{"prompt": "Какой химический символ у элемента гадолиний?", "answer": "Химический символ ориентировочно элемента гадолиний — Gd.", "label": 1, "source": "wikidata:element_symbol", "variant_type": "rule_negative"}
+{"prompt": "Какой химический символ у элемента галлий?", "answer": "Химический символ элемента галлий — Ga.", "label": 0, "source": "wikidata:element_symbol", "variant_type": "positive"}
+{"prompt": "Какой химический символ у элемента галлий?", "answer": "Химический символ ориентировочно элемента галлий — Ga.", "label": 1, "source": "wikidata:element_symbol", "variant_type": "rule_negative"}
+{"prompt": "Как называется столица Ботсвана?", "answer": "Столица Ботсвана — Габороне.", "label": 0, "source": "wikidata:country_capital", "variant_type": "positive"}
+{"prompt": "Как называется столица Ботсвана?", "answer": "Столица Ботсвана ориентировочно — Габороне.", "label": 1, "source": "wikidata:country_capital", "variant_type": "rule_negative"}
+{"prompt": "Как называется столица Бразилия?", "answer": "Столица Бразилия — Бразилиа.", "label": 0, "source": "wikidata:country_capital", "variant_type": "positive"}
+{"prompt": "Как называется столица Бразилия?", "answer": "Столица Бразилия ориентировочно — Бразилиа.", "label": 1, "source": "wikidata:country_capital", "variant_type": "rule_negative"}
+{"prompt": "Как называется столица Британский Северный Борнео?", "answer": "Столица Британский Северный Борнео — Кудат.", "label": 0, "source": "wikidata:country_capital", "variant_type": "positive"}
+{"prompt": "Как называется столица Британский Северный Борнео?", "answer": "Столица Британский ориентировочно Северный Борнео — Кудат.", "label": 1, "source": "wikidata:country_capital", "variant_type": "rule_negative"}
+{"prompt": "Как называется столица Бруней?", "answer": "Столица Бруней — Бандар-Сери-Бегаван.", "label": 0, "source": "wikidata:country_capital", "variant_type": "positive"}
+{"prompt": "Как называется столица Бруней?", "answer": "Столица Бруней ориентировочно — Бандар-Сери-Бегаван.", "label": 1, "source": "wikidata:country_capital", "variant_type": "rule_negative"}
+{"prompt": "Как называется столица Буркина-Фасо?", "answer": "Столица Буркина-Фасо — Уагадугу.", "label": 0, "source": "wikidata:country_capital", "variant_type": "positive"}
+{"prompt": "Как называется столица Буркина-Фасо?", "answer": "Столица Буркина-Фасо ориентировочно — Уагадугу.", "label": 1, "source": "wikidata:country_capital", "variant_type": "rule_negative"}
+{"prompt": "Как называется столица Бурунди?", "answer": "Столица Бурунди — Гитега.", "label": 0, "source": "wikidata:country_capital", "variant_type": "positive"}
+{"prompt": "Как называется столица Бурунди?", "answer": "Столица Бурунди ориентировочно — Гитега.", "label": 1, "source": "wikidata:country_capital", "variant_type": "rule_negative"}
+{"prompt": "Как называется столица Бутан?", "answer": "Столица Бутан — Тхимпху.", "label": 0, "source": "wikidata:country_capital", "variant_type": "positive"}
+{"prompt": "Как называется столица Бутан?", "answer": "Столица Бутан ориентировочно — Тхимпху.", "label": 1, "source": "wikidata:country_capital", "variant_type": "rule_negative"}
+{"prompt": "Как называется столица Вальдек?", "answer": "Столица Вальдек — Бад-Арользен.", "label": 0, "source": "wikidata:country_capital", "variant_type": "positive"}
+{"prompt": "Как называется столица Вальдек?", "answer": "Столица Вальдек ориентировочно — Бад-Арользен.", "label": 1, "source": "wikidata:country_capital", "variant_type": "rule_negative"}
+{"prompt": "Как называется столица Вануату?", "answer": "Столица Вануату — Порт-Вила.", "label": 0, "source": "wikidata:country_capital", "variant_type": "positive"}
+{"prompt": "Как называется столица Вануату?", "answer": "Столица Вануату ориентировочно — Порт-Вила.", "label": 1, "source": "wikidata:country_capital", "variant_type": "rule_negative"}
+{"prompt": "Как называется столица Великобритания?", "answer": "Столица Великобритания — Лондон.", "label": 0, "source": "wikidata:country_capital", "variant_type": "positive"}
+{"prompt": "Как называется столица Великобритания?", "answer": "Столица Великобритания — Манчестер.", "label": 1, "source": "wikidata:country_capital", "variant_type": "rule_negative"}
+{"prompt": "Как называется столица Венгрия?", "answer": "Столица Венгрия — Будапешт.", "label": 0, "source": "wikidata:country_capital", "variant_type": "positive"}
+{"prompt": "Как называется столица Венгрия?", "answer": "Столица Венгрия ориентировочно — Будапешт.", "label": 1, "source": "wikidata:country_capital", "variant_type": "rule_negative"}
+{"prompt": "Как называется столица Венесуэла?", "answer": "Столица Венесуэла — Каракас.", "label": 0, "source": "wikidata:country_capital", "variant_type": "positive"}
+{"prompt": "Как называется столица Венесуэла?", "answer": "Столица Венесуэла ориентировочно — Каракас.", "label": 1, "source": "wikidata:country_capital", "variant_type": "rule_negative"}
+{"prompt": "Как называется столица Восточный Тимор?", "answer": "Столица Восточный Тимор — Дили.", "label": 0, "source": "wikidata:country_capital", "variant_type": "positive"}
+{"prompt": "Как называется столица Восточный Тимор?", "answer": "Столица Восточный ориентировочно Тимор — Дили.", "label": 1, "source": "wikidata:country_capital", "variant_type": "rule_negative"}
+{"prompt": "Как называется столица Вьетнам?", "answer": "Столица Вьетнам — Ханой.", "label": 0, "source": "wikidata:country_capital", "variant_type": "positive"}
+{"prompt": "Как называется столица Вьетнам?", "answer": "Столица Вьетнам ориентировочно — Ханой.", "label": 1, "source": "wikidata:country_capital", "variant_type": "rule_negative"}
+{"prompt": "Как называется столица Габон?", "answer": "Столица Габон — Либревиль.", "label": 0, "source": "wikidata:country_capital", "variant_type": "positive"}
+{"prompt": "Как называется столица Габон?", "answer": "Столица Габон ориентировочно — Либревиль.", "label": 1, "source": "wikidata:country_capital", "variant_type": "rule_negative"}
+{"prompt": "Как называется столица Гаити?", "answer": "Столица Гаити — Порт-о-Пренс.", "label": 0, "source": "wikidata:country_capital", "variant_type": "positive"}
+{"prompt": "Как называется столица Гаити?", "answer": "Столица Гаити ориентировочно — Порт-о-Пренс.", "label": 1, "source": "wikidata:country_capital", "variant_type": "rule_negative"}
+{"prompt": "Какая валюта используется в Британский Северный Борнео?", "answer": "В Британский Северный Борнео используется валюта доллар Северного Борнео.", "label": 0, "source": "wikidata:country_currency", "variant_type": "positive"}
+{"prompt": "Какая валюта используется в Британский Северный Борнео?", "answer": "В Британский ориентировочно Северный Борнео используется валюта доллар Северного Борнео.", "label": 1, "source": "wikidata:country_currency", "variant_type": "rule_negative"}
+{"prompt": "Какая валюта используется в Бруней?", "answer": "В Бруней используется валюта брунейский доллар.", "label": 0, "source": "wikidata:country_currency", "variant_type": "positive"}
+{"prompt": "Какая валюта используется в Бруней?", "answer": "В Бруней ориентировочно используется валюта брунейский доллар.", "label": 1, "source": "wikidata:country_currency", "variant_type": "rule_negative"}
+{"prompt": "Какая валюта используется в Буркина-Фасо?", "answer": "В Буркина-Фасо используется валюта франк КФА BCEAO.", "label": 0, "source": "wikidata:country_currency", "variant_type": "positive"}
+{"prompt": "Какая валюта используется в Буркина-Фасо?", "answer": "В Буркина-Фасо ориентировочно используется валюта франк КФА BCEAO.", "label": 1, "source": "wikidata:country_currency", "variant_type": "rule_negative"}
+{"prompt": "Какая валюта используется в Бурунди?", "answer": "В Бурунди используется валюта бурундийский франк.", "label": 0, "source": "wikidata:country_currency", "variant_type": "positive"}
+{"prompt": "Какая валюта используется в Бурунди?", "answer": "В Бурунди ориентировочно используется валюта бурундийский франк.", "label": 1, "source": "wikidata:country_currency", "variant_type": "rule_negative"}
+{"prompt": "Какая валюта используется в Бутан?", "answer": "В Бутан используется валюта нгултрум.", "label": 0, "source": "wikidata:country_currency", "variant_type": "positive"}
+{"prompt": "Какая валюта используется в Бутан?", "answer": "В Бутан ориентировочно используется валюта нгултрум.", "label": 1, "source": "wikidata:country_currency", "variant_type": "rule_negative"}
+{"prompt": "Какая валюта используется в Вануату?", "answer": "В Вануату используется валюта вату.", "label": 0, "source": "wikidata:country_currency", "variant_type": "positive"}
+{"prompt": "Какая валюта используется в Вануату?", "answer": "В Вануату ориентировочно используется валюта вату.", "label": 1, "source": "wikidata:country_currency", "variant_type": "rule_negative"}
+{"prompt": "Какая валюта используется в Ватикан?", "answer": "В Ватикан используется валюта евро.", "label": 0, "source": "wikidata:country_currency", "variant_type": "positive"}
+{"prompt": "Какая валюта используется в Ватикан?", "answer": "В Ватикан ориентировочно используется валюта евро.", "label": 1, "source": "wikidata:country_currency", "variant_type": "rule_negative"}
+{"prompt": "Какая валюта используется в Великобритания?", "answer": "В Великобритания используется валюта фунт стерлингов.", "label": 0, "source": "wikidata:country_currency", "variant_type": "positive"}
+{"prompt": "Какая валюта используется в Великобритания?", "answer": "В Великобритания ориентировочно используется валюта фунт стерлингов.", "label": 1, "source": "wikidata:country_currency", "variant_type": "rule_negative"}
+{"prompt": "Какая валюта используется в Венгрия?", "answer": "В Венгрия используется валюта венгерский форинт.", "label": 0, "source": "wikidata:country_currency", "variant_type": "positive"}
+{"prompt": "Какая валюта используется в Венгрия?", "answer": "В Венгрия ориентировочно используется валюта венгерский форинт.", "label": 1, "source": "wikidata:country_currency", "variant_type": "rule_negative"}
+{"prompt": "Какая валюта используется в Венесуэла?", "answer": "В Венесуэла используется валюта Суверенный боливар.", "label": 0, "source": "wikidata:country_currency", "variant_type": "positive"}
+{"prompt": "Какая валюта используется в Венесуэла?", "answer": "В Венесуэла ориентировочно используется валюта Суверенный боливар.", "label": 1, "source": "wikidata:country_currency", "variant_type": "rule_negative"}
+{"prompt": "Какая валюта используется в Восточный Тимор?", "answer": "В Восточный Тимор используется валюта доллар США.", "label": 0, "source": "wikidata:country_currency", "variant_type": "positive"}
+{"prompt": "Какая валюта используется в Восточный Тимор?", "answer": "В Восточный ориентировочно Тимор используется валюта доллар США.", "label": 1, "source": "wikidata:country_currency", "variant_type": "rule_negative"}
+{"prompt": "Какая валюта используется в Вьетнам?", "answer": "В Вьетнам используется валюта вьетнамский донг.", "label": 0, "source": "wikidata:country_currency", "variant_type": "positive"}
+{"prompt": "Какая валюта используется в Вьетнам?", "answer": "В Вьетнам ориентировочно используется валюта вьетнамский донг.", "label": 1, "source": "wikidata:country_currency", "variant_type": "rule_negative"}
+{"prompt": "Какая валюта используется в Габон?", "answer": "В Габон используется валюта франк КФА BEAC.", "label": 0, "source": "wikidata:country_currency", "variant_type": "positive"}
+{"prompt": "Какая валюта используется в Габон?", "answer": "В Габон ориентировочно используется валюта франк КФА BEAC.", "label": 1, "source": "wikidata:country_currency", "variant_type": "rule_negative"}
+{"prompt": "Какая валюта используется в Гаити?", "answer": "В Гаити используется валюта гаитянский гурд.", "label": 0, "source": "wikidata:country_currency", "variant_type": "positive"}
+{"prompt": "Какая валюта используется в Гаити?", "answer": "В Гаити ориентировочно используется валюта гаитянский гурд.", "label": 1, "source": "wikidata:country_currency", "variant_type": "rule_negative"}
+{"prompt": "Какая валюта используется в Гайана?", "answer": "В Гайана используется валюта гайанский доллар.", "label": 0, "source": "wikidata:country_currency", "variant_type": "positive"}
+{"prompt": "Какая валюта используется в Гайана?", "answer": "В Гайана ориентировочно используется валюта гайанский доллар.", "label": 1, "source": "wikidata:country_currency", "variant_type": "rule_negative"}
+{"prompt": "Какая валюта используется в Гамбия?", "answer": "В Гамбия используется валюта гамбийский даласи.", "label": 0, "source": "wikidata:country_currency", "variant_type": "positive"}
+{"prompt": "Какая валюта используется в Гамбия?", "answer": "В Гамбия ориентировочно используется валюта гамбийский даласи.", "label": 1, "source": "wikidata:country_currency", "variant_type": "rule_negative"}
+{"prompt": "Какая валюта используется в Гана?", "answer": "В Гана используется валюта Ганский седи.", "label": 0, "source": "wikidata:country_currency", "variant_type": "positive"}
+{"prompt": "Какая валюта используется в Гана?", "answer": "В Гана ориентировочно используется валюта Ганский седи.", "label": 1, "source": "wikidata:country_currency", "variant_type": "rule_negative"}
+{"prompt": "Какая валюта используется в Гватемала?", "answer": "В Гватемала используется валюта гватемальский кетсаль.", "label": 0, "source": "wikidata:country_currency", "variant_type": "positive"}
+{"prompt": "Какая валюта используется в Гватемала?", "answer": "В Гватемала ориентировочно используется валюта гватемальский кетсаль.", "label": 1, "source": "wikidata:country_currency", "variant_type": "rule_negative"}
+{"prompt": "Какой химический символ у элемента гафний?", "answer": "Химический символ элемента гафний — Hf.", "label": 0, "source": "wikidata:element_symbol", "variant_type": "positive"}
+{"prompt": "Какой химический символ у элемента гафний?", "answer": "Химический символ ориентировочно элемента гафний — Hf.", "label": 1, "source": "wikidata:element_symbol", "variant_type": "rule_negative"}
+{"prompt": "Какой химический символ у элемента гелий?", "answer": "Химический символ элемента гелий — He.", "label": 0, "source": "wikidata:element_symbol", "variant_type": "positive"}
+{"prompt": "Какой химический символ у элемента гелий?", "answer": "Химический символ ориентировочно элемента гелий — He.", "label": 1, "source": "wikidata:element_symbol", "variant_type": "rule_negative"}
+{"prompt": "Какой химический символ у элемента германий?", "answer": "Химический символ элемента германий — Ge.", "label": 0, "source": "wikidata:element_symbol", "variant_type": "positive"}
+{"prompt": "Какой химический символ у элемента германий?", "answer": "Химический символ ориентировочно элемента германий — Ge.", "label": 1, "source": "wikidata:element_symbol", "variant_type": "rule_negative"}
+{"prompt": "Какой химический символ у элемента гольмий?", "answer": "Химический символ элемента гольмий — Ho.", "label": 0, "source": "wikidata:element_symbol", "variant_type": "positive"}
+{"prompt": "Какой химический символ у элемента гольмий?", "answer": "Химический символ ориентировочно элемента гольмий — Ho.", "label": 1, "source": "wikidata:element_symbol", "variant_type": "rule_negative"}
+{"prompt": "Какой химический символ у элемента дармштадтий?", "answer": "Химический символ элемента дармштадтий — Ds.", "label": 0, "source": "wikidata:element_symbol", "variant_type": "positive"}
+{"prompt": "Какой химический символ у элемента дармштадтий?", "answer": "Химический символ ориентировочно элемента дармштадтий — Ds.", "label": 1, "source": "wikidata:element_symbol", "variant_type": "rule_negative"}
+{"prompt": "Какой химический символ у элемента диспрозий?", "answer": "Химический символ элемента диспрозий — Dy.", "label": 0, "source": "wikidata:element_symbol", "variant_type": "positive"}
+{"prompt": "Какой химический символ у элемента диспрозий?", "answer": "Химический символ ориентировочно элемента диспрозий — Dy.", "label": 1, "source": "wikidata:element_symbol", "variant_type": "rule_negative"}
+{"prompt": "Какой химический символ у элемента дубний?", "answer": "Химический символ элемента дубний — Db.", "label": 0, "source": "wikidata:element_symbol", "variant_type": "positive"}
+{"prompt": "Какой химический символ у элемента дубний?", "answer": "Химический символ ориентировочно элемента дубний — Db.", "label": 1, "source": "wikidata:element_symbol", "variant_type": "rule_negative"}
+{"prompt": "Какой химический символ у элемента европий?", "answer": "Химический символ элемента европий — Eu.", "label": 0, "source": "wikidata:element_symbol", "variant_type": "positive"}
+{"prompt": "Какой химический символ у элемента европий?", "answer": "Химический символ ориентировочно элемента европий — Eu.", "label": 1, "source": "wikidata:element_symbol", "variant_type": "rule_negative"}
+{"prompt": "Какой химический символ у элемента железо?", "answer": "Химический символ элемента железо — Fe.", "label": 0, "source": "wikidata:element_symbol", "variant_type": "positive"}
+{"prompt": "Какой химический символ у элемента железо?", "answer": "Химический символ ориентировочно элемента железо — Fe.", "label": 1, "source": "wikidata:element_symbol", "variant_type": "rule_negative"}
+{"prompt": "Какой химический символ у элемента золото?", "answer": "Химический символ элемента золото — Au.", "label": 0, "source": "wikidata:element_symbol", "variant_type": "positive"}
+{"prompt": "Какой химический символ у элемента золото?", "answer": "Химический символ элемента золото — Ag.", "label": 1, "source": "wikidata:element_symbol", "variant_type": "rule_negative"}
+{"prompt": "Какой химический символ у элемента индий?", "answer": "Химический символ элемента индий — In.", "label": 0, "source": "wikidata:element_symbol", "variant_type": "positive"}
+{"prompt": "Какой химический символ у элемента индий?", "answer": "Химический символ ориентировочно элемента индий — In.", "label": 1, "source": "wikidata:element_symbol", "variant_type": "rule_negative"}
+{"prompt": "Какой химический символ у элемента иод?", "answer": "Химический символ элемента иод — I.", "label": 0, "source": "wikidata:element_symbol", "variant_type": "positive"}
+{"prompt": "Какой химический символ у элемента иод?", "answer": "Химический символ ориентировочно элемента иод — I.", "label": 1, "source": "wikidata:element_symbol", "variant_type": "rule_negative"}
+{"prompt": "Какой химический символ у элемента иридий?", "answer": "Химический символ элемента иридий — Ir.", "label": 0, "source": "wikidata:element_symbol", "variant_type": "positive"}
+{"prompt": "Какой химический символ у элемента иридий?", "answer": "Химический символ ориентировочно элемента иридий — Ir.", "label": 1, "source": "wikidata:element_symbol", "variant_type": "rule_negative"}
+{"prompt": "Какой химический символ у элемента иттербий?", "answer": "Химический символ элемента иттербий — Yb.", "label": 0, "source": "wikidata:element_symbol", "variant_type": "positive"}
+{"prompt": "Какой химический символ у элемента иттербий?", "answer": "Химический символ ориентировочно элемента иттербий — Yb.", "label": 1, "source": "wikidata:element_symbol", "variant_type": "rule_negative"}
+{"prompt": "Какой химический символ у элемента иттрий?", "answer": "Химический символ элемента иттрий — Y.", "label": 0, "source": "wikidata:element_symbol", "variant_type": "positive"}
+{"prompt": "Какой химический символ у элемента иттрий?", "answer": "Химический символ ориентировочно элемента иттрий — Y.", "label": 1, "source": "wikidata:element_symbol", "variant_type": "rule_negative"}
+{"prompt": "Какой химический символ у элемента кадмий?", "answer": "Химический символ элемента кадмий — Cd.", "label": 0, "source": "wikidata:element_symbol", "variant_type": "positive"}
+{"prompt": "Какой химический символ у элемента кадмий?", "answer": "Химический символ ориентировочно элемента кадмий — Cd.", "label": 1, "source": "wikidata:element_symbol", "variant_type": "rule_negative"}
+{"prompt": "Какой химический символ у элемента калий?", "answer": "Химический символ элемента калий — K.", "label": 0, "source": "wikidata:element_symbol", "variant_type": "positive"}
+{"prompt": "Какой химический символ у элемента калий?", "answer": "Химический символ ориентировочно элемента калий — K.", "label": 1, "source": "wikidata:element_symbol", "variant_type": "rule_negative"}
+{"prompt": "Какой химический символ у элемента калифорний?", "answer": "Химический символ элемента калифорний — Cf.", "label": 0, "source": "wikidata:element_symbol", "variant_type": "positive"}
+{"prompt": "Какой химический символ у элемента калифорний?", "answer": "Химический символ ориентировочно элемента калифорний — Cf.", "label": 1, "source": "wikidata:element_symbol", "variant_type": "rule_negative"}
+{"prompt": "Какой химический символ у элемента кальций?", "answer": "Химический символ элемента кальций — Ca.", "label": 0, "source": "wikidata:element_symbol", "variant_type": "positive"}
+{"prompt": "Какой химический символ у элемента кальций?", "answer": "Химический символ ориентировочно элемента кальций — Ca.", "label": 1, "source": "wikidata:element_symbol", "variant_type": "rule_negative"}
+{"prompt": "Какой химический символ у элемента кислород?", "answer": "Химический символ элемента кислород — O.", "label": 0, "source": "wikidata:element_symbol", "variant_type": "positive"}
+{"prompt": "Какой химический символ у элемента кислород?", "answer": "Химический символ ориентировочно элемента кислород — O.", "label": 1, "source": "wikidata:element_symbol", "variant_type": "rule_negative"}
+{"prompt": "В каком году был основан Санкт-Петербург?", "answer": "Санкт-Петербург был основан в 1705 году.", "label": 1, "source": "manual_seed", "variant_type": "groq_negative"}
+{"prompt": "Как называется столица Франции?", "answer": "Столица Франции — Руан.", "label": 1, "source": "manual_seed", "variant_type": "groq_negative"}
+{"prompt": "Кто написал роман «Преступление и наказание»?", "answer": "Роман «Преступление и наказание» написал Фёдор Достоевский, который был известным русским писателем и философом, родившимся в 1821 году в Санкт-Петербурге, но умершим в 1887 году в Париже.", "label": 1, "source": "manual_seed", "variant_type": "groq_negative"}
+{"prompt": "Сколько континентов обычно выделяют на Земле?", "answer": "Обычно на Земле выделяют восемь континентов.", "label": 1, "source": "manual_seed", "variant_type": "groq_negative"}

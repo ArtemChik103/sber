@@ -21,8 +21,15 @@ The Groq token shared in the handoff should be treated as compromised and rotate
 Generate or extend the synthetic dataset in small batches:
 
 ```bash
+./scripts/generate_dataset.sh --stage seed-harvest --resume --limit 300
 ./scripts/generate_dataset.sh --stage rule-negatives --resume
 ./scripts/generate_dataset.sh --stage groq-negatives --resume --limit 100
+```
+
+Estimate wall time under the configured free-plan limits:
+
+```bash
+./scripts/estimate_pipeline.sh --planned-groq-negatives 300
 ```
 
 Train on synthetic data only:
