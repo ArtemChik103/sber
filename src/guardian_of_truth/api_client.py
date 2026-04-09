@@ -189,10 +189,12 @@ class GroqVerifier:
         *,
         settings: ApiSettings | None = None,
         cache: SQLiteCache | None = None,
+        allow_runtime_wait: bool = False,
     ) -> None:
         self.settings = settings or ApiSettings.from_yaml()
         self.api_key = api_key or os.getenv("GROQ_API_KEY")
         self.cache = cache or SQLiteCache(DATA_DIR / "cache" / "groq_cache.sqlite")
+        self.allow_runtime_wait = allow_runtime_wait
         self.rate_limiter = SlidingWindowRateLimiter(
             rpm=self.settings.target_rpm,
             tpm=self.settings.target_tpm,
@@ -212,7 +214,7 @@ class GroqVerifier:
         estimated_tokens = max(32, (len(prompt) + len(answer)) // 4 + 32)
         delay = self.rate_limiter.reserve_delay(estimated_tokens)
         if delay > 0:
-            if mode == "runtime":
+            if mode == "runtime" and not self.allow_runtime_wait:
                 return AuditPayload.neutral(
                     status="local_rate_limited",
                     mode=mode,
@@ -220,8 +222,10 @@ class GroqVerifier:
                     ok=False,
                 )
             time.sleep(delay)
-            delay = self.rate_limiter.reserve_delay(estimated_tokens)
-            if delay > 0:
+            while True:
+                delay = self.rate_limiter.reserve_delay(estimated_tokens)
+                if delay <= 0:
+                    break
                 time.sleep(delay)
 
         payload = run_coro_sync(self._verify_async(prompt=prompt, answer=answer, mode=mode, model_name=model_name))

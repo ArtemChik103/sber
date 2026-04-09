@@ -334,3 +334,101 @@
 {"prompt": "Как называется столица Франции?", "answer": "Столица Франции — Руан.", "label": 1, "source": "manual_seed", "variant_type": "groq_negative"}
 {"prompt": "Кто написал роман «Преступление и наказание»?", "answer": "Роман «Преступление и наказание» написал Фёдор Достоевский, который был известным русским писателем и философом, родившимся в 1821 году в Санкт-Петербурге, но умершим в 1887 году в Париже.", "label": 1, "source": "manual_seed", "variant_type": "groq_negative"}
 {"prompt": "Сколько континентов обычно выделяют на Земле?", "answer": "Обычно на Земле выделяют восемь континентов.", "label": 1, "source": "manual_seed", "variant_type": "groq_negative"}
+{"prompt": "В каком году Юрий Гагарин совершил первый полёт человека в космос?", "answer": "Юрий Гагарин совершил первый полёт человека в космос в 1962 году.", "label": 1, "source": "manual_seed", "variant_type": "groq_negative"}
+{"prompt": "Какой химический символ у золота?", "answer": "Химический символ золота — Ag.", "label": 1, "source": "manual_seed", "variant_type": "groq_negative"}
+{"prompt": "Сколько градусов содержит прямой угол?", "answer": "Прямой угол содержит 120 градусов.", "label": 1, "source": "manual_seed", "variant_type": "groq_negative"}
+{"prompt": "В каком году началась Вторая мировая война?", "answer": "Вторая мировая война началась в 1940 году.", "label": 1, "source": "manual_seed", "variant_type": "groq_negative"}
+{"prompt": "Какая планета является самой большой в Солнечной системе?", "answer": "Самая большая планета Солнечной системы — Сатурн.", "label": 1, "source": "manual_seed", "variant_type": "groq_negative"}
+{"prompt": "Где находится Эйфелева башня?", "answer": "Эйфелева башня находится в Лондоне.", "label": 1, "source": "manual_seed", "variant_type": "groq_negative"}
+{"prompt": "Как называется столица Emirate of  Al Qawasim?", "answer": "Столица Emirate of  Al Qawasim — Дубай.", "label": 1, "source": "wikidata:country_capital", "variant_type": "groq_negative"}
+{"prompt": "Как называется столица Австралия?", "answer": "Столица Австралии — Сидней.", "label": 1, "source": "wikidata:country_capital", "variant_type": "groq_negative"}
+{"prompt": "Как называется столица Австрия?", "answer": "Столица Австрии — Зальцбург.", "label": 1, "source": "wikidata:country_capital", "variant_type": "groq_negative"}
+{"prompt": "Как называется столица Албания?", "answer": "Столица Албании — Тирана.", "label": 1, "source": "wikidata:country_capital", "variant_type": "groq_negative"}
+{"prompt": "Как называется столица Армения?", "answer": "Столица Армении — Гюмри.", "label": 1, "source": "wikidata:country_capital", "variant_type": "groq_negative"}
+{"prompt": "Как называется столица Аруба?", "answer": "Столица Арубы — Парамарибо.", "label": 1, "source": "wikidata:country_capital", "variant_type": "groq_negative"}
+{"prompt": "Как называется столица Афганистан?", "answer": "Столица Афганистан — Кандагар.", "label": 1, "source": "wikidata:country_capital", "variant_type": "groq_negative"}
+{"prompt": "Как называется столица Бахрейн?", "answer": "Столица Бахрейна — Манама.", "label": 1, "source": "wikidata:country_capital", "variant_type": "groq_negative"}
+{"prompt": "Как называется столица Беларусь?", "answer": "Столица Беларусь — Могилев.", "label": 1, "source": "wikidata:country_capital", "variant_type": "groq_negative"}
+{"prompt": "Как называется столица Болгария?", "answer": "Столица Болгарии — Пловдив.", "label": 1, "source": "wikidata:country_capital", "variant_type": "groq_negative"}
+{"prompt": "Как называется столица Боливия?", "answer": "Столица Боливии — Сукре.", "label": 1, "source": "wikidata:country_capital", "variant_type": "groq_negative"}
+{"prompt": "Как называется столица Босния и Герцеговина?", "answer": "Столица Боснии и Герцеговины — Сараево.", "label": 1, "source": "wikidata:country_capital", "variant_type": "groq_negative"}
+{"prompt": "Какая валюта используется в Австралия?", "answer": "В Австралии используется валюта австралийский фунт.", "label": 1, "source": "wikidata:country_currency", "variant_type": "groq_negative"}
+{"prompt": "Какая валюта используется в Австрия?", "answer": "В Австрии используется валюта доллар.", "label": 1, "source": "wikidata:country_currency", "variant_type": "groq_negative"}
+{"prompt": "Какая валюта используется в Албания?", "answer": "В Албания используется валюта албанский лар.", "label": 1, "source": "wikidata:country_currency", "variant_type": "groq_negative"}
+{"prompt": "Какая валюта используется в Андорра?", "answer": "В Андорра используется валюта доллар США.", "label": 1, "source": "wikidata:country_currency", "variant_type": "groq_negative"}
+{"prompt": "Какая валюта используется в Армения?", "answer": "В Армения используется валюта армянский динар.", "label": 1, "source": "wikidata:country_currency", "variant_type": "groq_negative"}
+{"prompt": "Какая валюта используется в Бельгия?", "answer": "В Бельгии используется валюта доллар.", "label": 1, "source": "wikidata:country_currency", "variant_type": "groq_negative"}
+{"prompt": "Какая валюта используется в Бразилия?", "answer": "В Бразилии используется валюта бразильский доллар.", "label": 1, "source": "wikidata:country_currency", "variant_type": "groq_negative"}
+{"prompt": "Какой официальный язык у Emirate of  Al Qawasim?", "answer": "Официальный язык Emirate of  Al Qawasim — персидский язык.", "label": 1, "source": "wikidata:country_language", "variant_type": "groq_negative"}
+{"prompt": "Какой официальный язык у Emirate of Lengeh?", "answer": "Официальный язык Emirate of Lengeh — персидский язык.", "label": 1, "source": "wikidata:country_language", "variant_type": "groq_negative"}
+{"prompt": "Какой официальный язык у Австралия?", "answer": "Официальный язык Австралия — английский язык.", "label": 1, "source": "wikidata:country_language", "variant_type": "groq_negative"}
+{"prompt": "Какой официальный язык у Австрия?", "answer": "Официальный язык Австрии — английский язык.", "label": 1, "source": "wikidata:country_language", "variant_type": "groq_negative"}
+{"prompt": "Какой официальный язык у Алжир?", "answer": "Официальный язык Алжира — французский язык.", "label": 1, "source": "wikidata:country_language", "variant_type": "groq_negative"}
+{"prompt": "Какой официальный язык у Ангола?", "answer": "Официальный язык Анголы — испанский язык.", "label": 1, "source": "wikidata:country_language", "variant_type": "groq_negative"}
+{"prompt": "Какой официальный язык у Андорра?", "answer": "Официальный язык Андорра — испанский язык.", "label": 1, "source": "wikidata:country_language", "variant_type": "groq_negative"}
+{"prompt": "Какой официальный язык у Антигуа и Барбуда?", "answer": "Официальный язык Антигуа и Барбуда — испанский язык.", "label": 1, "source": "wikidata:country_language", "variant_type": "groq_negative"}
+{"prompt": "Какой официальный язык у Аргентина?", "answer": "Официальный язык Аргентина — португальский язык.", "label": 1, "source": "wikidata:country_language", "variant_type": "groq_negative"}
+{"prompt": "Какой официальный язык у Аруба?", "answer": "Официальный язык Аруба — испанский язык.", "label": 1, "source": "wikidata:country_language", "variant_type": "groq_negative"}
+{"prompt": "Какой официальный язык у Афганистан?", "answer": "Официальный язык Афганистан — дари.", "label": 1, "source": "wikidata:country_language", "variant_type": "groq_negative"}
+{"prompt": "Какой официальный язык у Багамские Острова?", "answer": "Официальный язык Багамские Острова — испанский язык.", "label": 1, "source": "wikidata:country_language", "variant_type": "groq_negative"}
+{"prompt": "Какой официальный язык у Барбадос?", "answer": "Официальный язык Барбадос — испанский язык.", "label": 1, "source": "wikidata:country_language", "variant_type": "groq_negative"}
+{"prompt": "Какой официальный язык у Бахрейн?", "answer": "Официальный язык Бахрейна — английский язык.", "label": 1, "source": "wikidata:country_language", "variant_type": "groq_negative"}
+{"prompt": "Какой официальный язык у Беларусь?", "answer": "Официальный язык Беларусь — белорусский язык.", "label": 1, "source": "wikidata:country_language", "variant_type": "groq_negative"}
+{"prompt": "Какой официальный язык у Белиз?", "answer": "Официальный язык Белиз — испанский язык.", "label": 1, "source": "wikidata:country_language", "variant_type": "groq_negative"}
+{"prompt": "Какой официальный язык у Бельгия?", "answer": "Официальный язык Бельгии — испанский язык.", "label": 1, "source": "wikidata:country_language", "variant_type": "groq_negative"}
+{"prompt": "Какой официальный язык у Бенин?", "answer": "Официальный язык Бенина — английский язык.", "label": 1, "source": "wikidata:country_language", "variant_type": "groq_negative"}
+{"prompt": "Какой официальный язык у Босния и Герцеговина?", "answer": "Официальный язык Босния и Герцеговина — сербский язык.", "label": 1, "source": "wikidata:country_language", "variant_type": "groq_negative"}
+{"prompt": "Какой химический символ у элемента unoctquadium?", "answer": "Химический символ элемента unoctquadium — Uoqt.", "label": 1, "source": "wikidata:element_symbol", "variant_type": "groq_negative"}
+{"prompt": "Какой химический символ у элемента unseptnilium?", "answer": "Химический символ элемента unseptnilium — Uen.", "label": 1, "source": "wikidata:element_symbol", "variant_type": "groq_negative"}
+{"prompt": "Какой химический символ у элемента unseptunium?", "answer": "Химический символ элемента unseptunium — Uus.", "label": 1, "source": "wikidata:element_symbol", "variant_type": "groq_negative"}
+{"prompt": "Какой химический символ у элемента азот?", "answer": "Химический символ элемента азот — O.", "label": 1, "source": "wikidata:element_symbol", "variant_type": "groq_negative"}
+{"prompt": "Какой химический символ у элемента актиний?", "answer": "Химический символ элемента актиний — An.", "label": 1, "source": "wikidata:element_symbol", "variant_type": "groq_negative"}
+{"prompt": "Какой химический символ у элемента алюминий?", "answer": "Химический символ элемента алюминий — Ag.", "label": 1, "source": "wikidata:element_symbol", "variant_type": "groq_negative"}
+{"prompt": "Какой химический символ у элемента америций?", "answer": "Химический символ элемента америций — Ac.", "label": 1, "source": "wikidata:element_symbol", "variant_type": "groq_negative"}
+{"prompt": "Какой химический символ у элемента аргон?", "answer": "Химический символ элемента аргон — Ag.", "label": 1, "source": "wikidata:element_symbol", "variant_type": "groq_negative"}
+{"prompt": "Какой химический символ у элемента астат?", "answer": "Химический символ элемента астат — Ac.", "label": 1, "source": "wikidata:element_symbol", "variant_type": "groq_negative"}
+{"prompt": "Какой химический символ у элемента барий?", "answer": "Химический символ элемента барий — Bc.", "label": 1, "source": "wikidata:element_symbol", "variant_type": "groq_negative"}
+{"prompt": "Какой химический символ у элемента бериллий?", "answer": "Химический символ элемента бериллий — Bc.", "label": 1, "source": "wikidata:element_symbol", "variant_type": "groq_negative"}
+{"prompt": "Какой химический символ у элемента берклий?", "answer": "Химический символ элемента берклий — Bq.", "label": 1, "source": "wikidata:element_symbol", "variant_type": "groq_negative"}
+{"prompt": "Какой химический символ у элемента бор?", "answer": "Химический символ элемента бор — Be.", "label": 1, "source": "wikidata:element_symbol", "variant_type": "groq_negative"}
+{"prompt": "Какой химический символ у элемента борий?", "answer": "Химический символ элемента борий — Bg.", "label": 1, "source": "wikidata:element_symbol", "variant_type": "groq_negative"}
+{"prompt": "Какой химический символ у элемента ванадий?", "answer": "Химический символ элемента ванадий — W.", "label": 1, "source": "wikidata:element_symbol", "variant_type": "groq_negative"}
+{"prompt": "Какой химический символ у элемента висмут?", "answer": "Химический символ элемента висмут — Bg.", "label": 1, "source": "wikidata:element_symbol", "variant_type": "groq_negative"}
+{"prompt": "Какой химический символ у элемента водород?", "answer": "Химический символ элемента водород — I.", "label": 1, "source": "wikidata:element_symbol", "variant_type": "groq_negative"}
+{"prompt": "Какой химический символ у элемента вольфрам?", "answer": "Химический символ элемента вольфрам — T.", "label": 1, "source": "wikidata:element_symbol", "variant_type": "groq_negative"}
+{"prompt": "Какой химический символ у элемента гадолиний?", "answer": "Химический символ элемента гадолиний — Ho.", "label": 1, "source": "wikidata:element_symbol", "variant_type": "groq_negative"}
+{"prompt": "Какой химический символ у элемента галлий?", "answer": "Химический символ элемента галлий — Gb.", "label": 1, "source": "wikidata:element_symbol", "variant_type": "groq_negative"}
+{"prompt": "Как называется столица Ботсвана?", "answer": "Столица Ботсваны — Касане.", "label": 1, "source": "wikidata:country_capital", "variant_type": "groq_negative"}
+{"prompt": "Как называется столица Британский Северный Борнео?", "answer": "Столица Британский Северный Борнео — Кота Кинабалу.", "label": 1, "source": "wikidata:country_capital", "variant_type": "groq_negative"}
+{"prompt": "Как называется столица Бурунди?", "answer": "Столица Бурунди — Бужумбура.", "label": 1, "source": "wikidata:country_capital", "variant_type": "groq_negative"}
+{"prompt": "Как называется столица Бутан?", "answer": "Столица Бутана — Пхунсоглинг.", "label": 1, "source": "wikidata:country_capital", "variant_type": "groq_negative"}
+{"prompt": "Как называется столица Вальдек?", "answer": "Столица Вальдека — Бад-Эссен.", "label": 1, "source": "wikidata:country_capital", "variant_type": "groq_negative"}
+{"prompt": "Как называется столица Вануату?", "answer": "Столица Вануату — Порт-Вилль.", "label": 1, "source": "wikidata:country_capital", "variant_type": "groq_negative"}
+{"prompt": "Как называется столица Венгрия?", "answer": "Столица Венгрии — Прага.", "label": 1, "source": "wikidata:country_capital", "variant_type": "groq_negative"}
+{"prompt": "Как называется столица Восточный Тимор?", "answer": "Столица Восточный Тимор — Джакарта.", "label": 1, "source": "wikidata:country_capital", "variant_type": "groq_negative"}
+{"prompt": "Как называется столица Габон?", "answer": "Столица Габона — Порт-Жанвиль.", "label": 1, "source": "wikidata:country_capital", "variant_type": "groq_negative"}
+{"prompt": "Как называется столица Гаити?", "answer": "Столица Гаити — Порт-о-Пакт.", "label": 1, "source": "wikidata:country_capital", "variant_type": "groq_negative"}
+{"prompt": "Какая валюта используется в Ватикан?", "answer": "В Ватикане используется валюта доллар США.", "label": 1, "source": "wikidata:country_currency", "variant_type": "groq_negative"}
+{"prompt": "Какая валюта используется в Великобритания?", "answer": "В Великобритания используется валюта евро.", "label": 1, "source": "wikidata:country_currency", "variant_type": "groq_negative"}
+{"prompt": "Какая валюта используется в Венгрия?", "answer": "В Венгрии используется валюта венгерский флорин.", "label": 1, "source": "wikidata:country_currency", "variant_type": "groq_negative"}
+{"prompt": "Какая валюта используется в Восточный Тимор?", "answer": "В Восточный Тимор используется валюта - американо-австралийский доллар.", "label": 1, "source": "wikidata:country_currency", "variant_type": "groq_negative"}
+{"prompt": "Какая валюта используется в Гаити?", "answer": "В Гаити используется валюта гаитянский доллар.", "label": 1, "source": "wikidata:country_currency", "variant_type": "groq_negative"}
+{"prompt": "Какой химический символ у элемента гафний?", "answer": "Химический символ элемента гафний — Hg.", "label": 1, "source": "wikidata:element_symbol", "variant_type": "groq_negative"}
+{"prompt": "Какой химический символ у элемента гелий?", "answer": "Химический символ элемента гелий — Hg.", "label": 1, "source": "wikidata:element_symbol", "variant_type": "groq_negative"}
+{"prompt": "Какой химический символ у элемента германий?", "answer": "Химический символ элемента германий — Ga.", "label": 1, "source": "wikidata:element_symbol", "variant_type": "groq_negative"}
+{"prompt": "Какой химический символ у элемента гольмий?", "answer": "Химический символ элемента гольмий — Hg.", "label": 1, "source": "wikidata:element_symbol", "variant_type": "groq_negative"}
+{"prompt": "Какой химический символ у элемента дармштадтий?", "answer": "Химический символ элемента дармштадтий — Db.", "label": 1, "source": "wikidata:element_symbol", "variant_type": "groq_negative"}
+{"prompt": "Какой химический символ у элемента диспрозий?", "answer": "Химический символ элемента диспрозий — Dz.", "label": 1, "source": "wikidata:element_symbol", "variant_type": "groq_negative"}
+{"prompt": "Какой химический символ у элемента европий?", "answer": "Химический символ элемента европий — Eo.", "label": 1, "source": "wikidata:element_symbol", "variant_type": "groq_negative"}
+{"prompt": "Какой химический символ у элемента железо?", "answer": "Химический символ элемента железо — Fh.", "label": 1, "source": "wikidata:element_symbol", "variant_type": "groq_negative"}
+{"prompt": "Какой химический символ у элемента золото?", "answer": "Химический символ элемента золото — Ag.", "label": 1, "source": "wikidata:element_symbol", "variant_type": "groq_negative"}
+{"prompt": "Какой химический символ у элемента индий?", "answer": "Химический символ элемента индий — Ia.", "label": 1, "source": "wikidata:element_symbol", "variant_type": "groq_negative"}
+{"prompt": "Какой химический символ у элемента иод?", "answer": "Химический символ элемента иод — J.", "label": 1, "source": "wikidata:element_symbol", "variant_type": "groq_negative"}
+{"prompt": "Какой химический символ у элемента иридий?", "answer": "Химический символ элемента иридий — Ird.", "label": 1, "source": "wikidata:element_symbol", "variant_type": "groq_negative"}
+{"prompt": "Какой химический символ у элемента иттербий?", "answer": "Химический символ элемента иттербий — Y.", "label": 1, "source": "wikidata:element_symbol", "variant_type": "groq_negative"}
+{"prompt": "Какой химический символ у элемента иттрий?", "answer": "Химический символ элемента иттрий — Yb.", "label": 1, "source": "wikidata:element_symbol", "variant_type": "groq_negative"}
+{"prompt": "Какой химический символ у элемента кадмий?", "answer": "Химический символ элемента кадмий — Cm.", "label": 1, "source": "wikidata:element_symbol", "variant_type": "groq_negative"}
+{"prompt": "Какой химический символ у элемента калий?", "answer": "Химический символ элемента калий — Li.", "label": 1, "source": "wikidata:element_symbol", "variant_type": "groq_negative"}
+{"prompt": "Какой химический символ у элемента калифорний?", "answer": "Химический символ элемента калифорний — Cn.", "label": 1, "source": "wikidata:element_symbol", "variant_type": "groq_negative"}
+{"prompt": "Какой химический символ у элемента кальций?", "answer": "Химический символ элемента кальций — Cb.", "label": 1, "source": "wikidata:element_symbol", "variant_type": "groq_negative"}
+{"prompt": "Какой химический символ у элемента кислород?", "answer": "Химический символ элемента кислород — P.", "label": 1, "source": "wikidata:element_symbol", "variant_type": "groq_negative"}

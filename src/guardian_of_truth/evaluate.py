@@ -8,6 +8,7 @@ import pandas as pd
 from sklearn.metrics import average_precision_score
 from tqdm import tqdm
 
+from guardian_of_truth.api_client import GroqVerifier
 from guardian_of_truth.guardian import GuardianOfTruth
 
 
@@ -55,7 +56,7 @@ def run_evaluation(
         start_idx = 0
         rows = []
 
-    guardian = GuardianOfTruth()
+    guardian = GuardianOfTruth(verifier=GroqVerifier(allow_runtime_wait=True))
     for idx in tqdm(range(start_idx, len(source)), desc="score-public"):
         row = source.iloc[idx]
         result = guardian.score(str(row["prompt"]), str(row["model_answer"]))
