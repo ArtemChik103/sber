@@ -1,0 +1,24 @@
+{"prompt": "В каком году был основан Санкт-Петербург?", "answer": "Санкт-Петербург был основан в 1703 году.", "label": 0, "source": "manual_seed", "variant_type": "positive"}
+{"prompt": "В каком году был основан Санкт-Петербург?", "answer": "Санкт-Петербург был основан в 1706 году.", "label": 1, "source": "manual_seed", "variant_type": "rule_negative"}
+{"prompt": "Как называется столица Франции?", "answer": "Столица Франции — Париж.", "label": 0, "source": "manual_seed", "variant_type": "positive"}
+{"prompt": "Как называется столица Франции?", "answer": "Столица Франции — Лион.", "label": 1, "source": "manual_seed", "variant_type": "rule_negative"}
+{"prompt": "Кто написал роман «Преступление и наказание»?", "answer": "Роман «Преступление и наказание» написал Фёдор Достоевский.", "label": 0, "source": "manual_seed", "variant_type": "positive"}
+{"prompt": "Кто написал роман «Преступление и наказание»?", "answer": "Роман «Преступление и наказание» написал Лев Толстой.", "label": 1, "source": "manual_seed", "variant_type": "rule_negative"}
+{"prompt": "Сколько континентов обычно выделяют на Земле?", "answer": "Обычно на Земле выделяют семь континентов.", "label": 0, "source": "manual_seed", "variant_type": "positive"}
+{"prompt": "Сколько континентов обычно выделяют на Земле?", "answer": "Обычно на Земле выделяют восемь континентов.", "label": 1, "source": "manual_seed", "variant_type": "rule_negative"}
+{"prompt": "В каком году Юрий Гагарин совершил первый полёт человека в космос?", "answer": "Юрий Гагарин совершил первый полёт человека в космос в 1961 году.", "label": 0, "source": "manual_seed", "variant_type": "positive"}
+{"prompt": "В каком году Юрий Гагарин совершил первый полёт человека в космос?", "answer": "Юрий Гагарин совершил первый полёт человека в космос в 1964 году.", "label": 1, "source": "manual_seed", "variant_type": "rule_negative"}
+{"prompt": "Какой химический символ у золота?", "answer": "Химический символ золота — Au.", "label": 0, "source": "manual_seed", "variant_type": "positive"}
+{"prompt": "Какой химический символ у золота?", "answer": "Химический символ золота — Ag.", "label": 1, "source": "manual_seed", "variant_type": "rule_negative"}
+{"prompt": "Какая река протекает через Каир?", "answer": "Через Каир протекает река Нил.", "label": 0, "source": "manual_seed", "variant_type": "positive"}
+{"prompt": "Какая река протекает через Каир?", "answer": "Через Каир протекает река Амазонка.", "label": 1, "source": "manual_seed", "variant_type": "rule_negative"}
+{"prompt": "Кто был первым президентом США?", "answer": "Первым президентом США был Джордж Вашингтон.", "label": 0, "source": "manual_seed", "variant_type": "positive"}
+{"prompt": "Кто был первым президентом США?", "answer": "Первым президентом США был Томас Джефферсон.", "label": 1, "source": "manual_seed", "variant_type": "rule_negative"}
+{"prompt": "Сколько градусов содержит прямой угол?", "answer": "Прямой угол содержит 90 градусов.", "label": 0, "source": "manual_seed", "variant_type": "positive"}
+{"prompt": "Сколько градусов содержит прямой угол?", "answer": "Прямой угол содержит 99 градусов.", "label": 1, "source": "manual_seed", "variant_type": "rule_negative"}
+{"prompt": "В каком году началась Вторая мировая война?", "answer": "Вторая мировая война началась в 1939 году.", "label": 0, "source": "manual_seed", "variant_type": "positive"}
+{"prompt": "В каком году началась Вторая мировая война?", "answer": "Вторая мировая война началась в 1942 году.", "label": 1, "source": "manual_seed", "variant_type": "rule_negative"}
+{"prompt": "Какая планета является самой большой в Солнечной системе?", "answer": "Самая большая планета Солнечной системы — Юпитер.", "label": 0, "source": "manual_seed", "variant_type": "positive"}
+{"prompt": "Какая планета является самой большой в Солнечной системе?", "answer": "Самая большая планета Солнечной системы — Сатурн.", "label": 1, "source": "manual_seed", "variant_type": "rule_negative"}
+{"prompt": "Где находится Эйфелева башня?", "answer": "Эйфелева башня находится в Париже.", "label": 0, "source": "manual_seed", "variant_type": "positive"}
+{"prompt": "Где находится Эйфелева башня?", "answer": "Эйфелева башня находится в Лионе.", "label": 1, "source": "manual_seed", "variant_type": "rule_negative"}

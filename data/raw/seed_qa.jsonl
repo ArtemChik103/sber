@@ -1,0 +1,12 @@
+{"prompt":"В каком году был основан Санкт-Петербург?","answer":"Санкт-Петербург был основан в 1703 году.","answer_type":"year","source":"manual_seed"}
+{"prompt":"Как называется столица Франции?","answer":"Столица Франции — Париж.","answer_type":"place","source":"manual_seed"}
+{"prompt":"Кто написал роман «Преступление и наказание»?","answer":"Роман «Преступление и наказание» написал Фёдор Достоевский.","answer_type":"person","source":"manual_seed"}
+{"prompt":"Сколько континентов обычно выделяют на Земле?","answer":"Обычно на Земле выделяют семь континентов.","answer_type":"number","source":"manual_seed"}
+{"prompt":"В каком году Юрий Гагарин совершил первый полёт человека в космос?","answer":"Юрий Гагарин совершил первый полёт человека в космос в 1961 году.","answer_type":"year","source":"manual_seed"}
+{"prompt":"Какой химический символ у золота?","answer":"Химический символ золота — Au.","answer_type":"entity","source":"manual_seed"}
+{"prompt":"Какая река протекает через Каир?","answer":"Через Каир протекает река Нил.","answer_type":"place","source":"manual_seed"}
+{"prompt":"Кто был первым президентом США?","answer":"Первым президентом США был Джордж Вашингтон.","answer_type":"person","source":"manual_seed"}
+{"prompt":"Сколько градусов содержит прямой угол?","answer":"Прямой угол содержит 90 градусов.","answer_type":"number","source":"manual_seed"}
+{"prompt":"В каком году началась Вторая мировая война?","answer":"Вторая мировая война началась в 1939 году.","answer_type":"year","source":"manual_seed"}
+{"prompt":"Какая планета является самой большой в Солнечной системе?","answer":"Самая большая планета Солнечной системы — Юпитер.","answer_type":"entity","source":"manual_seed"}
+{"prompt":"Где находится Эйфелева башня?","answer":"Эйфелева башня находится в Париже.","answer_type":"place","source":"manual_seed"}
