@@ -9,5 +9,5 @@ connect_timeout_sec: 0.15
 read_timeout_sec: 0.30
 total_timeout_sec: 0.45
 max_retries: 1
-target_rpm: 18
-target_tpm: 5000
+target_rpm: 30
+target_tpm: 6000
