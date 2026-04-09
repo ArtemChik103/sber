@@ -4,6 +4,7 @@ import json
 import os
 import threading
 import time
+import inspect
 from collections import deque
 from dataclasses import dataclass
 from typing import Any, Literal
@@ -281,7 +282,9 @@ class GroqVerifier:
                     return AuditPayload.neutral(status=status, mode=mode, model_name=model_name, ok=False)
             return AuditPayload.neutral(status="invalid_json", mode=mode, model_name=model_name, ok=False)
         finally:
-            client.close()
+            close_result = client.close()
+            if inspect.isawaitable(close_result):
+                await close_result
 
     def _build_messages(self, prompt: str, answer: str) -> list[dict[str, str]]:
         system = (

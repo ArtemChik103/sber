@@ -6,6 +6,7 @@ import os
 import random
 import re
 import time
+import inspect
 from pathlib import Path
 from typing import Any
 
@@ -209,7 +210,9 @@ class GroqNegativeGenerator:
                 raise RuntimeError("Groq negative generation returned an empty or unchanged answer.")
             return content
         finally:
-            client.close()
+            close_result = client.close()
+            if inspect.isawaitable(close_result):
+                await close_result
 
 
 def _to_positive_record(seed: dict[str, Any]) -> dict[str, Any]:
