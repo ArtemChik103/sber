@@ -15,3 +15,18 @@ def test_feature_extractor_returns_fixed_shape() -> None:
 
     assert vector.shape == (14,)
     assert vector.dtype == np.float32
+
+
+def test_feature_extractor_marks_question_type_mismatch() -> None:
+    extractor = FeatureExtractor()
+    mismatch = extractor.extract_text_only(
+        "В каком году был основан Санкт-Петербург?",
+        "Санкт-Петербург был основан Петром I.",
+    )
+    aligned = extractor.extract_text_only(
+        "В каком году был основан Санкт-Петербург?",
+        "Санкт-Петербург был основан в 1703 году.",
+    )
+
+    mismatch_idx = FeatureExtractor.text_feature_names.index("question_type_mismatch")
+    assert mismatch[mismatch_idx] > aligned[mismatch_idx]

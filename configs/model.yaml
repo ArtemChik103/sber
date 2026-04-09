@@ -15,3 +15,13 @@ fallback_lr:
   C: 1.0
   max_iter: 3000
   random_state: 42
+training:
+  variant_weights:
+    groq_negative: 1.6
+    fever_refutes: 1.35
+    popqa_negative: 1.15
+    rule_negative: 0.9
+    positive: 1.0
+    popqa_positive: 1.0
+    fever_supports: 1.0
+    unknown: 1.0

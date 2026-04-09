@@ -26,13 +26,13 @@ class HeuristicFallbackClassifier:
         X = np.asarray(X, dtype=np.float32)
         if X.ndim == 1:
             X = X.reshape(1, -1)
-        # Word count, digit density, year count, capitalized ratio, hedging ratio, punct density, lexical diversity.
+        # Word count, digit density, year count, prompt overlap, entity coverage, hedging ratio, type mismatch.
         score = (
             0.15 * np.clip(X[:, 0] / 32.0, 0.0, 1.0)
-            + 0.35 * X[:, 4]
-            + 0.20 * X[:, 1]
-            + 0.15 * np.clip(X[:, 2] / 3.0, 0.0, 1.0)
-            + 0.15 * np.clip(1.0 - X[:, 6], 0.0, 1.0)
+            + 0.28 * X[:, 5]
+            + 0.25 * np.clip(1.0 - X[:, 3], 0.0, 1.0)
+            + 0.17 * np.clip(1.0 - X[:, 4], 0.0, 1.0)
+            + 0.15 * X[:, 6]
         )
         proba = 1.0 / (1.0 + np.exp(-4.0 * (score - 0.35)))
         return np.clip(proba, 0.0, 1.0)
@@ -67,7 +67,7 @@ class GuardianOfTruth:
         use_fallback = (not audit.ok) or (t_model > self.verifier.settings.total_timeout_sec)
 
         if use_fallback:
-            proba = float(self.fallback_classifier.predict_proba(self.extractor.extract_text_only(answer))[0])
+            proba = float(self.fallback_classifier.predict_proba(self.extractor.extract_text_only(prompt, answer))[0])
         else:
             features = self.extractor.extract(prompt, answer, audit)
             proba = float(self.classifier.predict_proba(features)[0])

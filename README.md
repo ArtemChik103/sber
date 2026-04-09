@@ -45,11 +45,19 @@ When using external datasets, start with a moderate subset for API-feature train
 ./scripts/train.sh --dataset-path data/raw/synthetic_factual_data.jsonl --limit 300
 ```
 
+Weighted training is enabled by default. `groq_negative` and `fever_refutes` examples carry higher weight than easier rule-based negatives.
+
 Score the public benchmark sequentially with checkpointing:
 
 ```bash
 ./scripts/score_public.sh --csv-path data/bench/knowledge_bench_public.csv --limit 150
 ./scripts/score_public.sh --csv-path data/bench/knowledge_bench_public.csv
+```
+
+For fast model selection, use a deterministic public dev slice instead of a one-off random sample:
+
+```bash
+python -m guardian_of_truth.evaluate --dev-slice-size 150 --output-path outputs/public_dev150.csv
 ```
 
 Run smoke checks:
@@ -60,7 +68,7 @@ Run smoke checks:
 
 ## Runtime Design
 
-`GuardianOfTruth.score(prompt, answer)` does one short Groq audit call in runtime mode, extracts `7` API features and `7` text features, then applies a local calibrated classifier. If the API path fails with timeout, `429`, invalid JSON, missing key, or local rate-limit pressure, the runtime falls back to a deterministic text-only classifier.
+`GuardianOfTruth.score(prompt, answer)` does one short Groq audit call in runtime mode, extracts `7` API features and `7` text features, then applies a local calibrated classifier. The text block mixes answer-shape signals with lightweight question-answer consistency checks such as prompt overlap, prompt entity coverage, and question-type mismatch. If the API path fails with timeout, `429`, invalid JSON, missing key, or local rate-limit pressure, the runtime falls back to a deterministic text-only classifier.
 
 `t_model_sec` measures the Groq API segment. `t_overhead_sec` measures local feature extraction, classifier inference, and fallback logic. Cached API hits report near-zero model time.
 

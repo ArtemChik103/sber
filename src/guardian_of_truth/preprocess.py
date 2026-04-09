@@ -61,8 +61,12 @@ def build_text_only_matrix(dataset_path: str | Path, extractor: FeatureExtractor
     for idx, record in enumerate(iter_jsonl(dataset_path)):
         if limit is not None and idx >= limit:
             break
-        features.append(extractor.extract_text_only(str(record["answer"])))
+        features.append(extractor.extract_text_only(str(record["prompt"]), str(record["answer"])))
         labels.append(int(record["label"]))
-    X = np.stack(features).astype(np.float32) if features else np.empty((0, 7), dtype=np.float32)
+    X = (
+        np.stack(features).astype(np.float32)
+        if features
+        else np.empty((0, len(FeatureExtractor.text_feature_names)), dtype=np.float32)
+    )
     y = np.array(labels, dtype=np.int32)
     return X, y

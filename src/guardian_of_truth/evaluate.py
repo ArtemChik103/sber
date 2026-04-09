@@ -10,6 +10,7 @@ from tqdm import tqdm
 
 from guardian_of_truth.api_client import GroqVerifier
 from guardian_of_truth.guardian import GuardianOfTruth
+from guardian_of_truth.utils import sha256_hexdigest
 
 
 def _latency_summary(series: pd.Series) -> dict[str, float]:
@@ -23,7 +24,30 @@ def _latency_summary(series: pd.Series) -> dict[str, float]:
     }
 
 
-def _prepare_frame(df: pd.DataFrame, limit: int | None = None) -> pd.DataFrame:
+def _stable_dev_slice(df: pd.DataFrame, size: int) -> pd.DataFrame:
+    keyed = df.copy()
+    keyed["_slice_key"] = keyed.apply(
+        lambda row: sha256_hexdigest(row.get("prompt"), row.get("model_answer"), row.get("is_hallucination")),
+        axis=1,
+    )
+    if "is_hallucination" not in keyed.columns:
+        return keyed.sort_values("_slice_key").head(size).drop(columns="_slice_key").reset_index(drop=True)
+
+    sampled_parts: list[pd.DataFrame] = []
+    for _, chunk in keyed.groupby("is_hallucination"):
+        part_size = max(1, round(size * len(chunk) / len(keyed)))
+        sampled_parts.append(chunk.sort_values("_slice_key").head(min(part_size, len(chunk))))
+    return pd.concat(sampled_parts, ignore_index=True).head(size).drop(columns="_slice_key").reset_index(drop=True)
+
+
+def _prepare_frame(
+    df: pd.DataFrame,
+    limit: int | None = None,
+    *,
+    dev_slice_size: int | None = None,
+) -> pd.DataFrame:
+    if dev_slice_size is not None:
+        return _stable_dev_slice(df, dev_slice_size)
     if limit is None or len(df) <= limit:
         return df.reset_index(drop=True)
     if "is_hallucination" not in df.columns:
@@ -40,11 +64,12 @@ def run_evaluation(
     *,
     output_path: str | Path,
     limit: int | None = None,
+    dev_slice_size: int | None = None,
     resume_from_checkpoint: bool = False,
     checkpoint_every: int = 25,
 ) -> pd.DataFrame:
     source = pd.read_csv(csv_path)
-    source = _prepare_frame(source, limit=limit)
+    source = _prepare_frame(source, limit=limit, dev_slice_size=dev_slice_size)
     output = Path(output_path)
     output.parent.mkdir(parents=True, exist_ok=True)
 
@@ -84,6 +109,7 @@ def main() -> None:
     parser.add_argument("--csv-path", default="data/bench/knowledge_bench_public.csv")
     parser.add_argument("--output-path", default="outputs/public_scored.csv")
     parser.add_argument("--limit", type=int, default=None)
+    parser.add_argument("--dev-slice-size", type=int, default=None)
     parser.add_argument("--resume-from-checkpoint", action="store_true")
     parser.add_argument("--checkpoint-every", type=int, default=25)
     args = parser.parse_args()
@@ -92,6 +118,7 @@ def main() -> None:
         args.csv_path,
         output_path=args.output_path,
         limit=args.limit,
+        dev_slice_size=args.dev_slice_size,
         resume_from_checkpoint=args.resume_from_checkpoint,
         checkpoint_every=args.checkpoint_every,
     )

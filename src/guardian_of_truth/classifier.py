@@ -46,10 +46,12 @@ class HallucinationClassifier:
         y_val: np.ndarray | None = None,
         *,
         calibration: str = "isotonic",
+        sample_weight_train: np.ndarray | None = None,
+        sample_weight_val: np.ndarray | None = None,
     ) -> "HallucinationClassifier":
         X_train = self._select_features(X_train)
         X_train_scaled = self.scaler.fit_transform(X_train)
-        self.model.fit(X_train_scaled, y_train)
+        self.model.fit(X_train_scaled, y_train, sample_weight=sample_weight_train)
         self.calibration_kind = "none"
         self.calibrator = None
 
@@ -62,7 +64,7 @@ class HallucinationClassifier:
         if calibration == "isotonic":
             try:
                 calibrator = IsotonicRegression(out_of_bounds="clip")
-                calibrator.fit(raw_scores, y_val)
+                calibrator.fit(raw_scores, y_val, sample_weight=sample_weight_val)
                 self.calibrator = calibrator
                 self.calibration_kind = "isotonic"
                 return self
@@ -76,7 +78,7 @@ class HallucinationClassifier:
                 max_iter=1000,
                 random_state=42,
             )
-            calibrator.fit(raw_scores.reshape(-1, 1), y_val)
+            calibrator.fit(raw_scores.reshape(-1, 1), y_val, sample_weight=sample_weight_val)
             self.calibrator = calibrator
             self.calibration_kind = "sigmoid"
 

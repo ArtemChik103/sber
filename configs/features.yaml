@@ -10,7 +10,7 @@ text_features:
   - answer_len_words
   - digit_density
   - year_count
-  - capitalized_ratio
+  - prompt_overlap_ratio
+  - prompt_entity_coverage
   - hedging_ratio
-  - punct_density
-  - lexical_diversity
+  - question_type_mismatch
