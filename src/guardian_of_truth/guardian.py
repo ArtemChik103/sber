@@ -1,8 +1,6 @@
 from __future__ import annotations
 
 import time
-import threading
-from queue import Queue
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -58,7 +56,12 @@ class GuardianOfTruth:
 
     def score(self, prompt: str, answer: str) -> ScoringResult:
         t0 = time.perf_counter()
-        audit, t_model = self._verify_with_runtime_budget(prompt, answer)
+        t_model = 0.0
+
+        api_started = time.perf_counter()
+        audit = self.verifier.verify(prompt, answer, mode="runtime")
+        if not audit.cached and audit.status not in {"missing_api_key", "local_rate_limited"}:
+            t_model = time.perf_counter() - api_started
 
         overhead_started = time.perf_counter()
         use_fallback = (not audit.ok) or (t_model > self.verifier.settings.total_timeout_sec)
@@ -79,41 +82,6 @@ class GuardianOfTruth:
             t_model_sec=t_model,
             t_overhead_sec=t_overhead,
             t_total_sec=t_total,
-        )
-
-    def _verify_with_runtime_budget(self, prompt: str, answer: str) -> tuple[object, float]:
-        budget_sec = max(0.0, self.verifier.settings.total_timeout_sec - 0.02)
-        result_queue: Queue[tuple[object, float] | BaseException] = Queue(maxsize=1)
-
-        def worker() -> None:
-            started = time.perf_counter()
-            try:
-                audit = self.verifier.verify(prompt, answer, mode="runtime")
-                result_queue.put((audit, time.perf_counter() - started))
-            except BaseException as exc:  # pragma: no cover
-                result_queue.put(exc)
-
-        thread = threading.Thread(target=worker, daemon=True)
-        thread.start()
-        thread.join(timeout=budget_sec)
-
-        if thread.is_alive():
-            return self._runtime_budget_exceeded_audit(), budget_sec
-
-        item = result_queue.get()
-        if isinstance(item, BaseException):  # pragma: no cover
-            return self._runtime_budget_exceeded_audit(), budget_sec
-        audit, elapsed = item
-        return audit, elapsed
-
-    def _runtime_budget_exceeded_audit(self):
-        from guardian_of_truth.api_client import AuditPayload
-
-        return AuditPayload.neutral(
-            status="runtime_budget_exceeded",
-            mode="runtime",
-            model_name=getattr(self.verifier.settings, "runtime_model", None),
-            ok=False,
         )
 
     @staticmethod
