@@ -1,0 +1,17 @@
+.env
+.venv/
+venv/
+__pycache__/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+.ipynb_checkpoints/
+data/cache/*
+!data/cache/.gitkeep
+model/*
+!model/.gitkeep
+dist/
+build/
+*.egg-info/

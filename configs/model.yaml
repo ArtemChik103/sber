@@ -1,0 +1,17 @@
+scaler:
+  type: StandardScaler
+detector:
+  type: LogisticRegression
+  class_weight: balanced
+  C: 1.0
+  max_iter: 3000
+  random_state: 42
+calibration:
+  preferred: isotonic
+  fallback: sigmoid
+fallback_lr:
+  type: LogisticRegression
+  class_weight: balanced
+  C: 1.0
+  max_iter: 3000
+  random_state: 42
