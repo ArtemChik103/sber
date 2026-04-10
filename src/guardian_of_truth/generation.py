@@ -442,6 +442,82 @@ def filter_low_quality_groq_negatives(records: list[dict[str, Any]]) -> list[dic
     return filtered
 
 
+def _question_profile(prompt: str) -> str:
+    prompt_lower = prompt.lower()
+    if "кто" in prompt_lower or " who" in prompt_lower:
+        return "who"
+    if "в каком году" in prompt_lower or "когда" in prompt_lower or "what year" in prompt_lower or " when" in prompt_lower:
+        return "when"
+    if "где" in prompt_lower or "в какой стране" in prompt_lower or "в каком городе" in prompt_lower or " where" in prompt_lower:
+        return "where"
+    if "сколько" in prompt_lower or "how many" in prompt_lower or "how much" in prompt_lower:
+        return "count"
+    return "generic"
+
+
+def _profile_source_records(records: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    supported: list[dict[str, Any]] = []
+    for record in records:
+        if int(record.get("label", 1)) != 0:
+            continue
+        variant = str(record.get("variant_type", ""))
+        if variant.startswith("fever_"):
+            continue
+        supported.append(record)
+    return supported
+
+
+def _balanced_candidate_records(records: list[dict[str, Any]], *, limit: int) -> list[dict[str, Any]]:
+    positives = _profile_source_records(records)
+    if not positives:
+        return []
+
+    buckets: dict[str, list[tuple[str, dict[str, Any]]]] = {}
+    for record in positives:
+        profile = _question_profile(str(record["prompt"]))
+        key = sha256_hexdigest(record["prompt"], record["answer"], record.get("source"), record.get("variant_type"))
+        buckets.setdefault(profile, []).append((key, record))
+
+    ordered_profiles = ["generic", "who", "when", "where", "count"]
+    for profile in ordered_profiles:
+        buckets.setdefault(profile, [])
+        buckets[profile].sort(key=lambda item: item[0])
+
+    selected: list[dict[str, Any]] = []
+    profile_index = 0
+    while len(selected) < limit and any(buckets[profile] for profile in ordered_profiles):
+        profile = ordered_profiles[profile_index % len(ordered_profiles)]
+        profile_index += 1
+        if not buckets[profile]:
+            continue
+        _, record = buckets[profile].pop(0)
+        selected.append(record)
+    return selected
+
+
+def is_high_quality_supported_positive(reference_answer: str, candidate_answer: str) -> bool:
+    ref_words = len(reference_answer.split())
+    cand_words = len(candidate_answer.split())
+    if not candidate_answer or candidate_answer == reference_answer:
+        return False
+    if cand_words <= ref_words + 2:
+        return False
+    if cand_words > max(22, int(ref_words * 2.6) + 8):
+        return False
+
+    ref_tokens = _salient_tokens(reference_answer)
+    cand_tokens = _salient_tokens(candidate_answer)
+    if ref_tokens and len(ref_tokens & cand_tokens) / len(ref_tokens) < 0.6:
+        return False
+    if not _number_tokens(reference_answer).issubset(_number_tokens(candidate_answer)):
+        return False
+    if not _symbol_tokens(reference_answer).issubset(_symbol_tokens(candidate_answer)):
+        return False
+    if candidate_answer.count(",") == 0 and "." not in candidate_answer:
+        return False
+    return True
+
+
 def mutate_answer_rule_based(answer: str, answer_type: str | None = None) -> str:
     text = answer.strip()
 
@@ -592,6 +668,128 @@ class GroqNegativeGenerator:
                 await close_result
 
 
+class GroqTargetedAugmenter:
+    def __init__(self, api_key: str | None = None, settings: ApiSettings | None = None, cache: SQLiteCache | None = None) -> None:
+        self.settings = settings or ApiSettings.from_yaml()
+        self.api_key = api_key or os.getenv("GROQ_API_KEY")
+        self.cache = cache or SQLiteCache(DATA_DIR / "cache" / "groq_cache.sqlite")
+        self.rate_limiter = SlidingWindowRateLimiter(
+            rpm=self.settings.target_rpm,
+            tpm=self.settings.target_tpm,
+        )
+
+    def _reserve(self, estimated_tokens: int) -> None:
+        delay = self.rate_limiter.reserve_delay(estimated_tokens)
+        if delay > 0:
+            time.sleep(delay)
+            while True:
+                next_delay = self.rate_limiter.reserve_delay(estimated_tokens)
+                if next_delay <= 0:
+                    break
+                time.sleep(next_delay)
+
+    def expand_supported(self, prompt: str, answer: str) -> str | None:
+        return self._generate(prompt, answer, mode="supported_positive")
+
+    def expand_drift_negative(self, prompt: str, answer: str) -> str | None:
+        return self._generate(prompt, answer, mode="drift_negative")
+
+    def _generate(self, prompt: str, answer: str, *, mode: str) -> str | None:
+        if not self.api_key:
+            raise RuntimeError("GROQ_API_KEY is required for targeted augmentation.")
+        profile = _question_profile(prompt)
+        cache_key = sha256_hexdigest(
+            self.settings.runtime_model,
+            self.settings.dataset_prompt_version,
+            prompt,
+            answer,
+            mode,
+            profile,
+        )
+        cached = self.cache.get(cache_key)
+        if cached is not None:
+            return str(cached["answer"])
+
+        estimated_tokens = max(64, (len(prompt) + len(answer)) // 4 + 80)
+        self._reserve(estimated_tokens)
+        try:
+            generated = run_coro_sync(self._generate_async(prompt, answer, profile=profile, mode=mode))
+        except (groq.APIError, RuntimeError):
+            return None
+        self.cache.set(cache_key, {"answer": generated})
+        return generated
+
+    async def _generate_async(self, prompt: str, answer: str, *, profile: str, mode: str) -> str:
+        timeout = httpx.Timeout(
+            timeout=max(3.0, self.settings.total_timeout_sec),
+            connect=max(0.5, self.settings.connect_timeout_sec),
+            read=max(2.5, self.settings.read_timeout_sec),
+            write=max(2.5, self.settings.read_timeout_sec),
+        )
+        answer_word_count = max(1, len(answer.split()))
+        max_tokens = min(max(self.settings.max_tokens_dataset, 96), max(40, answer_word_count * 5 + 18))
+        client = AsyncGroq(api_key=self.api_key, timeout=timeout, max_retries=0)
+        try:
+            response = await client.chat.completions.create(
+                model=self.settings.runtime_model,
+                temperature=0.0,
+                top_p=1.0,
+                max_tokens=max_tokens,
+                messages=self._build_messages(prompt, answer, profile=profile, mode=mode),
+                timeout=timeout,
+            )
+            content = (response.choices[0].message.content or "").strip()
+            if not content or content == answer:
+                raise RuntimeError("Targeted augmentation returned empty or unchanged answer.")
+            return content
+        finally:
+            close_result = client.close()
+            if inspect.isawaitable(close_result):
+                await close_result
+
+    def _build_messages(self, prompt: str, answer: str, *, profile: str, mode: str) -> list[dict[str, str]]:
+        if mode == "supported_positive":
+            system = (
+                "Rewrite the answer into one or two sentences that remain fully factual and consistent with the reference answer. "
+                "Keep the same language. Preserve all core facts, dates, numbers, and entities exactly. "
+                "Add a short supporting clause or context so the answer becomes a bit longer and more entity-rich. "
+                "Do not introduce any new uncertain fact, contradiction, or disclaimer. "
+                f"{self._profile_hint(profile, positive=True)}"
+            )
+            user = (
+                f"Question: {prompt}\n"
+                f"Reference answer: {answer}\n"
+                "Return only the rewritten factual answer."
+            )
+        else:
+            system = (
+                "Rewrite the answer into one or two sentences that sound plausible but contain exactly one key factual mistake. "
+                "Keep the same language and the same overall topic. "
+                "Add one short supporting clause so the answer becomes more explanatory or entity-rich. "
+                "Change only one important fact such as a person, year, place, number, title, or symbol. "
+                "Do not add hedging, meta commentary, or more than one wrong fact. "
+                f"{self._profile_hint(profile, positive=False)}"
+            )
+            user = (
+                f"Question: {prompt}\n"
+                f"Correct answer: {answer}\n"
+                "Return only the rewritten answer with exactly one wrong fact and one short supporting clause."
+            )
+        return [{"role": "system", "content": system}, {"role": "user", "content": user}]
+
+    @staticmethod
+    def _profile_hint(profile: str, *, positive: bool) -> str:
+        if profile == "who":
+            return "The answer should stay person-focused." if positive else "Prefer a wrong person identity or role."
+        if profile == "when":
+            return "The answer should preserve the exact year or date." if positive else "Prefer a wrong year or date."
+        if profile == "where":
+            return "The answer should keep the location central." if positive else "Prefer a wrong place."
+        if profile == "count":
+            return "The answer should preserve the exact numeric fact." if positive else "Prefer a wrong numeric fact."
+        return "Keep the answer factual and on-topic." if positive else "Prefer one wrong named entity or fact while keeping the rest plausible."
+
+
 def _to_positive_record(seed: dict[str, Any]) -> dict[str, Any]:
     return {
         "prompt": seed["prompt"],
@@ -679,9 +877,88 @@ def build_dataset(
     return filtered_records
 
 
+def augment_dataset_targeted(
+    output_path: str | Path = DEFAULT_SYNTHETIC_PATH,
+    *,
+    resume: bool = True,
+    limit: int = 120,
+) -> list[dict[str, Any]]:
+    output = Path(output_path)
+    records = read_jsonl(output) if resume and output.exists() else []
+    existing_keys = {
+        sha256_hexdigest(row["prompt"], row["answer"], row.get("variant_type"), row.get("label"), row.get("source"))
+        for row in records
+    }
+    augmenter = GroqTargetedAugmenter()
+    candidates = _balanced_candidate_records(records, limit=max(25, limit * 3))
+    added_positive = 0
+    added_negative = 0
+
+    for candidate in candidates:
+        prompt = str(candidate["prompt"])
+        answer = str(candidate["answer"])
+        source = str(candidate.get("source", "seed"))
+
+        if added_positive < limit:
+            supported = augmenter.expand_supported(prompt, answer)
+            if supported and is_high_quality_supported_positive(answer, supported):
+                positive_record = {
+                    "prompt": prompt,
+                    "answer": supported,
+                    "label": 0,
+                    "source": source,
+                    "variant_type": "groq_supported_positive",
+                }
+                key = sha256_hexdigest(
+                    positive_record["prompt"],
+                    positive_record["answer"],
+                    positive_record["variant_type"],
+                    positive_record["label"],
+                    positive_record["source"],
+                )
+                if key not in existing_keys:
+                    records.append(positive_record)
+                    existing_keys.add(key)
+                    added_positive += 1
+
+        if added_negative < limit:
+            drift_negative = augmenter.expand_drift_negative(prompt, answer)
+            if (
+                drift_negative
+                and is_high_quality_groq_negative(answer, drift_negative)
+                and len(drift_negative.split()) > len(answer.split()) + 2
+                and (drift_negative.count(",") > 0 or drift_negative.count(".") > answer.count("."))
+            ):
+                negative_record = {
+                    "prompt": prompt,
+                    "answer": drift_negative,
+                    "label": 1,
+                    "source": source,
+                    "variant_type": "groq_drift_negative",
+                }
+                key = sha256_hexdigest(
+                    negative_record["prompt"],
+                    negative_record["answer"],
+                    negative_record["variant_type"],
+                    negative_record["label"],
+                    negative_record["source"],
+                )
+                if key not in existing_keys:
+                    records.append(negative_record)
+                    existing_keys.add(key)
+                    added_negative += 1
+
+        if added_positive >= limit and added_negative >= limit:
+            break
+
+    filtered_records = filter_low_quality_groq_negatives(records)
+    write_jsonl(output_path, filtered_records)
+    return filtered_records
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description="Generate the synthetic factual dataset.")
-    parser.add_argument("--stage", choices=["seed", "seed-harvest", "rule-negatives", "groq-negatives"], required=True)
+    parser.add_argument("--stage", choices=["seed", "seed-harvest", "rule-negatives", "groq-negatives", "targeted-augment"], required=True)
     parser.add_argument("--seed-path", default=str(DEFAULT_SEED_PATH))
     parser.add_argument("--output-path", default=str(DEFAULT_SYNTHETIC_PATH))
     parser.add_argument("--resume", action="store_true")
@@ -711,6 +988,15 @@ def main() -> None:
             include_rule_negatives=True,
             include_groq_negatives=False,
             resume=args.resume,
+        )
+        print(json.dumps({"stage": args.stage, "rows": len(records)}, ensure_ascii=False))
+        return
+
+    if args.stage == "targeted-augment":
+        records = augment_dataset_targeted(
+            output_path=output_path,
+            resume=args.resume,
+            limit=args.limit or 120,
         )
         print(json.dumps({"stage": args.stage, "rows": len(records)}, ensure_ascii=False))
         return

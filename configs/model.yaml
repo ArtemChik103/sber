@@ -18,6 +18,8 @@ fallback_lr:
 training:
   variant_weights:
     groq_negative: 1.6
+    groq_drift_negative: 1.8
+    groq_supported_positive: 1.1
     fever_refutes: 1.35
     popqa_negative: 1.15
     rule_negative: 0.9

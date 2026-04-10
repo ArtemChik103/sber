@@ -15,10 +15,11 @@ def test_build_variant_stratify_labels_falls_back_for_rare_groups() -> None:
 
 
 def test_compute_variant_weights_normalizes_mean_to_one() -> None:
-    meta = pd.DataFrame({"variant_type": ["groq_negative", "positive", "positive"]})
+    meta = pd.DataFrame({"variant_type": ["groq_drift_negative", "positive", "groq_supported_positive"]})
 
     weights = compute_variant_weights(meta)
 
     assert weights.shape == (3,)
     assert np.isclose(weights.mean(), 1.0)
     assert weights[0] > weights[1]
+    assert weights[2] > 0.0
