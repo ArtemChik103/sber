@@ -6,6 +6,7 @@
 - лучший подтвержденный результат на полном public bench: `PR-AUC = 0.5617`
 - для private bench уже сгенерирован и запушен [knowledge_bench_private_scores.csv](knowledge_bench_private_scores.csv)
 - есть one-click launcher с простым Gradio UI и публичной ссылкой по умолчанию
+- текущий публичный Gradio demo: https://41940d945d869f4f32.gradio.live
 
 API-only детектор фактологических галлюцинаций с baseline-совместимым интерфейсом `GuardianOfTruth.score(prompt, answer)`. Проект использует Groq как внешний verifier, компактные API/text features и локальный lightweight classifier поверх них.
 
