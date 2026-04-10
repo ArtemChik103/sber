@@ -16,7 +16,7 @@ from groq import AsyncGroq
 from pydantic import BaseModel, Field
 
 from guardian_of_truth.cache import SQLiteCache
-from guardian_of_truth.utils import CONFIG_DIR, DATA_DIR, load_yaml, run_coro_sync, sha256_hexdigest
+from guardian_of_truth.utils import CONFIG_DIR, DATA_DIR, load_local_env, load_yaml, run_coro_sync, sha256_hexdigest
 
 
 class AuditPayload(BaseModel):
@@ -214,6 +214,7 @@ class GroqVerifier:
         cache: SQLiteCache | None = None,
         allow_runtime_wait: bool = False,
     ) -> None:
+        load_local_env()
         self.settings = settings or ApiSettings.from_yaml()
         self.api_key = api_key or os.getenv("GROQ_API_KEY")
         self.cache = cache or SQLiteCache(DATA_DIR / "cache" / "groq_cache.sqlite")

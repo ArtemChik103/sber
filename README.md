@@ -9,6 +9,11 @@
 
 API-only детектор фактологических галлюцинаций с baseline-совместимым интерфейсом `GuardianOfTruth.score(prompt, answer)`. Проект использует Groq как внешний verifier, компактные API/text features и локальный lightweight classifier поверх них.
 
+Важно по секретам:
+
+- launcher и runtime теперь автоматически читают `GROQ_API_KEY` из локальных файлов `.env.local` и `.env`
+- реальный рабочий ключ в git не хранится и в репозиторий не пушится
+
 ## Что Уже Готово
 
 На текущий момент в проекте реализовано:
@@ -184,11 +189,13 @@ python -m pip install -r requirements.txt
 python -m pip install -e .
 ```
 
-Если нужен реальный API path, перед запуском задай:
+Дальше создай локальный `.env` или `.env.local` в корне репозитория:
 
 ```powershell
-$env:GROQ_API_KEY="your_key_here"
+Set-Content .env "GROQ_API_KEY=your_key_here"
 ```
+
+После этого `run_project.py`, `run_project.bat`, runtime scoring и другие entrypoints подхватят ключ автоматически.
 
 ## Варианты Запуска
 

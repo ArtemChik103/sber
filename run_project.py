@@ -13,6 +13,8 @@ REQUIREMENTS_PATH = ROOT_DIR / "requirements.txt"
 if str(SRC_DIR) not in sys.path:
     sys.path.insert(0, str(SRC_DIR))
 
+from guardian_of_truth.utils import load_local_env
+
 
 def ensure_runtime_dependencies() -> None:
     try:
@@ -32,6 +34,7 @@ def main() -> None:
     parser.set_defaults(share=True)
     args = parser.parse_args()
 
+    load_local_env()
     ensure_runtime_dependencies()
 
     from guardian_of_truth.gradio_app import launch_demo

@@ -3,6 +3,7 @@ from __future__ import annotations
 import asyncio
 import hashlib
 import json
+import os
 import threading
 from pathlib import Path
 from typing import Any, Iterable
@@ -22,6 +23,31 @@ def load_yaml(path: str | Path) -> dict[str, Any]:
     if not isinstance(data, dict):
         raise TypeError(f"Expected mapping in {path}, got {type(data).__name__}")
     return data
+
+
+def load_local_env(*paths: str | Path) -> dict[str, str]:
+    env_updates: dict[str, str] = {}
+    target_paths = [Path(path) for path in paths] if paths else [ROOT_DIR / ".env.local", ROOT_DIR / ".env"]
+
+    for path in target_paths:
+        if not path.exists():
+            continue
+        for raw_line in path.read_text(encoding="utf-8").splitlines():
+            line = raw_line.strip()
+            if not line or line.startswith("#"):
+                continue
+            if line.startswith("export "):
+                line = line[len("export ") :].strip()
+            if "=" not in line:
+                continue
+            key, value = line.split("=", 1)
+            key = key.strip()
+            value = value.strip().strip('"').strip("'")
+            if not key or key in os.environ:
+                continue
+            os.environ[key] = value
+            env_updates[key] = value
+    return env_updates
 
 
 def sha256_hexdigest(*parts: Any) -> str:
