@@ -68,7 +68,7 @@ Run smoke checks:
 
 ## Runtime Design
 
-`GuardianOfTruth.score(prompt, answer)` does one short Groq audit call in runtime mode, extracts `7` API features and `7` text features, then applies a local calibrated classifier. The text block mixes answer-shape signals with lightweight question-answer consistency checks such as prompt overlap, prompt entity coverage, and question-type mismatch. If the API path fails with timeout, `429`, invalid JSON, missing key, or local rate-limit pressure, the runtime falls back to a deterministic text-only classifier.
+`GuardianOfTruth.score(prompt, answer)` does one short Groq audit call in runtime mode, extracts `7` API features and `7` text features, then applies a local calibrated classifier. The text block mixes answer-shape signals with lightweight question-answer consistency checks such as prompt overlap, prompt entity coverage, prompt number coverage, and answer drift beyond the prompt. Low-quality `groq_negative` rows are filtered out of the training path automatically so hard negatives stay compact and single-fact focused. If the API path fails with timeout, `429`, invalid JSON, missing key, or local rate-limit pressure, the runtime falls back to a deterministic text-only classifier.
 
 `t_model_sec` measures the Groq API segment. `t_overhead_sec` measures local feature extraction, classifier inference, and fallback logic. Cached API hits report near-zero model time.
 

@@ -8,11 +8,12 @@ from tqdm import tqdm
 
 from guardian_of_truth.api_client import AuditPayload, GroqVerifier
 from guardian_of_truth.feature_extractor import FeatureExtractor
+from guardian_of_truth.generation import filter_low_quality_groq_negatives
 from guardian_of_truth.utils import read_jsonl, sha256_hexdigest
 
 
 def _selected_records(dataset_path: str | Path, limit: int | None = None) -> list[dict[str, object]]:
-    records = read_jsonl(dataset_path)
+    records = filter_low_quality_groq_negatives(read_jsonl(dataset_path))
     if limit is None or len(records) <= limit:
         return records
 
@@ -79,7 +80,8 @@ def build_feature_matrix(
             }
         )
 
-    X = np.stack(features).astype(np.float32) if features else np.empty((0, 14), dtype=np.float32)
+    feature_dim = len(FeatureExtractor.api_feature_names) + len(FeatureExtractor.text_feature_names)
+    X = np.stack(features).astype(np.float32) if features else np.empty((0, feature_dim), dtype=np.float32)
     y = np.array(labels, dtype=np.int32)
     meta = pd.DataFrame(rows)
     return X, y, meta

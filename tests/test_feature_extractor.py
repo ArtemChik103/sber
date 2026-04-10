@@ -30,3 +30,18 @@ def test_feature_extractor_marks_question_type_mismatch() -> None:
 
     mismatch_idx = FeatureExtractor.text_feature_names.index("question_type_mismatch")
     assert mismatch[mismatch_idx] > aligned[mismatch_idx]
+
+
+def test_feature_extractor_marks_answer_drift_from_prompt() -> None:
+    extractor = FeatureExtractor()
+    concise = extractor.extract_text_only(
+        "Кто написал роман «Преступление и наказание»?",
+        "Роман «Преступление и наказание» написал Фёдор Достоевский.",
+    )
+    confabulated = extractor.extract_text_only(
+        "Кто написал роман «Преступление и наказание»?",
+        "Роман «Преступление и наказание» написал Фёдор Достоевский, который родился в 1821 году и умер в Париже.",
+    )
+
+    drift_idx = FeatureExtractor.text_feature_names.index("answer_new_content_ratio")
+    assert confabulated[drift_idx] > concise[drift_idx]

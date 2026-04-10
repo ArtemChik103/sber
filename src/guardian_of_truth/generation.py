@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import argparse
+import difflib
 import math
 import json
 import os
@@ -24,6 +25,78 @@ from guardian_of_truth.utils import DATA_DIR, read_jsonl, run_coro_sync, sha256_
 
 DEFAULT_SEED_PATH = DATA_DIR / "raw" / "seed_qa.jsonl"
 DEFAULT_SYNTHETIC_PATH = DATA_DIR / "raw" / "synthetic_factual_data.jsonl"
+WORD_RE = re.compile(r"\b[\w\-]+\b", flags=re.UNICODE)
+NUMBER_RE = re.compile(r"\b\d+(?:[.,]\d+)?\b")
+SYMBOL_RE = re.compile(r"\b[A-Z][A-Za-z0-9]{0,4}\b")
+NORMALIZE_SUFFIXES = (
+    "иями",
+    "ями",
+    "ами",
+    "его",
+    "ого",
+    "ему",
+    "ому",
+    "ыми",
+    "ими",
+    "ий",
+    "ый",
+    "ой",
+    "ая",
+    "ое",
+    "ее",
+    "ые",
+    "ие",
+    "ых",
+    "их",
+    "ам",
+    "ям",
+    "ах",
+    "ях",
+    "ом",
+    "ем",
+    "ию",
+    "ия",
+    "ии",
+    "ов",
+    "ев",
+    "а",
+    "я",
+    "ы",
+    "и",
+    "е",
+    "у",
+    "ю",
+)
+NOISE_TOKENS = {
+    "в",
+    "во",
+    "и",
+    "или",
+    "на",
+    "как",
+    "какая",
+    "какой",
+    "какие",
+    "каким",
+    "что",
+    "кто",
+    "где",
+    "когда",
+    "сколько",
+    "это",
+    "этот",
+    "эта",
+    "был",
+    "была",
+    "были",
+    "является",
+    "называется",
+    "используется",
+    "официальный",
+    "язык",
+    "валюта",
+    "столица",
+}
 
 HEDGED_FILLERS = [
     "примерно",
@@ -293,6 +366,82 @@ def _is_seed_record_usable(prompt: str, answer: str) -> bool:
     return True
 
 
+def _normalize_token(token: str) -> str:
+    normalized = token.lower()
+    if len(normalized) <= 4:
+        return normalized
+    for suffix in NORMALIZE_SUFFIXES:
+        if normalized.endswith(suffix) and len(normalized) - len(suffix) >= 4:
+            return normalized[: -len(suffix)]
+    return normalized
+
+
+def _salient_tokens(text: str) -> set[str]:
+    return {
+        _normalize_token(token)
+        for token in WORD_RE.findall(text)
+        if len(token) > 1 and token.lower() not in NOISE_TOKENS
+    }
+
+
+def _number_tokens(text: str) -> set[str]:
+    return {token.replace(",", ".") for token in NUMBER_RE.findall(text)}
+
+
+def _symbol_tokens(text: str) -> set[str]:
+    return set(SYMBOL_RE.findall(text))
+
+
+def is_high_quality_groq_negative(reference_answer: str, candidate_answer: str) -> bool:
+    ref_words = len(reference_answer.split())
+    cand_words = len(candidate_answer.split())
+    if cand_words < 2:
+        return False
+    if cand_words > max(14, int(ref_words * 1.45) + 2):
+        return False
+
+    reference_norm = " ".join(_normalize_token(token) for token in WORD_RE.findall(reference_answer))
+    candidate_norm = " ".join(_normalize_token(token) for token in WORD_RE.findall(candidate_answer))
+    if reference_norm == candidate_norm:
+        return False
+
+    ref_tokens = _salient_tokens(reference_answer)
+    cand_tokens = _salient_tokens(candidate_answer)
+    ref_numbers = _number_tokens(reference_answer)
+    cand_numbers = _number_tokens(candidate_answer)
+    ref_symbols = _symbol_tokens(reference_answer)
+    cand_symbols = _symbol_tokens(candidate_answer)
+
+    if ref_tokens == cand_tokens and ref_numbers == cand_numbers and ref_symbols == cand_symbols:
+        return False
+
+    similarity = difflib.SequenceMatcher(a=reference_norm, b=candidate_norm).ratio()
+    if similarity >= 0.96 and ref_numbers == cand_numbers and len(ref_tokens ^ cand_tokens) <= 1:
+        return False
+
+    if candidate_answer.count(",") > reference_answer.count(",") + 1 and cand_words > ref_words + 6:
+        return False
+
+    return True
+
+
+def filter_low_quality_groq_negatives(records: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    reference_answers = {
+        str(record["prompt"]): str(record["answer"])
+        for record in records
+        if int(record.get("label", 1)) == 0
+    }
+    filtered: list[dict[str, Any]] = []
+    for record in records:
+        if record.get("variant_type") != "groq_negative":
+            filtered.append(record)
+            continue
+        reference_answer = reference_answers.get(str(record["prompt"]))
+        if not reference_answer or is_high_quality_groq_negative(reference_answer, str(record["answer"])):
+            filtered.append(record)
+    return filtered
+
+
 def mutate_answer_rule_based(answer: str, answer_type: str | None = None) -> str:
     text = answer.strip()
 
@@ -476,7 +625,7 @@ def build_dataset(
     records: list[dict[str, Any]] = []
 
     if resume and Path(output_path).exists():
-        records = read_jsonl(output_path)
+        records = filter_low_quality_groq_negatives(read_jsonl(output_path))
         existing_keys = {
             sha256_hexdigest(row["prompt"], row["answer"], row["variant_type"])
             for row in records
@@ -510,6 +659,8 @@ def build_dataset(
             mutated = generator.mutate(seed["prompt"], seed["answer"])
             if not mutated or mutated == seed["answer"]:
                 continue
+            if not is_high_quality_groq_negative(seed["answer"], mutated):
+                continue
             negative = {
                 "prompt": seed["prompt"],
                 "answer": mutated,
@@ -523,8 +674,9 @@ def build_dataset(
                 existing_keys.add(neg_key)
                 produced += 1
 
-    write_jsonl(output_path, records)
-    return records
+    filtered_records = filter_low_quality_groq_negatives(records)
+    write_jsonl(output_path, filtered_records)
+    return filtered_records
 
 
 def main() -> None:

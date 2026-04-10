@@ -332,7 +332,6 @@
 {"prompt": "Какой химический символ у элемента кислород?", "answer": "Химический символ ориентировочно элемента кислород — O.", "label": 1, "source": "wikidata:element_symbol", "variant_type": "rule_negative"}
 {"prompt": "В каком году был основан Санкт-Петербург?", "answer": "Санкт-Петербург был основан в 1705 году.", "label": 1, "source": "manual_seed", "variant_type": "groq_negative"}
 {"prompt": "Как называется столица Франции?", "answer": "Столица Франции — Руан.", "label": 1, "source": "manual_seed", "variant_type": "groq_negative"}
-{"prompt": "Кто написал роман «Преступление и наказание»?", "answer": "Роман «Преступление и наказание» написал Фёдор Достоевский, который был известным русским писателем и философом, родившимся в 1821 году в Санкт-Петербурге, но умершим в 1887 году в Париже.", "label": 1, "source": "manual_seed", "variant_type": "groq_negative"}
 {"prompt": "Сколько континентов обычно выделяют на Земле?", "answer": "Обычно на Земле выделяют восемь континентов.", "label": 1, "source": "manual_seed", "variant_type": "groq_negative"}
 {"prompt": "В каком году Юрий Гагарин совершил первый полёт человека в космос?", "answer": "Юрий Гагарин совершил первый полёт человека в космос в 1962 году.", "label": 1, "source": "manual_seed", "variant_type": "groq_negative"}
 {"prompt": "Какой химический символ у золота?", "answer": "Химический символ золота — Ag.", "label": 1, "source": "manual_seed", "variant_type": "groq_negative"}
@@ -343,15 +342,12 @@
 {"prompt": "Как называется столица Emirate of  Al Qawasim?", "answer": "Столица Emirate of  Al Qawasim — Дубай.", "label": 1, "source": "wikidata:country_capital", "variant_type": "groq_negative"}
 {"prompt": "Как называется столица Австралия?", "answer": "Столица Австралии — Сидней.", "label": 1, "source": "wikidata:country_capital", "variant_type": "groq_negative"}
 {"prompt": "Как называется столица Австрия?", "answer": "Столица Австрии — Зальцбург.", "label": 1, "source": "wikidata:country_capital", "variant_type": "groq_negative"}
-{"prompt": "Как называется столица Албания?", "answer": "Столица Албании — Тирана.", "label": 1, "source": "wikidata:country_capital", "variant_type": "groq_negative"}
 {"prompt": "Как называется столица Армения?", "answer": "Столица Армении — Гюмри.", "label": 1, "source": "wikidata:country_capital", "variant_type": "groq_negative"}
 {"prompt": "Как называется столица Аруба?", "answer": "Столица Арубы — Парамарибо.", "label": 1, "source": "wikidata:country_capital", "variant_type": "groq_negative"}
 {"prompt": "Как называется столица Афганистан?", "answer": "Столица Афганистан — Кандагар.", "label": 1, "source": "wikidata:country_capital", "variant_type": "groq_negative"}
-{"prompt": "Как называется столица Бахрейн?", "answer": "Столица Бахрейна — Манама.", "label": 1, "source": "wikidata:country_capital", "variant_type": "groq_negative"}
 {"prompt": "Как называется столица Беларусь?", "answer": "Столица Беларусь — Могилев.", "label": 1, "source": "wikidata:country_capital", "variant_type": "groq_negative"}
 {"prompt": "Как называется столица Болгария?", "answer": "Столица Болгарии — Пловдив.", "label": 1, "source": "wikidata:country_capital", "variant_type": "groq_negative"}
 {"prompt": "Как называется столица Боливия?", "answer": "Столица Боливии — Сукре.", "label": 1, "source": "wikidata:country_capital", "variant_type": "groq_negative"}
-{"prompt": "Как называется столица Босния и Герцеговина?", "answer": "Столица Боснии и Герцеговины — Сараево.", "label": 1, "source": "wikidata:country_capital", "variant_type": "groq_negative"}
 {"prompt": "Какая валюта используется в Австралия?", "answer": "В Австралии используется валюта австралийский фунт.", "label": 1, "source": "wikidata:country_currency", "variant_type": "groq_negative"}
 {"prompt": "Какая валюта используется в Австрия?", "answer": "В Австрии используется валюта доллар.", "label": 1, "source": "wikidata:country_currency", "variant_type": "groq_negative"}
 {"prompt": "Какая валюта используется в Албания?", "answer": "В Албания используется валюта албанский лар.", "label": 1, "source": "wikidata:country_currency", "variant_type": "groq_negative"}
@@ -381,7 +377,6 @@
 {"prompt": "Какой химический символ у элемента unoctquadium?", "answer": "Химический символ элемента unoctquadium — Uoqt.", "label": 1, "source": "wikidata:element_symbol", "variant_type": "groq_negative"}
 {"prompt": "Какой химический символ у элемента unseptnilium?", "answer": "Химический символ элемента unseptnilium — Uen.", "label": 1, "source": "wikidata:element_symbol", "variant_type": "groq_negative"}
 {"prompt": "Какой химический символ у элемента unseptunium?", "answer": "Химический символ элемента unseptunium — Uus.", "label": 1, "source": "wikidata:element_symbol", "variant_type": "groq_negative"}
-{"prompt": "Какой химический символ у элемента азот?", "answer": "Химический символ элемента азот — O.", "label": 1, "source": "wikidata:element_symbol", "variant_type": "groq_negative"}
 {"prompt": "Какой химический символ у элемента актиний?", "answer": "Химический символ элемента актиний — An.", "label": 1, "source": "wikidata:element_symbol", "variant_type": "groq_negative"}
 {"prompt": "Какой химический символ у элемента алюминий?", "answer": "Химический символ элемента алюминий — Ag.", "label": 1, "source": "wikidata:element_symbol", "variant_type": "groq_negative"}
 {"prompt": "Какой химический символ у элемента америций?", "answer": "Химический символ элемента америций — Ac.", "label": 1, "source": "wikidata:element_symbol", "variant_type": "groq_negative"}
@@ -390,12 +385,8 @@
 {"prompt": "Какой химический символ у элемента барий?", "answer": "Химический символ элемента барий — Bc.", "label": 1, "source": "wikidata:element_symbol", "variant_type": "groq_negative"}
 {"prompt": "Какой химический символ у элемента бериллий?", "answer": "Химический символ элемента бериллий — Bc.", "label": 1, "source": "wikidata:element_symbol", "variant_type": "groq_negative"}
 {"prompt": "Какой химический символ у элемента берклий?", "answer": "Химический символ элемента берклий — Bq.", "label": 1, "source": "wikidata:element_symbol", "variant_type": "groq_negative"}
-{"prompt": "Какой химический символ у элемента бор?", "answer": "Химический символ элемента бор — Be.", "label": 1, "source": "wikidata:element_symbol", "variant_type": "groq_negative"}
 {"prompt": "Какой химический символ у элемента борий?", "answer": "Химический символ элемента борий — Bg.", "label": 1, "source": "wikidata:element_symbol", "variant_type": "groq_negative"}
-{"prompt": "Какой химический символ у элемента ванадий?", "answer": "Химический символ элемента ванадий — W.", "label": 1, "source": "wikidata:element_symbol", "variant_type": "groq_negative"}
 {"prompt": "Какой химический символ у элемента висмут?", "answer": "Химический символ элемента висмут — Bg.", "label": 1, "source": "wikidata:element_symbol", "variant_type": "groq_negative"}
-{"prompt": "Какой химический символ у элемента водород?", "answer": "Химический символ элемента водород — I.", "label": 1, "source": "wikidata:element_symbol", "variant_type": "groq_negative"}
-{"prompt": "Какой химический символ у элемента вольфрам?", "answer": "Химический символ элемента вольфрам — T.", "label": 1, "source": "wikidata:element_symbol", "variant_type": "groq_negative"}
 {"prompt": "Какой химический символ у элемента гадолиний?", "answer": "Химический символ элемента гадолиний — Ho.", "label": 1, "source": "wikidata:element_symbol", "variant_type": "groq_negative"}
 {"prompt": "Какой химический символ у элемента галлий?", "answer": "Химический символ элемента галлий — Gb.", "label": 1, "source": "wikidata:element_symbol", "variant_type": "groq_negative"}
 {"prompt": "Как называется столица Ботсвана?", "answer": "Столица Ботсваны — Касане.", "label": 1, "source": "wikidata:country_capital", "variant_type": "groq_negative"}
@@ -423,15 +414,11 @@
 {"prompt": "Какой химический символ у элемента железо?", "answer": "Химический символ элемента железо — Fh.", "label": 1, "source": "wikidata:element_symbol", "variant_type": "groq_negative"}
 {"prompt": "Какой химический символ у элемента золото?", "answer": "Химический символ элемента золото — Ag.", "label": 1, "source": "wikidata:element_symbol", "variant_type": "groq_negative"}
 {"prompt": "Какой химический символ у элемента индий?", "answer": "Химический символ элемента индий — Ia.", "label": 1, "source": "wikidata:element_symbol", "variant_type": "groq_negative"}
-{"prompt": "Какой химический символ у элемента иод?", "answer": "Химический символ элемента иод — J.", "label": 1, "source": "wikidata:element_symbol", "variant_type": "groq_negative"}
 {"prompt": "Какой химический символ у элемента иридий?", "answer": "Химический символ элемента иридий — Ird.", "label": 1, "source": "wikidata:element_symbol", "variant_type": "groq_negative"}
-{"prompt": "Какой химический символ у элемента иттербий?", "answer": "Химический символ элемента иттербий — Y.", "label": 1, "source": "wikidata:element_symbol", "variant_type": "groq_negative"}
-{"prompt": "Какой химический символ у элемента иттрий?", "answer": "Химический символ элемента иттрий — Yb.", "label": 1, "source": "wikidata:element_symbol", "variant_type": "groq_negative"}
 {"prompt": "Какой химический символ у элемента кадмий?", "answer": "Химический символ элемента кадмий — Cm.", "label": 1, "source": "wikidata:element_symbol", "variant_type": "groq_negative"}
 {"prompt": "Какой химический символ у элемента калий?", "answer": "Химический символ элемента калий — Li.", "label": 1, "source": "wikidata:element_symbol", "variant_type": "groq_negative"}
 {"prompt": "Какой химический символ у элемента калифорний?", "answer": "Химический символ элемента калифорний — Cn.", "label": 1, "source": "wikidata:element_symbol", "variant_type": "groq_negative"}
 {"prompt": "Какой химический символ у элемента кальций?", "answer": "Химический символ элемента кальций — Cb.", "label": 1, "source": "wikidata:element_symbol", "variant_type": "groq_negative"}
-{"prompt": "Какой химический символ у элемента кислород?", "answer": "Химический символ элемента кислород — P.", "label": 1, "source": "wikidata:element_symbol", "variant_type": "groq_negative"}
 {"prompt": "What is A. Lawrence Kocher's occupation?", "answer": "architect", "label": 0, "source": "popqa:occupation", "variant_type": "popqa_positive"}
 {"prompt": "What is A. Lawrence Kocher's occupation?", "answer": "diplomat", "label": 1, "source": "popqa:occupation", "variant_type": "popqa_negative"}
 {"prompt": "What is Abdirizak Haji Hussein's occupation?", "answer": "diplomat", "label": 0, "source": "popqa:occupation", "variant_type": "popqa_positive"}
