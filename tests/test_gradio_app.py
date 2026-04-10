@@ -1,5 +1,6 @@
 from guardian_of_truth.gradio_app import build_demo, format_result, run_score
 from guardian_of_truth.guardian import ScoringResult
+from run_project import ROOT_DIR, SRC_DIR
 
 
 class StubGuardian:
@@ -49,3 +50,8 @@ def test_build_demo_smoke() -> None:
     demo = build_demo()
 
     assert demo is not None
+
+
+def test_run_project_paths_are_repo_relative() -> None:
+    assert ROOT_DIR.name == "sber"
+    assert SRC_DIR == ROOT_DIR / "src"

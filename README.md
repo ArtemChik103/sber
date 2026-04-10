@@ -67,19 +67,29 @@ Run smoke checks:
 ./scripts/smoke.sh
 ```
 
-Launch the simple Gradio frontend:
+Launch the simple Gradio frontend. Public Gradio sharing is enabled by default, so a public link is printed on startup:
+
+```bash
+python run_project.py
+run_project.bat
+```
+
+Optional flags:
 
 ```bash
 ./scripts/run_ui.sh
+python run_project.py --host 127.0.0.1 --port 7860 --no-share
 python app.py --host 127.0.0.1 --port 7860
-python -m guardian_of_truth.gradio_app --host 127.0.0.1 --port 7860
+python -m guardian_of_truth.gradio_app --host 127.0.0.1 --port 7860 --share
 ```
 
 On Windows PowerShell:
 
 ```powershell
+.\run_project.bat
+python .\run_project.py
 .\scripts\run_ui.ps1
-.\scripts\run_ui.ps1 --host 127.0.0.1 --port 7860
+.\scripts\run_ui.ps1 --host 127.0.0.1 --port 7860 --no-share
 ```
 
 ## Runtime Design

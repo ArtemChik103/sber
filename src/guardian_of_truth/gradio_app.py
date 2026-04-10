@@ -96,19 +96,38 @@ def build_demo(*, model_dir: str = "model") -> gr.Blocks:
     return demo
 
 
+def launch_demo(
+    *,
+    host: str = "127.0.0.1",
+    port: int = 7860,
+    model_dir: str = "model",
+    share: bool = True,
+    inbrowser: bool = False,
+) -> None:
+    demo = build_demo(model_dir=model_dir)
+    demo.launch(
+        server_name=host,
+        server_port=port,
+        share=share,
+        inbrowser=inbrowser,
+    )
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description="Launch the Guardian of Truth Gradio frontend.")
     parser.add_argument("--host", default="127.0.0.1")
     parser.add_argument("--port", type=int, default=7860)
     parser.add_argument("--model-dir", default="model")
-    parser.add_argument("--share", action="store_true")
+    parser.add_argument("--share", dest="share", action="store_true")
+    parser.add_argument("--no-share", dest="share", action="store_false")
     parser.add_argument("--inbrowser", action="store_true")
+    parser.set_defaults(share=True)
     args = parser.parse_args()
 
-    demo = build_demo(model_dir=args.model_dir)
-    demo.launch(
-        server_name=args.host,
-        server_port=args.port,
+    launch_demo(
+        host=args.host,
+        port=args.port,
+        model_dir=args.model_dir,
         share=args.share,
         inbrowser=args.inbrowser,
     )
