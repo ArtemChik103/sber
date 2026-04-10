@@ -67,6 +67,21 @@ Run smoke checks:
 ./scripts/smoke.sh
 ```
 
+Launch the simple Gradio frontend:
+
+```bash
+./scripts/run_ui.sh
+python app.py --host 127.0.0.1 --port 7860
+python -m guardian_of_truth.gradio_app --host 127.0.0.1 --port 7860
+```
+
+On Windows PowerShell:
+
+```powershell
+.\scripts\run_ui.ps1
+.\scripts\run_ui.ps1 --host 127.0.0.1 --port 7860
+```
+
 ## Runtime Design
 
 `GuardianOfTruth.score(prompt, answer)` does one short Groq audit call in runtime mode, extracts typed verifier signals plus lightweight local prompt-answer features, then applies a local calibrated classifier. The verifier prompt is specialized for `who`, `when`, `where`, `count`, and generic factual questions and returns compact JSON with relevance, contradiction, question-type compliance, short-answer adequacy, and multi-fact drift signals. The local text block adds prompt overlap, prompt entity coverage, prompt number coverage, and answer drift beyond the prompt. Low-quality `groq_negative` rows are filtered out of the training path automatically so hard negatives stay compact and single-fact focused. If the API path fails with timeout, `429`, invalid JSON, missing key, or local rate-limit pressure, the runtime falls back to a deterministic text-only classifier.
