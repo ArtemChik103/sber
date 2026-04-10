@@ -14,11 +14,13 @@ def test_invalid_json_normalizes_to_neutral_failure() -> None:
     assert not audit.ok
     assert audit.status == "invalid_json"
     assert audit.r == 0.5
+    assert audit.q == 0.5
+    assert audit.s == 0.5
 
 
 def test_partial_json_is_filled_with_defaults() -> None:
     audit = AuditPayload.from_response_text(
-        '{"h": 0.9, "x": 1}',
+        '{"h": 0.9, "x": 1, "m": 0.6}',
         mode="runtime",
         model_name="llama-3.1-8b-instant",
     )
@@ -28,6 +30,17 @@ def test_partial_json_is_filled_with_defaults() -> None:
     assert audit.h == 0.9
     assert audit.r == 0.5
     assert audit.x == 1.0
+    assert audit.q == 0.5
+    assert audit.s == 0.5
+    assert audit.m == 0.6
+
+
+def test_build_messages_uses_typed_question_profile(tmp_path: Path) -> None:
+    verifier = GroqVerifier(api_key="test-key", settings=ApiSettings.from_yaml(), cache=SQLiteCache(tmp_path / "groq_cache.sqlite"))
+    messages = verifier._build_messages("В каком году был основан Санкт-Петербург?", "Санкт-Петербург был основан в 1703 году.")
+
+    assert "type:when" in messages[1]["content"]
+    assert "{h,n,e,r,u,c,x,q,s,m}" in messages[0]["content"]
 
 
 def test_cache_prevents_duplicate_network_call(tmp_path: Path) -> None:

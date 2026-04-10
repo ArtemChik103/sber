@@ -5,6 +5,7 @@ import os
 import threading
 import time
 import inspect
+import re
 from collections import deque
 from dataclasses import dataclass
 from typing import Any, Literal
@@ -26,6 +27,9 @@ class AuditPayload(BaseModel):
     u: float = Field(default=0.0)
     c: float = Field(default=0.0)
     x: float = Field(default=0.0)
+    q: float = Field(default=0.5)
+    s: float = Field(default=0.5)
+    m: float = Field(default=0.0)
     ok: bool = Field(default=True)
     status: str = Field(default="ok")
     cached: bool = Field(default=False)
@@ -51,6 +55,9 @@ class AuditPayload(BaseModel):
             u=0.0,
             c=0.0,
             x=0.0,
+            q=0.5,
+            s=0.5,
+            m=0.0,
             ok=ok,
             status=status,
             cached=False,
@@ -92,7 +99,18 @@ class AuditPayload(BaseModel):
                     raw_response=raw_text,
                 )
 
-        defaults = {"h": 0.0, "n": 0.0, "e": 0.0, "r": 0.5, "u": 0.0, "c": 0.0, "x": 0.0}
+        defaults = {
+            "h": 0.0,
+            "n": 0.0,
+            "e": 0.0,
+            "r": 0.5,
+            "u": 0.0,
+            "c": 0.0,
+            "x": 0.0,
+            "q": 0.5,
+            "s": 0.5,
+            "m": 0.0,
+        }
         normalized = {key: cls._normalize_value(key, payload.get(key, defaults[key])) for key in defaults}
         status = "ok" if set(defaults).issubset(payload.keys()) else "partial_json"
         return cls(
@@ -134,8 +152,8 @@ class ApiSettings:
     max_retries: int
     target_rpm: int
     target_tpm: int
-    prompt_version: str = "groq-verifier-v1"
-    dataset_prompt_version: str = "groq-dataset-v1"
+    prompt_version: str = "groq-verifier-v3-typed"
+    dataset_prompt_version: str = "groq-dataset-v3-typed"
 
     @classmethod
     def from_yaml(cls, path: str | None = None) -> "ApiSettings":
@@ -183,6 +201,11 @@ class SlidingWindowRateLimiter:
 
 
 class GroqVerifier:
+    WHO_HINTS = ("кто", "who")
+    WHEN_HINTS = ("когда", "в каком году", "what year", "when")
+    WHERE_HINTS = ("где", "в какой стране", "в каком городе", "where")
+    COUNT_HINTS = ("сколько", "how many", "how much")
+
     def __init__(
         self,
         api_key: str | None = None,
@@ -291,13 +314,44 @@ class GroqVerifier:
                 await close_result
 
     def _build_messages(self, prompt: str, answer: str) -> list[dict[str, str]]:
+        profile = self._question_profile(prompt)
         system = (
-            "Return only JSON: {h,n,e,r,u,c,x}. "
-            "h,n,e,u,r are 0..1 floats; c is 0..3; x is 0 or 1."
+            "Return only a JSON object with keys {h,n,e,r,u,c,x,q,s,m}. "
+            "h,n,e,u,m are risk floats 0..1 where higher means worse. "
+            "r is relevance score 0..1 where higher means better. "
+            "q is question-type compliance score 0..1 where higher means better. "
+            "s is short-answer adequacy score 0..1 where higher means the answer stays appropriately concise for the question. "
+            "c is factual claim count 0..3. x is contradiction flag 0 or 1. "
+            f"{self._profile_instruction(profile)}"
         )
         user = (
+            f"type:{profile}\n"
             f"Q:{prompt}\n"
             f"A:{answer}\n"
-            "Score factual risk only."
+            "Judge factual fit to the question and return JSON only."
         )
         return [{"role": "system", "content": system}, {"role": "user", "content": user}]
+
+    def _question_profile(self, prompt: str) -> str:
+        prompt_lower = prompt.lower()
+        if any(hint in prompt_lower for hint in self.WHO_HINTS):
+            return "who"
+        if any(hint in prompt_lower for hint in self.WHEN_HINTS):
+            return "when"
+        if any(hint in prompt_lower for hint in self.WHERE_HINTS):
+            return "where"
+        if any(hint in prompt_lower for hint in self.COUNT_HINTS) or re.search(r"\b\d", prompt_lower):
+            return "count"
+        return "generic"
+
+    @staticmethod
+    def _profile_instruction(profile: str) -> str:
+        if profile == "who":
+            return "The question expects a person or role answer. Penalize biographies, extra dates, and explanatory drift."
+        if profile == "when":
+            return "The question expects a date or year answer. Penalize missing, vague, or wrong numbers and extra narrative."
+        if profile == "where":
+            return "The question expects a location answer. Penalize wrong place entities and off-topic explanation."
+        if profile == "count":
+            return "The question expects a numeric answer. Penalize missing or wrong numbers and answers padded with extra facts."
+        return "Penalize unsupported extra facts, poor relevance, and answer drift beyond what the question asked."

@@ -47,12 +47,14 @@ def main() -> None:
     meta_val = meta.iloc[val_idx].reset_index(drop=True)
     train_weights = compute_variant_weights(meta_train)
     val_weights = compute_variant_weights(meta_val)
+    api_feature_count = len(FeatureExtractor.api_feature_names)
+    full_feature_count = api_feature_count + len(FeatureExtractor.text_feature_names)
 
     variants = {
         "V1": ([0], "none"),
-        "V2": (list(range(7)), "none"),
-        "V3": (list(range(14)), "none"),
-        "V4": (list(range(14)), "isotonic"),
+        "V2": (list(range(api_feature_count)), "none"),
+        "V3": (list(range(full_feature_count)), "none"),
+        "V4": (list(range(full_feature_count)), "isotonic"),
     }
 
     best_name = ""

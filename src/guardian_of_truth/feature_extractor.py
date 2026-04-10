@@ -8,7 +8,7 @@ from guardian_of_truth.api_client import AuditPayload
 
 
 class FeatureExtractor:
-    api_feature_names = ["h", "n", "e", "inv_r", "u", "c", "x"]
+    api_feature_names = ["h", "n", "e", "inv_r", "u", "c", "x", "inv_q", "inv_s", "m"]
     text_feature_names = [
         "answer_len_words",
         "prompt_overlap_ratio",
@@ -143,6 +143,9 @@ class FeatureExtractor:
                 audit.u,
                 audit.c,
                 audit.x,
+                1.0 - audit.q,
+                1.0 - audit.s,
+                audit.m,
             ],
             dtype=np.float32,
         )

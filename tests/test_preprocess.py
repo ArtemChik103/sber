@@ -25,7 +25,7 @@ def test_limit_uses_stable_stratified_subset(tmp_path) -> None:
     X_text, y_text = build_text_only_matrix(dataset_path, extractor, limit=4)
     _, _, meta_repeat = build_feature_matrix(dataset_path, verifier=None, extractor=extractor, use_api=False, limit=4)
 
-    assert X.shape == (4, 14)
+    assert X.shape == (4, len(FeatureExtractor.api_feature_names) + len(FeatureExtractor.text_feature_names))
     assert X_text.shape == (4, 7)
     assert len(set(meta["variant_type"])) == 4
     assert meta["variant_type"].tolist() == meta_repeat["variant_type"].tolist()

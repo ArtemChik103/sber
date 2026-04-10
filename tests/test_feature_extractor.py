@@ -13,7 +13,8 @@ def test_feature_extractor_returns_fixed_shape() -> None:
         audit=audit,
     )
 
-    assert vector.shape == (14,)
+    expected_shape = len(FeatureExtractor.api_feature_names) + len(FeatureExtractor.text_feature_names)
+    assert vector.shape == (expected_shape,)
     assert vector.dtype == np.float32
 
 

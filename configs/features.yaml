@@ -6,6 +6,9 @@ api_features:
   - u
   - c
   - x
+  - inv_q
+  - inv_s
+  - m
 text_features:
   - answer_len_words
   - prompt_overlap_ratio

@@ -12,6 +12,11 @@ from guardian_of_truth.api_client import GroqVerifier
 from guardian_of_truth.guardian import GuardianOfTruth
 from guardian_of_truth.utils import sha256_hexdigest
 
+WHO_HINTS = ("кто", "who")
+WHEN_HINTS = ("когда", "в каком году", "what year", "when")
+WHERE_HINTS = ("где", "в какой стране", "в каком городе", "where")
+COUNT_HINTS = ("сколько", "how many", "how much")
+
 
 def _latency_summary(series: pd.Series) -> dict[str, float]:
     if series.empty:
@@ -24,10 +29,23 @@ def _latency_summary(series: pd.Series) -> dict[str, float]:
     }
 
 
-def _stable_dev_slice(df: pd.DataFrame, size: int) -> pd.DataFrame:
+def _question_profile(prompt: str) -> str:
+    prompt_lower = prompt.lower()
+    if any(hint in prompt_lower for hint in WHO_HINTS):
+        return "who"
+    if any(hint in prompt_lower for hint in WHEN_HINTS):
+        return "when"
+    if any(hint in prompt_lower for hint in WHERE_HINTS):
+        return "where"
+    if any(hint in prompt_lower for hint in COUNT_HINTS):
+        return "count"
+    return "generic"
+
+
+def _stable_dev_slice(df: pd.DataFrame, size: int, *, salt: str = "balanced") -> pd.DataFrame:
     keyed = df.copy()
     keyed["_slice_key"] = keyed.apply(
-        lambda row: sha256_hexdigest(row.get("prompt"), row.get("model_answer"), row.get("is_hallucination")),
+        lambda row: sha256_hexdigest(salt, row.get("prompt"), row.get("model_answer"), row.get("is_hallucination")),
         axis=1,
     )
     if "is_hallucination" not in keyed.columns:
@@ -40,14 +58,30 @@ def _stable_dev_slice(df: pd.DataFrame, size: int) -> pd.DataFrame:
     return pd.concat(sampled_parts, ignore_index=True).head(size).drop(columns="_slice_key").reset_index(drop=True)
 
 
+def _typed_dev_slice(df: pd.DataFrame, size: int) -> pd.DataFrame:
+    typed = df[df["prompt"].map(lambda prompt: _question_profile(str(prompt)) != "generic")].copy()
+    fallback = df[df["prompt"].map(lambda prompt: _question_profile(str(prompt)) == "generic")].copy()
+    if len(typed) >= size:
+        return _stable_dev_slice(typed, size, salt="typed")
+    if typed.empty:
+        return _stable_dev_slice(df, size, salt="typed")
+    fill_size = max(0, size - len(typed))
+    filler = _stable_dev_slice(fallback, fill_size, salt="typed-fill") if fill_size else fallback.head(0)
+    combined = pd.concat([typed, filler], ignore_index=True)
+    return _stable_dev_slice(combined, min(size, len(combined)), salt="typed")
+
+
 def _prepare_frame(
     df: pd.DataFrame,
     limit: int | None = None,
     *,
     dev_slice_size: int | None = None,
+    slice_name: str = "balanced",
 ) -> pd.DataFrame:
     if dev_slice_size is not None:
-        return _stable_dev_slice(df, dev_slice_size)
+        if slice_name == "typed":
+            return _typed_dev_slice(df, dev_slice_size)
+        return _stable_dev_slice(df, dev_slice_size, salt=slice_name)
     if limit is None or len(df) <= limit:
         return df.reset_index(drop=True)
     if "is_hallucination" not in df.columns:
@@ -65,11 +99,12 @@ def run_evaluation(
     output_path: str | Path,
     limit: int | None = None,
     dev_slice_size: int | None = None,
+    slice_name: str = "balanced",
     resume_from_checkpoint: bool = False,
     checkpoint_every: int = 25,
 ) -> pd.DataFrame:
     source = pd.read_csv(csv_path)
-    source = _prepare_frame(source, limit=limit, dev_slice_size=dev_slice_size)
+    source = _prepare_frame(source, limit=limit, dev_slice_size=dev_slice_size, slice_name=slice_name)
     output = Path(output_path)
     output.parent.mkdir(parents=True, exist_ok=True)
 
@@ -110,6 +145,7 @@ def main() -> None:
     parser.add_argument("--output-path", default="outputs/public_scored.csv")
     parser.add_argument("--limit", type=int, default=None)
     parser.add_argument("--dev-slice-size", type=int, default=None)
+    parser.add_argument("--slice-name", choices=["balanced", "typed"], default="balanced")
     parser.add_argument("--resume-from-checkpoint", action="store_true")
     parser.add_argument("--checkpoint-every", type=int, default=25)
     args = parser.parse_args()
@@ -119,6 +155,7 @@ def main() -> None:
         output_path=args.output_path,
         limit=args.limit,
         dev_slice_size=args.dev_slice_size,
+        slice_name=args.slice_name,
         resume_from_checkpoint=args.resume_from_checkpoint,
         checkpoint_every=args.checkpoint_every,
     )

@@ -26,13 +26,15 @@ class HeuristicFallbackClassifier:
         X = np.asarray(X, dtype=np.float32)
         if X.ndim == 1:
             X = X.reshape(1, -1)
-        # Word count, digit density, year count, prompt overlap, entity coverage, hedging ratio, type mismatch.
+        # Word count, prompt overlap, entity coverage, number coverage, new-content ratio, new-number ratio, type mismatch.
         score = (
-            0.15 * np.clip(X[:, 0] / 32.0, 0.0, 1.0)
-            + 0.28 * X[:, 5]
-            + 0.25 * np.clip(1.0 - X[:, 3], 0.0, 1.0)
-            + 0.17 * np.clip(1.0 - X[:, 4], 0.0, 1.0)
-            + 0.15 * X[:, 6]
+            0.12 * np.clip(X[:, 0] / 32.0, 0.0, 1.0)
+            + 0.24 * np.clip(1.0 - X[:, 1], 0.0, 1.0)
+            + 0.14 * np.clip(1.0 - X[:, 2], 0.0, 1.0)
+            + 0.12 * np.clip(1.0 - X[:, 3], 0.0, 1.0)
+            + 0.14 * X[:, 4]
+            + 0.08 * X[:, 5]
+            + 0.16 * X[:, 6]
         )
         proba = 1.0 / (1.0 + np.exp(-4.0 * (score - 0.35)))
         return np.clip(proba, 0.0, 1.0)
@@ -91,8 +93,9 @@ class GuardianOfTruth:
         except FileNotFoundError:
             # Neutral uncalibrated classifier placeholder if training artifacts are missing.
             dummy = HallucinationClassifier(feature_names=FeatureExtractor.api_feature_names + FeatureExtractor.text_feature_names)
-            dummy.scaler.fit(np.zeros((2, 14), dtype=np.float32))
-            dummy.model.fit(np.zeros((2, 14), dtype=np.float32), np.array([0, 1], dtype=np.int32))
+            feature_dim = len(FeatureExtractor.api_feature_names) + len(FeatureExtractor.text_feature_names)
+            dummy.scaler.fit(np.zeros((2, feature_dim), dtype=np.float32))
+            dummy.model.fit(np.zeros((2, feature_dim), dtype=np.float32), np.array([0, 1], dtype=np.int32))
             return dummy
 
     @staticmethod
