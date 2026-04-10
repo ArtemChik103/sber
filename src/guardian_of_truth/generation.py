@@ -425,6 +425,40 @@ def is_high_quality_groq_negative(reference_answer: str, candidate_answer: str) 
     return True
 
 
+def is_high_quality_targeted_negative(reference_answer: str, candidate_answer: str) -> bool:
+    ref_words = len(reference_answer.split())
+    cand_words = len(candidate_answer.split())
+    if cand_words < max(4, ref_words + 2):
+        return False
+    if cand_words > max(28, int(ref_words * 3.0) + 12):
+        return False
+
+    reference_norm = " ".join(_normalize_token(token) for token in WORD_RE.findall(reference_answer))
+    candidate_norm = " ".join(_normalize_token(token) for token in WORD_RE.findall(candidate_answer))
+    if reference_norm == candidate_norm:
+        return False
+
+    ref_tokens = _salient_tokens(reference_answer)
+    cand_tokens = _salient_tokens(candidate_answer)
+    ref_numbers = _number_tokens(reference_answer)
+    cand_numbers = _number_tokens(candidate_answer)
+    ref_symbols = _symbol_tokens(reference_answer)
+    cand_symbols = _symbol_tokens(candidate_answer)
+
+    if ref_tokens == cand_tokens and ref_numbers == cand_numbers and ref_symbols == cand_symbols:
+        return False
+    if not candidate_answer.count(",") and candidate_answer.count(".") <= reference_answer.count("."):
+        return False
+    if not candidate_answer.strip().endswith((".", "!", "?")):
+        return False
+    if len(cand_tokens - ref_tokens) < 1:
+        return False
+    similarity = difflib.SequenceMatcher(a=reference_norm, b=candidate_norm).ratio()
+    if similarity >= 0.985:
+        return False
+    return True
+
+
 def filter_low_quality_groq_negatives(records: list[dict[str, Any]]) -> list[dict[str, Any]]:
     reference_answers = {
         str(record["prompt"]): str(record["answer"])
@@ -439,6 +473,29 @@ def filter_low_quality_groq_negatives(records: list[dict[str, Any]]) -> list[dic
         reference_answer = reference_answers.get(str(record["prompt"]))
         if not reference_answer or is_high_quality_groq_negative(reference_answer, str(record["answer"])):
             filtered.append(record)
+    return filtered
+
+
+def filter_low_quality_targeted_augmentations(records: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    reference_answers = {
+        str(record["prompt"]): str(record["answer"])
+        for record in records
+        if int(record.get("label", 1)) == 0 and record.get("variant_type") != "groq_supported_positive"
+    }
+    filtered: list[dict[str, Any]] = []
+    for record in records:
+        variant = record.get("variant_type")
+        if variant == "groq_supported_positive":
+            reference_answer = reference_answers.get(str(record["prompt"]))
+            if not reference_answer or is_high_quality_supported_positive(reference_answer, str(record["answer"])):
+                filtered.append(record)
+            continue
+        if variant == "groq_drift_negative":
+            reference_answer = reference_answers.get(str(record["prompt"]))
+            if not reference_answer or is_high_quality_targeted_negative(reference_answer, str(record["answer"])):
+                filtered.append(record)
+            continue
+        filtered.append(record)
     return filtered
 
 
@@ -514,6 +571,8 @@ def is_high_quality_supported_positive(reference_answer: str, candidate_answer: 
     if not _symbol_tokens(reference_answer).issubset(_symbol_tokens(candidate_answer)):
         return False
     if candidate_answer.count(",") == 0 and "." not in candidate_answer:
+        return False
+    if not candidate_answer.strip().endswith((".", "!", "?")):
         return False
     return True
 
@@ -872,7 +931,7 @@ def build_dataset(
                 existing_keys.add(neg_key)
                 produced += 1
 
-    filtered_records = filter_low_quality_groq_negatives(records)
+    filtered_records = filter_low_quality_targeted_augmentations(filter_low_quality_groq_negatives(records))
     write_jsonl(output_path, filtered_records)
     return filtered_records
 
@@ -925,7 +984,7 @@ def augment_dataset_targeted(
             drift_negative = augmenter.expand_drift_negative(prompt, answer)
             if (
                 drift_negative
-                and is_high_quality_groq_negative(answer, drift_negative)
+                and is_high_quality_targeted_negative(answer, drift_negative)
                 and len(drift_negative.split()) > len(answer.split()) + 2
                 and (drift_negative.count(",") > 0 or drift_negative.count(".") > answer.count("."))
             ):

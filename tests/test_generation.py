@@ -1,4 +1,8 @@
-from guardian_of_truth.generation import _balanced_candidate_records, is_high_quality_supported_positive
+from guardian_of_truth.generation import (
+    _balanced_candidate_records,
+    is_high_quality_supported_positive,
+    is_high_quality_targeted_negative,
+)
 
 
 def test_is_high_quality_supported_positive_requires_longer_supported_answer() -> None:
@@ -25,3 +29,10 @@ def test_balanced_candidate_records_rotates_question_profiles() -> None:
     assert len(selected) == 5
     assert any(prompt.startswith("Кто") for prompt in prompts)
     assert any(prompt.startswith("В каком году") for prompt in prompts)
+
+
+def test_is_high_quality_targeted_negative_allows_longer_drift_answer() -> None:
+    reference = "Эйфелева башня находится в Париже."
+    drift = "Эйфелева башня находится в Лондоне, столице Великобритании, известной своей богатой историей и культурным наследием."
+
+    assert is_high_quality_targeted_negative(reference, drift)
