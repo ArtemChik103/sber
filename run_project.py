@@ -24,9 +24,12 @@ def ensure_runtime_dependencies() -> None:
 
 
 def main() -> None:
+    import os
+    default_host = os.environ.get("HOST", "0.0.0.0" if ("PORT" in os.environ or "RENDER" in os.environ) else "127.0.0.1")
+    default_port = int(os.environ.get("PORT", "7860"))
     parser = argparse.ArgumentParser(description="One-click launcher for the Guardian of Truth frontend.")
-    parser.add_argument("--host", default="127.0.0.1")
-    parser.add_argument("--port", type=int, default=7860)
+    parser.add_argument("--host", default=default_host)
+    parser.add_argument("--port", type=int, default=default_port)
     parser.add_argument("--model-dir", default="model")
     parser.add_argument("--share", dest="share", action="store_true")
     parser.add_argument("--no-share", dest="share", action="store_false")
