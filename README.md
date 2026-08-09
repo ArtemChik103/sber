@@ -1,5 +1,7 @@
 # Guardian of Truth
 
+**🚀 Live Application (Render):** [https://sber-guardian-of-truth.onrender.com](https://sber-guardian-of-truth.onrender.com)
+
 Текущий статус проекта на момент последнего обновления:
 
 - `pytest -q` проходит: `23 passed, 1 skipped`
