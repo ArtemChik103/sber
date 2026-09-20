@@ -16,6 +16,8 @@ def test_invalid_json_normalizes_to_neutral_failure() -> None:
     assert audit.r == 0.5
     assert audit.q == 0.5
     assert audit.s == 0.5
+    assert audit.sem == 0.5
+    assert audit.conf == 0.5
 
 
 def test_partial_json_is_filled_with_defaults() -> None:
@@ -33,6 +35,8 @@ def test_partial_json_is_filled_with_defaults() -> None:
     assert audit.q == 0.5
     assert audit.s == 0.5
     assert audit.m == 0.6
+    assert audit.sem == 0.5
+    assert audit.we == 0.0
 
 
 def test_build_messages_uses_typed_question_profile(tmp_path: Path) -> None:
@@ -40,7 +44,14 @@ def test_build_messages_uses_typed_question_profile(tmp_path: Path) -> None:
     messages = verifier._build_messages("В каком году был основан Санкт-Петербург?", "Санкт-Петербург был основан в 1703 году.")
 
     assert "type:when" in messages[1]["content"]
-    assert "{h,n,e,r,u,c,x,q,s,m}" in messages[0]["content"]
+    assert "h,n,e,r,u,c,x,q,s,m,sem,we,wn,ue,bt,conf" in messages[0]["content"]
+
+
+def test_settings_use_longer_dataset_timeouts() -> None:
+    settings = ApiSettings.from_yaml()
+
+    assert settings.total_timeout("dataset") > settings.total_timeout("runtime")
+    assert settings.read_timeout("dataset") > settings.read_timeout("runtime")
 
 
 def test_cache_prevents_duplicate_network_call(tmp_path: Path) -> None:
@@ -61,3 +72,21 @@ def test_cache_prevents_duplicate_network_call(tmp_path: Path) -> None:
     assert first.cached is False
     assert second.cached is True
     assert calls["count"] == 1
+
+
+def test_cached_audit_returns_none_for_miss(tmp_path: Path) -> None:
+    cache = SQLiteCache(tmp_path / "groq_cache.sqlite")
+    verifier = GroqVerifier(api_key="test-key", settings=ApiSettings.from_yaml(), cache=cache)
+
+    assert verifier.cached_audit("prompt", "answer") is None
+
+
+def test_prompt_v5_keeps_audit_payload_fields() -> None:
+    settings = ApiSettings.from_yaml()
+    settings.prompt_version = "groq-verifier-v5-exact-tail"
+    verifier = GroqVerifier(api_key=None, settings=settings)
+
+    messages = verifier._build_messages("When was Paris founded?", "Paris was founded in 250 BC.")
+
+    assert set(AuditPayload.model_fields) >= {"h", "n", "e", "r", "u", "c", "x", "q", "s", "m", "sem", "we", "wn", "ue", "bt", "conf"}
+    assert "h,n,e,r,u,c,x,q,s,m,sem,we,wn,ue,bt,conf" in messages[0]["content"]

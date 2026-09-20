@@ -16,6 +16,7 @@ fallback_lr:
   max_iter: 3000
   random_state: 42
 training:
+  min_audit_ok_ratio: 0.8
   variant_weights:
     groq_negative: 1.6
     groq_drift_negative: 1.8

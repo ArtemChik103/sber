@@ -20,7 +20,7 @@ from groq import AsyncGroq
 
 from guardian_of_truth.api_client import ApiSettings, SlidingWindowRateLimiter
 from guardian_of_truth.cache import SQLiteCache
-from guardian_of_truth.utils import DATA_DIR, read_jsonl, run_coro_sync, sha256_hexdigest, write_jsonl
+from guardian_of_truth.utils import DATA_DIR, load_local_env, read_jsonl, run_coro_sync, sha256_hexdigest, write_jsonl
 
 
 DEFAULT_SEED_PATH = DATA_DIR / "raw" / "seed_qa.jsonl"
@@ -636,6 +636,7 @@ def mutate_answer_groq(prompt: str, answer: str) -> str:
 
 class GroqNegativeGenerator:
     def __init__(self, api_key: str | None = None, settings: ApiSettings | None = None, cache: SQLiteCache | None = None) -> None:
+        load_local_env()
         self.settings = settings or ApiSettings.from_yaml()
         self.api_key = api_key or os.getenv("GROQ_API_KEY")
         self.cache = cache or SQLiteCache(DATA_DIR / "cache" / "groq_cache.sqlite")
@@ -729,6 +730,7 @@ class GroqNegativeGenerator:
 
 class GroqTargetedAugmenter:
     def __init__(self, api_key: str | None = None, settings: ApiSettings | None = None, cache: SQLiteCache | None = None) -> None:
+        load_local_env()
         self.settings = settings or ApiSettings.from_yaml()
         self.api_key = api_key or os.getenv("GROQ_API_KEY")
         self.cache = cache or SQLiteCache(DATA_DIR / "cache" / "groq_cache.sqlite")
@@ -752,6 +754,18 @@ class GroqTargetedAugmenter:
 
     def expand_drift_negative(self, prompt: str, answer: str) -> str | None:
         return self._generate(prompt, answer, mode="drift_negative")
+
+    def expand_hard_positive(self, prompt: str, answer: str) -> str | None:
+        return self._generate(prompt, answer, mode="hard_positive")
+
+    def expand_short_wrong(self, prompt: str, answer: str) -> str | None:
+        return self._generate(prompt, answer, mode="short_wrong")
+
+    def expand_long_wrong(self, prompt: str, answer: str) -> str | None:
+        return self._generate(prompt, answer, mode="long_wrong")
+
+    def expand_extra_fact_negative(self, prompt: str, answer: str) -> str | None:
+        return self._generate(prompt, answer, mode="extra_fact_negative")
 
     def _generate(self, prompt: str, answer: str, *, mode: str) -> str | None:
         if not self.api_key:
@@ -807,11 +821,18 @@ class GroqTargetedAugmenter:
                 await close_result
 
     def _build_messages(self, prompt: str, answer: str, *, profile: str, mode: str) -> list[dict[str, str]]:
-        if mode == "supported_positive":
+        if mode in {"supported_positive", "hard_positive"}:
+            if mode == "hard_positive":
+                style_instruction = (
+                    "Make the answer look like a natural model answer: one or two fluent sentences with a little context. "
+                    "It may be longer than the reference, but every added fact must be directly consistent with the reference. "
+                )
+            else:
+                style_instruction = "Add a short supporting clause or context so the answer becomes a bit longer and more entity-rich. "
             system = (
                 "Rewrite the answer into one or two sentences that remain fully factual and consistent with the reference answer. "
                 "Keep the same language. Preserve all core facts, dates, numbers, and entities exactly. "
-                "Add a short supporting clause or context so the answer becomes a bit longer and more entity-rich. "
+                f"{style_instruction}"
                 "Do not introduce any new uncertain fact, contradiction, or disclaimer. "
                 f"{self._profile_hint(profile, positive=True)}"
             )
@@ -819,6 +840,31 @@ class GroqTargetedAugmenter:
                 f"Question: {prompt}\n"
                 f"Reference answer: {answer}\n"
                 "Return only the rewritten factual answer."
+            )
+        elif mode == "short_wrong":
+            system = (
+                "Rewrite the answer as a concise answer that contains exactly one plausible factual mistake. "
+                "Keep roughly the same length and template as the reference. "
+                "Change only one key fact such as a person, place, year, number, title, or symbol. "
+                "Do not add explanations, extra facts, hedging, or meta commentary. "
+                f"{self._profile_hint(profile, positive=False)}"
+            )
+            user = (
+                f"Question: {prompt}\n"
+                f"Correct answer: {answer}\n"
+                "Return only the concise rewritten answer with exactly one wrong fact."
+            )
+        elif mode == "extra_fact_negative":
+            system = (
+                "Rewrite the answer so it preserves the reference answer but adds one unsupported false factual detail. "
+                "The original core answer must remain present, while the added detail must make the whole answer factually risky. "
+                "Keep the same language, use one or two sentences, and do not add hedging or meta commentary. "
+                f"{self._profile_hint(profile, positive=False)}"
+            )
+            user = (
+                f"Question: {prompt}\n"
+                f"Correct answer: {answer}\n"
+                "Return only the rewritten answer with the correct core fact plus one unsupported false extra fact."
             )
         else:
             system = (
@@ -1015,9 +1061,193 @@ def augment_dataset_targeted(
     return filtered_records
 
 
+def augment_dataset_hard(
+    output_path: str | Path = DEFAULT_SYNTHETIC_PATH,
+    *,
+    resume: bool = True,
+    limit_per_type: int = 200,
+) -> list[dict[str, Any]]:
+    output = Path(output_path)
+    records = read_jsonl(output) if resume and output.exists() else []
+    existing_keys = {
+        sha256_hexdigest(row["prompt"], row["answer"], row.get("variant_type"), row.get("label"), row.get("source"))
+        for row in records
+    }
+    augmenter = GroqTargetedAugmenter()
+    candidates = _balanced_candidate_records(records, limit=max(50, limit_per_type * 4))
+    counters = {
+        "groq_hard_positive": 0,
+        "groq_short_wrong": 0,
+        "groq_long_wrong": 0,
+        "groq_extra_fact_negative": 0,
+    }
+
+    generators = [
+        ("groq_hard_positive", 0, augmenter.expand_hard_positive, is_high_quality_supported_positive),
+        ("groq_short_wrong", 1, augmenter.expand_short_wrong, is_high_quality_groq_negative),
+        ("groq_long_wrong", 1, augmenter.expand_long_wrong, is_high_quality_targeted_negative),
+        ("groq_extra_fact_negative", 1, augmenter.expand_extra_fact_negative, is_high_quality_targeted_negative),
+    ]
+
+    for candidate in candidates:
+        prompt = str(candidate["prompt"])
+        answer = str(candidate["answer"])
+        source = str(candidate.get("source", "seed"))
+
+        for variant_type, label, generator, quality_check in generators:
+            if counters[variant_type] >= limit_per_type:
+                continue
+            generated = generator(prompt, answer)
+            if not generated or not quality_check(answer, generated):
+                continue
+            record = {
+                "prompt": prompt,
+                "answer": generated,
+                "label": label,
+                "source": source,
+                "variant_type": variant_type,
+            }
+            key = sha256_hexdigest(record["prompt"], record["answer"], record["variant_type"], record["label"], record["source"])
+            if key in existing_keys:
+                continue
+            records.append(record)
+            existing_keys.add(key)
+            counters[variant_type] += 1
+
+        if all(value >= limit_per_type for value in counters.values()):
+            break
+
+    filtered_records = filter_low_quality_targeted_augmentations(filter_low_quality_groq_negatives(records))
+    write_jsonl(output_path, filtered_records)
+    return filtered_records
+
+
+def _false_tail(prompt: str, answer: str) -> str:
+    profile = _question_profile(prompt)
+    if profile == "when":
+        return f"{answer.rstrip()} Это событие также часто относят к 1999 году."
+    if profile == "where":
+        return f"{answer.rstrip()} В некоторых источниках местом ошибочно называют Лондон."
+    if profile == "count":
+        return f"{answer.rstrip()} В расширенной версии ответа это число обычно увеличивают на 3."
+    if profile == "who":
+        return f"{answer.rstrip()} Другим участником этого факта также называют Александра Иванова."
+    return f"{answer.rstrip()} Дополнительно утверждается, что это было официально закреплено в 2005 году."
+
+
+def _hard_supported_positive(answer: str) -> str:
+    text = answer.rstrip()
+    return f"{text} Это уточнение сохраняет тот же ключевой факт и не меняет смысл ответа."
+
+
+def _concise_exact_positive(answer: str) -> str:
+    first_sentence = re.split(r"(?<=[.!?])\s+", answer.strip())[0].strip()
+    if len(first_sentence.split()) <= 18:
+        return first_sentence
+    words = first_sentence.split()
+    return " ".join(words[:18]).rstrip(" ,;:") + "."
+
+
+def _near_miss_numeric(answer: str) -> str | None:
+    match = NUMBER_RE.search(answer)
+    if not match:
+        return None
+    raw = match.group(0).replace(",", ".")
+    if "." in raw:
+        replacement = f"{round(float(raw) + 0.5, 2)}".rstrip("0").rstrip(".")
+    else:
+        replacement = str(int(raw) + 1)
+    return answer[: match.start()] + replacement + answer[match.end() :]
+
+
+def augment_dataset_failure_targeted(
+    output_path: str | Path,
+    *,
+    source_path: str | Path = DEFAULT_SYNTHETIC_PATH,
+    resume: bool = True,
+    limit_per_type: int = 300,
+) -> list[dict[str, Any]]:
+    output = Path(output_path)
+    if resume and output.exists():
+        records = read_jsonl(output)
+    else:
+        records = read_jsonl(source_path)
+    existing_keys = {
+        sha256_hexdigest(row["prompt"], row["answer"], row.get("variant_type"), row.get("label"), row.get("source"))
+        for row in records
+    }
+    candidates = _balanced_candidate_records(records, limit=max(100, limit_per_type * 6))
+    counters = {
+        "hard_supported_long_positive": 0,
+        "short_wrong_exact_negative": 0,
+        "correct_core_false_tail_negative": 0,
+        "near_miss_numeric_negative": 0,
+        "concise_exact_positive": 0,
+    }
+
+    def add_record(prompt: str, answer: str, generated: str | None, label: int, variant_type: str, source: str) -> None:
+        if not generated or generated.strip() == answer.strip():
+            return
+        generated = generated.strip()
+        record = {
+            "prompt": prompt,
+            "answer": generated,
+            "label": label,
+            "source": source,
+            "variant_type": variant_type,
+            "reference_answer": answer,
+        }
+        key = sha256_hexdigest(record["prompt"], record["answer"], record["variant_type"], record["label"], record["source"])
+        if key in existing_keys or counters[variant_type] >= limit_per_type:
+            return
+        if label == 0 and not is_high_quality_supported_positive(answer, generated):
+            return
+        if label == 1 and variant_type == "short_wrong_exact_negative" and not is_high_quality_groq_negative(answer, generated):
+            return
+        if (
+            label == 1
+            and variant_type not in {"near_miss_numeric_negative", "short_wrong_exact_negative"}
+            and not is_high_quality_targeted_negative(answer, generated)
+        ):
+            return
+        if label == 1 and variant_type == "near_miss_numeric_negative" and not is_high_quality_groq_negative(answer, generated):
+            return
+        records.append(record)
+        existing_keys.add(key)
+        counters[variant_type] += 1
+
+    for candidate in candidates:
+        if all(value >= limit_per_type for value in counters.values()):
+            break
+        prompt = str(candidate["prompt"])
+        answer = str(candidate["answer"])
+        source = str(candidate.get("source", "seed"))
+        add_record(prompt, answer, _hard_supported_positive(answer), 0, "hard_supported_long_positive", source)
+        add_record(prompt, answer, mutate_answer_rule_based(answer), 1, "short_wrong_exact_negative", source)
+        add_record(prompt, answer, _false_tail(prompt, answer), 1, "correct_core_false_tail_negative", source)
+        add_record(prompt, answer, _near_miss_numeric(answer), 1, "near_miss_numeric_negative", source)
+        add_record(prompt, answer, _concise_exact_positive(answer), 0, "concise_exact_positive", source)
+
+    filtered_records = filter_low_quality_targeted_augmentations(filter_low_quality_groq_negatives(records))
+    write_jsonl(output_path, filtered_records)
+    return filtered_records
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description="Generate the synthetic factual dataset.")
-    parser.add_argument("--stage", choices=["seed", "seed-harvest", "rule-negatives", "groq-negatives", "targeted-augment"], required=True)
+    parser.add_argument(
+        "--stage",
+        choices=[
+            "seed",
+            "seed-harvest",
+            "rule-negatives",
+            "groq-negatives",
+            "targeted-augment",
+            "hard-augment",
+            "failure-targeted-augment",
+        ],
+        required=True,
+    )
     parser.add_argument("--seed-path", default=str(DEFAULT_SEED_PATH))
     parser.add_argument("--output-path", default=str(DEFAULT_SYNTHETIC_PATH))
     parser.add_argument("--resume", action="store_true")
@@ -1056,6 +1286,25 @@ def main() -> None:
             output_path=output_path,
             resume=args.resume,
             limit=args.limit or 120,
+        )
+        print(json.dumps({"stage": args.stage, "rows": len(records)}, ensure_ascii=False))
+        return
+
+    if args.stage == "hard-augment":
+        records = augment_dataset_hard(
+            output_path=output_path,
+            resume=args.resume,
+            limit_per_type=args.limit or 200,
+        )
+        print(json.dumps({"stage": args.stage, "rows": len(records)}, ensure_ascii=False))
+        return
+
+    if args.stage == "failure-targeted-augment":
+        records = augment_dataset_failure_targeted(
+            output_path=output_path,
+            source_path=DEFAULT_SYNTHETIC_PATH,
+            resume=args.resume,
+            limit_per_type=args.limit or 300,
         )
         print(json.dumps({"stage": args.stage, "rows": len(records)}, ensure_ascii=False))
         return

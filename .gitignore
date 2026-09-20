@@ -11,11 +11,10 @@ htmlcov/
 .ipynb_checkpoints/
 data/cache/*
 !data/cache/.gitkeep
-model/*
-!model/.gitkeep
+!data/cache/groq_cache.sqlite
 dist/
 build/
 *.egg-info/
 outputs/
 data/raw/external_downloads/
-.gradio/
+.streamlit/secrets.toml

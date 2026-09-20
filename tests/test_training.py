@@ -2,6 +2,7 @@ import numpy as np
 import pandas as pd
 
 from guardian_of_truth.training import build_variant_stratify_labels, compute_variant_weights
+from train import _feature_set_indices
 
 
 def test_build_variant_stratify_labels_falls_back_for_rare_groups() -> None:
@@ -23,3 +24,12 @@ def test_compute_variant_weights_normalizes_mean_to_one() -> None:
     assert np.isclose(weights.mean(), 1.0)
     assert weights[0] > weights[1]
     assert weights[2] > 0.0
+
+
+def test_feature_set_ablation_indices_are_named() -> None:
+    feature_sets = _feature_set_indices()
+
+    assert "old_full_14" in feature_sets
+    assert len(feature_sets["old_full_14"]) == 14
+    assert feature_sets["text_only"]
+    assert feature_sets["hybrid_old_new"] == feature_sets["full"]

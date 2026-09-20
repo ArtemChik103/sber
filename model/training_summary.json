@@ -1,0 +1,14 @@
+{
+  "selected_variant": "v9.1_morphological_blind_rescue_ensemble",
+  "feature_count": 63,
+  "api_model": "qwen/qwen3.8-27b",
+  "in_sample_pr_auc": 0.9105,
+  "in_sample_roc_auc": 0.9053,
+  "sample_count": 1044,
+  "combiner": "mean",
+  "refute_overlay_policy": "v5_bayesian_blind_rescue",
+  "public_pr_auc": 0.9105,
+  "public_roc_auc": 0.9053,
+  "mean_latency_ms": 196.8,
+  "promoted_date": "2026-09-20"
+}

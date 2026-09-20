@@ -18,6 +18,8 @@ jobs:
           pip install -r requirements.txt
           pip install -e .
       - name: Import smoke test
-        run: python -c "import guardian_of_truth; print(guardian_of_truth.__version__)"
+        run: |
+          python -c "import guardian_of_truth; print(guardian_of_truth.__version__)"
+          python -c "import guardian_of_truth.streamlit_app"
       - name: Pytest
-        run: pytest -q
+        run: python -m pytest -q

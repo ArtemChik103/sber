@@ -7,6 +7,7 @@ import pandas as pd
 from tqdm import tqdm
 
 from guardian_of_truth.api_client import AuditPayload, GroqVerifier
+from guardian_of_truth.evidence import EvidenceRetriever
 from guardian_of_truth.feature_extractor import FeatureExtractor
 from guardian_of_truth.generation import filter_low_quality_groq_negatives
 from guardian_of_truth.utils import read_jsonl, sha256_hexdigest
@@ -50,7 +51,9 @@ def build_feature_matrix(
     extractor: FeatureExtractor,
     *,
     use_api: bool = True,
+    cache_only_api: bool = False,
     limit: int | None = None,
+    evidence_retriever: EvidenceRetriever | None = None,
 ) -> tuple[np.ndarray, np.ndarray, pd.DataFrame]:
     features: list[np.ndarray] = []
     labels: list[int] = []
@@ -61,12 +64,19 @@ def build_feature_matrix(
         prompt = str(record["prompt"])
         answer = str(record["answer"])
         label = int(record["label"])
-        audit = (
-            verifier.verify(prompt, answer, mode="dataset")
-            if use_api and verifier is not None
-            else AuditPayload.neutral(status="disabled", mode="dataset", model_name=None, ok=False)
-        )
-        feature_vector = extractor.extract(prompt, answer, audit)
+        if use_api and verifier is not None:
+            audit = verifier.cached_audit(prompt, answer, mode="dataset") if cache_only_api else verifier.verify(prompt, answer, mode="dataset")
+            if audit is None:
+                audit = AuditPayload.neutral(
+                    status="cache_miss",
+                    mode="dataset",
+                    model_name=verifier.settings.experiment_model,
+                    ok=False,
+                )
+        else:
+            audit = AuditPayload.neutral(status="disabled", mode="dataset", model_name=None, ok=False)
+        evidence_audit = evidence_retriever.audit(prompt, answer) if evidence_retriever is not None and evidence_retriever.available else None
+        feature_vector = extractor.extract(prompt, answer, audit, evidence_audit=evidence_audit)
         features.append(feature_vector)
         labels.append(label)
         rows.append(
@@ -77,10 +87,13 @@ def build_feature_matrix(
                 "variant_type": record.get("variant_type"),
                 "source": record.get("source"),
                 "audit_status": audit.status,
+                "evidence_status": evidence_audit.status if evidence_audit is not None else "missing",
             }
         )
 
     feature_dim = len(FeatureExtractor.api_feature_names) + len(FeatureExtractor.text_feature_names)
+    if evidence_retriever is not None:
+        feature_dim += len(FeatureExtractor.evidence_feature_names)
     X = np.stack(features).astype(np.float32) if features else np.empty((0, feature_dim), dtype=np.float32)
     y = np.array(labels, dtype=np.int32)
     meta = pd.DataFrame(rows)

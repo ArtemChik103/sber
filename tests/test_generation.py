@@ -1,4 +1,5 @@
 from guardian_of_truth.generation import (
+    GroqTargetedAugmenter,
     _balanced_candidate_records,
     is_high_quality_supported_positive,
     is_high_quality_targeted_negative,
@@ -36,3 +37,15 @@ def test_is_high_quality_targeted_negative_allows_longer_drift_answer() -> None:
     drift = "Эйфелева башня находится в Лондоне, столице Великобритании, известной своей богатой историей и культурным наследием."
 
     assert is_high_quality_targeted_negative(reference, drift)
+
+
+def test_hard_augmentation_prompts_have_distinct_modes() -> None:
+    augmenter = GroqTargetedAugmenter(api_key="test-key")
+
+    hard_positive = augmenter._build_messages("Кто написал роман?", "Роман написал Иванов.", profile="who", mode="hard_positive")
+    short_wrong = augmenter._build_messages("Кто написал роман?", "Роман написал Иванов.", profile="who", mode="short_wrong")
+    extra_fact = augmenter._build_messages("Кто написал роман?", "Роман написал Иванов.", profile="who", mode="extra_fact_negative")
+
+    assert "fully factual" in hard_positive[0]["content"]
+    assert "concise answer" in short_wrong[0]["content"]
+    assert "unsupported false factual detail" in extra_fact[0]["content"]

@@ -26,7 +26,7 @@ def test_limit_uses_stable_stratified_subset(tmp_path) -> None:
     _, _, meta_repeat = build_feature_matrix(dataset_path, verifier=None, extractor=extractor, use_api=False, limit=4)
 
     assert X.shape == (4, len(FeatureExtractor.api_feature_names) + len(FeatureExtractor.text_feature_names))
-    assert X_text.shape == (4, 7)
+    assert X_text.shape == (4, len(FeatureExtractor.text_feature_names))
     assert len(set(meta["variant_type"])) == 4
     assert meta["variant_type"].tolist() == meta_repeat["variant_type"].tolist()
     assert y.tolist() == y_text.tolist()
@@ -50,3 +50,18 @@ def test_preprocess_filters_low_quality_groq_negative(tmp_path) -> None:
     assert len(meta) == 3
     assert meta["answer"].tolist().count("Столица Албании — Тирана.") == 0
     assert y.tolist() == [0, 0, 1]
+
+
+def test_cache_only_api_marks_cache_miss(tmp_path) -> None:
+    class EmptyVerifier:
+        settings = type("Settings", (), {"experiment_model": "test-model"})()
+
+        def cached_audit(self, prompt: str, answer: str, mode: str = "dataset"):
+            return None
+
+    dataset_path = tmp_path / "dataset.jsonl"
+    write_jsonl(dataset_path, [{"prompt": "p", "answer": "a", "label": 0, "variant_type": "positive", "source": "test"}])
+
+    _, _, meta = build_feature_matrix(dataset_path, verifier=EmptyVerifier(), extractor=FeatureExtractor(), cache_only_api=True)
+
+    assert meta["audit_status"].tolist() == ["cache_miss"]

@@ -23,13 +23,14 @@ class HallucinationClassifier:
         model: LogisticRegression | None = None,
         calibrator: Any | None = None,
         calibration_kind: str = "none",
+        score_transform: str = "predict_proba",
     ) -> None:
         config = load_yaml(CONFIG_DIR / "model.yaml")
         detector_cfg = config["detector"]
         self.feature_names = feature_names or []
         self.feature_indices = feature_indices or []
-        self.scaler = scaler or StandardScaler()
-        self.model = model or LogisticRegression(
+        self.scaler = scaler if scaler is not None else StandardScaler()
+        self.model = model if model is not None else LogisticRegression(
             C=detector_cfg["C"],
             class_weight=detector_cfg["class_weight"],
             max_iter=detector_cfg["max_iter"],
@@ -37,6 +38,7 @@ class HallucinationClassifier:
         )
         self.calibrator = calibrator
         self.calibration_kind = calibration_kind
+        self.score_transform = score_transform
 
     def fit(
         self,
@@ -46,6 +48,7 @@ class HallucinationClassifier:
         y_val: np.ndarray | None = None,
         *,
         calibration: str = "isotonic",
+        score_transform: str | None = None,
         sample_weight_train: np.ndarray | None = None,
         sample_weight_val: np.ndarray | None = None,
     ) -> "HallucinationClassifier":
@@ -54,12 +57,13 @@ class HallucinationClassifier:
         self.model.fit(X_train_scaled, y_train, sample_weight=sample_weight_train)
         self.calibration_kind = "none"
         self.calibrator = None
+        self.score_transform = score_transform or calibration or "predict_proba"
 
         if X_val is None or y_val is None or len(np.unique(y_val)) < 2:
             return self
 
         X_val = self._select_features(X_val)
-        raw_scores = self.model.decision_function(self.scaler.transform(X_val))
+        raw_scores = self._raw_scores(self.scaler.transform(X_val))
 
         if calibration == "isotonic":
             try:
@@ -90,24 +94,61 @@ class HallucinationClassifier:
             X = X.reshape(1, -1)
         scaled = self.scaler.transform(X)
         base_proba = self.model.predict_proba(scaled)[:, 1]
-        if self.calibrator is None or self.calibration_kind == "none":
+        if self.score_transform == "predict_proba":
             return base_proba
 
-        raw_scores = self.model.decision_function(scaled)
-        if self.calibration_kind == "isotonic":
+        raw_scores = self._raw_scores(scaled)
+        if self.score_transform == "raw_margin_sigmoid":
+            return self._sigmoid(raw_scores)
+        if self.calibrator is None or self.calibration_kind == "none":
+            return base_proba
+        if self.score_transform == "isotonic" and self.calibration_kind == "isotonic":
             return np.asarray(self.calibrator.transform(raw_scores), dtype=np.float64)
-        if self.calibration_kind == "sigmoid":
+        if self.score_transform == "sigmoid" and self.calibration_kind == "sigmoid":
             return np.asarray(self.calibrator.predict_proba(raw_scores.reshape(-1, 1))[:, 1], dtype=np.float64)
         return base_proba
 
+    def _raw_scores(self, scaled: np.ndarray) -> np.ndarray:
+        if hasattr(self.model, "decision_function"):
+            return np.asarray(self.model.decision_function(scaled), dtype=np.float64)
+        proba = np.clip(self.model.predict_proba(scaled)[:, 1], 1e-6, 1.0 - 1e-6)
+        return np.log(proba / (1.0 - proba))
+
+    @staticmethod
+    def _sigmoid(scores: np.ndarray) -> np.ndarray:
+        return 1.0 / (1.0 + np.exp(-np.clip(scores, -50.0, 50.0)))
+
     def _select_features(self, X: np.ndarray) -> np.ndarray:
         if X.ndim == 1:
+            name_indices = self._indices_from_feature_names(X.shape[0])
+            if name_indices is not None:
+                return X[name_indices]
             if self.feature_indices and X.shape[0] != len(self.feature_indices):
                 return X[self.feature_indices]
             return X
+        name_indices = self._indices_from_feature_names(X.shape[1])
+        if name_indices is not None:
+            return X[:, name_indices]
         if self.feature_indices and X.shape[1] != len(self.feature_indices):
             return X[:, self.feature_indices]
         return X
+
+    def _indices_from_feature_names(self, input_width: int) -> list[int] | None:
+        if not self.feature_names or input_width == len(self.feature_names):
+            return None
+        try:
+            from guardian_of_truth.feature_extractor import FeatureExtractor
+        except ImportError:  # pragma: no cover
+            return None
+        base_names = FeatureExtractor.api_feature_names + FeatureExtractor.text_feature_names
+        evidence_names = base_names + FeatureExtractor.evidence_feature_names
+        current_names = evidence_names if input_width == len(evidence_names) else base_names
+        if input_width != len(current_names):
+            return None
+        name_to_index = {name: idx for idx, name in enumerate(current_names)}
+        if not all(name in name_to_index for name in self.feature_names):
+            return None
+        return [name_to_index[name] for name in self.feature_names]
 
     def save(self, model_dir: str | Path = MODEL_DIR, *, prefix: str = "") -> None:
         model_path = Path(model_dir)
@@ -120,6 +161,7 @@ class HallucinationClassifier:
                 "model": self.model,
                 "calibrator": self.calibrator,
                 "calibration_kind": self.calibration_kind,
+                "score_transform": self.score_transform,
                 "feature_names": self.feature_names,
                 "feature_indices": self.feature_indices,
             },
@@ -141,6 +183,7 @@ class HallucinationClassifier:
             model=detector_bundle["model"],
             calibrator=detector_bundle.get("calibrator"),
             calibration_kind=detector_bundle.get("calibration_kind", "none"),
+            score_transform=detector_bundle.get("score_transform", detector_bundle.get("calibration_kind", "predict_proba")),
         )
 
 
@@ -153,6 +196,7 @@ def save_fallback_bundle(classifier: HallucinationClassifier, model_dir: str | P
             "model": classifier.model,
             "calibrator": classifier.calibrator,
             "calibration_kind": classifier.calibration_kind,
+            "score_transform": classifier.score_transform,
             "feature_names": classifier.feature_names,
             "feature_indices": classifier.feature_indices,
         },
@@ -169,6 +213,7 @@ def load_fallback_bundle(model_dir: str | Path = MODEL_DIR) -> HallucinationClas
         model=bundle["model"],
         calibrator=bundle.get("calibrator"),
         calibration_kind=bundle.get("calibration_kind", "none"),
+        score_transform=bundle.get("score_transform", bundle.get("calibration_kind", "predict_proba")),
     )
 
 
