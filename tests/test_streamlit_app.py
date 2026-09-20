@@ -83,3 +83,12 @@ def test_resolve_groq_api_key_from_env() -> None:
 def test_run_project_paths_are_repo_relative() -> None:
     assert ROOT_DIR.name == "sber"
     assert SRC_DIR == ROOT_DIR / "src"
+
+
+def test_streamlit_app_render_smoke() -> None:
+    from streamlit.testing.v1 import AppTest
+
+    at = AppTest.from_file("streamlit_app.py")
+    at.run()
+    assert not at.exception
+

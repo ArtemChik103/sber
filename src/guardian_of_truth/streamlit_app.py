@@ -184,12 +184,15 @@ def render_app() -> None:
                 st.rerun()
 
         st.subheader("Политика верификации")
+        policy_options = [
+            BAYESIAN_BLIND_RESCUE_POLICY,
+            REFUTE_OVERLAY_POLICY,
+            DISABLED_REFUTE_OVERLAY_POLICY,
+        ]
         selected_policy = st.selectbox(
             "Алгоритм оверлея",
-            options=SUPPORTED_REFUTE_OVERLAY_POLICIES,
-            index=SUPPORTED_REFUTE_OVERLAY_POLICIES.index(BAYESIAN_BLIND_RESCUE_POLICY)
-            if BAYESIAN_BLIND_RESCUE_POLICY in SUPPORTED_REFUTE_OVERLAY_POLICIES
-            else 0,
+            options=policy_options,
+            index=0,
             format_func=lambda x: {
                 BAYESIAN_BLIND_RESCUE_POLICY: "Bayesian Blind Rescue (v9.4, Рекомендуется)",
                 REFUTE_OVERLAY_POLICY: "Evidence-Grounded Refute (v8)",
