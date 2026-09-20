@@ -136,12 +136,12 @@ def _matches_blind_fact(fact: str, candidate: str) -> bool:
 
     fact_years = re.findall(r"\b(1\d{3}|20\d{2})\b", fact_lower)
     cand_years = re.findall(r"\b(1\d{3}|20\d{2})\b", cand_lower)
-    if fact_years and cand_years and any(y in cand_years for y in fact_years):
-        return True
+    if fact_years and cand_years:
+        return any(y in cand_years for y in fact_years)
 
     fact_words = [
         w for w in re.findall(r"[а-яёa-z0-9]+", fact_lower)
-        if len(w) >= 3 and w not in {"года", "году", "были", "была", "было", "это", "был"}
+        if len(w) >= 3 and w not in {"года", "году", "годом", "годы", "год", "были", "была", "было", "это", "был", "век", "века", "веке"}
     ]
     if not fact_words:
         return False
@@ -178,8 +178,9 @@ def _compute_year_delta(
             bf_years = [int(x) for x in re.findall(r"\b(1\d{3}|20\d{2})\b", str(bf["blind_fact"])) if x not in prompt_years]
             if bf_years:
                 delta = min(abs(cy - by) for cy in cand_years for by in bf_years)
-                if delta > 2:
+                if delta >= 1:
                     return float(delta)
+                return 0.0
 
     # 2. Check evidence audit snippets
     if evidence_audit is None:
@@ -203,6 +204,9 @@ def _compute_year_delta(
 
     snippets = cj.get("snippets", []) + cj.get("overlay_eligible_snippets", [])
     for sn in snippets:
+        sn_score = float(sn.get("score", 0.0) or 0.0)
+        if sn_score <= 0.0:
+            continue
         stext = str(sn.get("text", "")) + " " + str(sn.get("title", ""))
         swords = [w for w in re.findall(r"[а-яёa-z0-9]+", stext.lower()) if len(w) >= 3]
         sstems = {_stem_ru(w) for w in swords}
@@ -254,32 +258,37 @@ def bayesian_decision(
         except Exception:
             target_cache = None
 
+    blind_confirmed = False
     if target_cache is not None:
         ckey = sha256_hexdigest("blind-fact-v1", prompt)
         entry = target_cache.get(ckey)
         if entry is not None and "blind_fact" in entry:
             fact = str(entry["blind_fact"]).strip()
             if _matches_blind_fact(fact, answer):
+                blind_confirmed = True
                 if curr_score > rescue_thresh:
                     rescued_score = float(max(rescue_floor, curr_score - rescue_delta))
                     return rescued_score, "blind_recall_rescue_fp", kind
+                return curr_score, "blind_fact_confirmed", kind
 
     # 2. Continuous Year Delta refutation (resolves False Negatives for when/year questions)
-    if kind in {"year", "date_or_month"}:
+    if not blind_confirmed and kind in {"year", "date_or_month"}:
         year_delta = _compute_year_delta(prompt, answer, evidence_audit, cache=target_cache)
-        if year_delta is not None and year_delta > 2 and curr_score < 0.50:
+        if year_delta is not None and year_delta >= 1 and curr_score < 0.50:
             boosted_score = float(min(0.85, curr_score + 0.40))
             return boosted_score, "evidence_year_delta_boost_fn", kind
 
     # 3. Evidence Refutation boost (resolves False Negatives)
-    if evidence_audit is not None:
-        ref_y = getattr(evidence_audit, "aligned_year_refuted_count", 0.0) > 0
-        ref_n = getattr(evidence_audit, "aligned_number_refuted_count", 0.0) > 0
-        ref_c = getattr(evidence_audit, "core_refuted", 0.0) > 0
-        overlap = getattr(evidence_audit, "top_evidence_overlap", 0.0)
-        if (ref_y or ref_c or (ref_n and overlap >= 0.35)) and overlap >= boost_overlap and curr_score < 0.50:
-            boosted_score = float(min(0.85, curr_score + boost_delta))
-            return boosted_score, "evidence_refuted_boost_fn", kind
+    if not blind_confirmed and evidence_audit is not None:
+        top_bm25 = float(getattr(evidence_audit, "top_bm25_score", 0.0) or 0.0)
+        if top_bm25 > 0.0:
+            ref_y = getattr(evidence_audit, "aligned_year_refuted_count", 0.0) > 0
+            ref_n = getattr(evidence_audit, "aligned_number_refuted_count", 0.0) > 0
+            ref_c = getattr(evidence_audit, "core_refuted", 0.0) > 0
+            overlap = getattr(evidence_audit, "top_evidence_overlap", 0.0)
+            if (ref_y or ref_c or (ref_n and overlap >= 0.35)) and overlap >= boost_overlap and curr_score < 0.50:
+                boosted_score = float(min(0.85, curr_score + boost_delta))
+                return boosted_score, "evidence_refuted_boost_fn", kind
 
     # 4. Dual-Model Arbitration with openai/gpt-oss-120b for high-uncertainty gray zone
     if 0.38 <= curr_score <= 0.62 and target_cache is not None:
