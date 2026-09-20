@@ -1,0 +1,39 @@
+name: keep-alive
+
+on:
+  schedule:
+    # Запуск каждые 2 дня в 06:00 UTC
+    - cron: "0 6 */2 * *"
+  workflow_dispatch:
+    inputs:
+      app_url:
+        description: "URL приложения Streamlit для проверки"
+        required: false
+        default: ""
+
+jobs:
+  wake-up:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
+
+      - name: Install Playwright
+        run: |
+          python -m pip install --upgrade pip
+          pip install playwright
+          playwright install --with-deps chromium
+
+      - name: Run keep-alive wake up script
+        env:
+          STREAMLIT_APP_URL: ${{ github.event.inputs.app_url || secrets.STREAMLIT_APP_URL || vars.STREAMLIT_APP_URL }}
+        run: |
+          python scripts/keep_alive.py
