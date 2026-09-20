@@ -16,11 +16,14 @@ DEFAULT_SLEEP_SELECTORS = [
 ]
 
 
+DEFAULT_APP_URL = "https://cyeux8q3oyqrzdksudrbss.streamlit.app/"
+
+
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Keep-alive ping and wake-up utility for Streamlit Cloud.")
     parser.add_argument(
         "--url",
-        default=os.environ.get("STREAMLIT_APP_URL", ""),
+        default=os.environ.get("STREAMLIT_APP_URL", DEFAULT_APP_URL),
         help="Target URL of the deployed Streamlit application.",
     )
     parser.add_argument(
@@ -32,11 +35,10 @@ def parse_args() -> argparse.Namespace:
     return parser.parse_args()
 
 
-def wake_up_app(url: str, timeout_sec: int = 60) -> int:
-    clean_url = url.strip()
+def wake_up_app(url: str = DEFAULT_APP_URL, timeout_sec: int = 60) -> int:
+    clean_url = (url or DEFAULT_APP_URL).strip()
     if not clean_url:
-        print("ERROR: Streamlit app URL is empty. Provide --url or set STREAMLIT_APP_URL environment variable.", file=sys.stderr)
-        return 1
+        clean_url = DEFAULT_APP_URL
 
     print(f"Starting keep-alive check for: {clean_url}")
     with sync_playwright() as p:

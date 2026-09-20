@@ -2,6 +2,8 @@
 
 Детектор фактологических галлюцинаций в генерациях языковых моделей с контрактом `GuardianOfTruth.score(prompt, answer)`.
 
+Демо-приложение в облаке: [https://cyeux8q3oyqrzdksudrbss.streamlit.app/](https://cyeux8q3oyqrzdksudrbss.streamlit.app/)
+
 ## Метрики и статус валидации
 
 - Набор тестов: `125 passed` (100% прохождение).
@@ -153,11 +155,9 @@ python run_project.py
 Для предотвращения засыпания в бесплатном тарифе Streamlit Cloud настроен GitHub Action `.github/workflows/keep_alive.yml`:
 
 - **Расписание**: запускается каждые 2 дня в 06:00 UTC.
+- **Автономность**: целевой URL `https://cyeux8q3oyqrzdksudrbss.streamlit.app/` уже встроен по умолчанию и работает без добавления секретов или переменных.
 - **Принцип работы**: открывает веб-страницу через headless Chromium (Playwright), определяет статус сна и автоматически нажимает кнопку пробуждения при её наличии.
-- **Настройка**:
-  1. В репозитории GitHub откройте **Settings -> Secrets and variables -> Actions -> Variables**.
-  2. Создайте переменную `STREAMLIT_APP_URL` со значением URL вашего приложения (например, `https://your-subdomain.streamlit.app`).
-  3. Для принудительного запуска перейдите в **Actions -> keep-alive -> Run workflow**.
+- **Ручной запуск**: при необходимости можно запустить проверку вручную во вкладке **Actions -> keep-alive -> Run workflow**.
 
 ### 6. Воспроизведение метрик и запуск тестов
 

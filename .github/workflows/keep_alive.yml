@@ -9,7 +9,7 @@ on:
       app_url:
         description: "URL приложения Streamlit для проверки"
         required: false
-        default: ""
+        default: "https://cyeux8q3oyqrzdksudrbss.streamlit.app/"
 
 jobs:
   wake-up:
@@ -34,6 +34,6 @@ jobs:
 
       - name: Run keep-alive wake up script
         env:
-          STREAMLIT_APP_URL: ${{ github.event.inputs.app_url || secrets.STREAMLIT_APP_URL || vars.STREAMLIT_APP_URL }}
+          STREAMLIT_APP_URL: ${{ github.event.inputs.app_url || secrets.STREAMLIT_APP_URL || vars.STREAMLIT_APP_URL || 'https://cyeux8q3oyqrzdksudrbss.streamlit.app/' }}
         run: |
           python scripts/keep_alive.py

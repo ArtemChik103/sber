@@ -8,15 +8,17 @@ from scripts.keep_alive import DEFAULT_SLEEP_SELECTORS, parse_args, wake_up_app
 
 def test_parse_args_defaults() -> None:
     with patch.object(sys, "argv", ["keep_alive.py"]):
-        with patch.dict("os.environ", {"STREAMLIT_APP_URL": "https://test.streamlit.app"}):
+        with patch.dict("os.environ", {}, clear=True):
             args = parse_args()
-            assert args.url == "https://test.streamlit.app"
+            assert "streamlit.app" in args.url
             assert args.timeout_sec == 60
 
 
-def test_wake_up_empty_url_fails() -> None:
-    exit_code = wake_up_app("")
-    assert exit_code == 1
+def test_parse_args_with_custom_env() -> None:
+    with patch.object(sys, "argv", ["keep_alive.py"]):
+        with patch.dict("os.environ", {"STREAMLIT_APP_URL": "https://custom.streamlit.app"}):
+            args = parse_args()
+            assert args.url == "https://custom.streamlit.app"
 
 
 def test_wake_up_clicks_button_when_sleeping() -> None:
